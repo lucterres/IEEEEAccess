@@ -454,7 +454,7 @@ Table~\ref{tab:synthetic_images_evaluation} shows the results of the evaluation 
 
 Comparing the results of the geoscience specialist evaluation for real and synthetic images, a small difference of less than 2\% can be observed in favor of the real images. Therefore, from the perspective of the specialists' evaluations, the synthetic seismic images are virtually indistinguishable from the real images. In that sense, we can conclude that from the point of view of geoscience specialists consulted, the synthetic images are as good as real images.
 
-\subsection{Quantitative Comparison with Related Works}
+\subsection{Quantitative Evaluation} 
 
 Considering the summary statistics presented in Table \ref{tab:metricsSummary} for MSE, DSSIM, and LBP - DISTANCE across the four groups and the total, we can draw several conclusions about the distribution of these metrics. First, analysing the Mean Squared Error, Group 3 achieved the best performance, consistently showing the lowest MSE, with a median of 542.87, indicating this group generally had the smallest errors. The Group 4 has the highest median MSE at 1093.89, suggesting it had the most significant typical errors and the worst performance observed. Group 3 is the most consistent, having the smallest Interquartile Range (IQR = 20.96) and the smallest overall range (109.04), meaning its errors are tightly clustered. Group 1 is the least consistent with a high range (380.69). The total distribution shows a very large IQR (362.28) and range (690.63), which is expected when combining the wide range of performance from the individual groups.
 
@@ -464,7 +464,35 @@ LBP (Local Binary Pattern) Distance as a metric often used for texture analysis,
 
 Based on the three metrics, Group 3 consistently demonstrates the best overall performance with the lowest median and lowest variability (IQR and Range) for both MSE (error magnitude) and LBP - DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in DSSIM, which refers to better structural similarity.  The box plot in figure \ref{fig:boxplots} confirms the group's performance in the DSSIM metric.
 
+\section*{Comparison of Synthetic Seismic Image Generation Methods}
 
+A quantitative analysis was conducted to compare the performance of our proposed method with the sketch-based approach from Ferreira et al. \cite{ref19}. The comparison focuses on the results presented in Table \ref{tab:metricsSummary} and Table I of \cite{ref19}, respectively. Both studies employ key metrics to measure the similarity between synthetic and original seismic images: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For all metrics, lower values indicate superior performance.
+
+The work by Ferreira et al. \cite{ref19} evaluated five sketch types (A through E), with Types D and E yielding the most favorable outcomes. Our study analyzed four groups (1 through 4), where Group 3 demonstrated the most consistent and generally superior performance across all metrics. The following subsections detail the comparison based on the median values reported, which provide a robust representation of each network's typical performance.
+
+\subsection{Mean Squared Error (MSE)}
+
+The MSE quantifies the pixel-wise distance between two images; a smaller value signifies a closer match in pixel intensities.
+
+In the work of Ferreira et al. \cite{ref19}, the best performance was achieved with Sketch Type E, which recorded a median MSE of 4712.1. In contrast, our context-oriented approach yielded its best result with Group 3, achieving a median MSE of 542.87. It demonstrates a drastically superior performance in terms of pixel-wise error. Its median MSE is significantly lower than the obtained by the best-performing sketch type in \cite{ref19}. This substantial difference indicates a much more precise correspondence of pixel intensity between the synthetic and original images.
+
+\subsection{Structural Similarity Dissimilarity (DSSIM)}
+
+The DSSIM metric assesses structural similarity by incorporating texture information such as variances and covariances. It is derived from the Structural Similarity Index (SSIM) via the transformation $DSSIM(x, y) = (1 - SSIM(x, y))/2$. Values closer to 0 indicate higher structural similarity.
+
+The best median DSSIM in \cite{ref19} was 0.39, obtained with Sketch Type D. In our results the best median DSSIM was 0.2424, achieved by Group 2. This result is substantially lower than the best result from Ferreira et al. (Type D: 0.39). As noted, a DSSIM value above 0.25 may be interpreted as "low perceptual similarity." The median value for Type D (0.39) falls within this range, whereas Group 2's median is just below this threshold, indicating a clear superiority in preserving structural and textural features. Furthermore, our Group 2 was not only the highest-performing in terms of structural quality (lowest median DSSIM) but also the most consistent, exhibiting the smallest Interquartile Range (IQR = 0.0080) and overall range.
+
+\subsection{LBP Distance}
+
+LBP Distance measures the Euclidean distance between LBP feature vectors, providing a robust assessment of texture similarity. Lower values signify a closer match in textural  characteristics.
+
+In \cite{ref19}, the lowest median LBP Distance was 0.17, achieved by Sketch Type D. The result in our proposed method produced its best result with Group 3, which recorded a median LBP Distance of 0.0800. It is less than half the value achieved by the best sketch type (0.17) in \cite{ref19}. This suggests that our proposed method generated textures with significantly higher fidelity to the original images. Moreover, Group 3 was also identified as the most consistent in terms of texture feature quality.
+
+\subsection{Conclusion on Comparison of Methods}
+
+Overall, the context-oriented synthesis approach demonstrates superior quantitative performance across all three metrics when compared to the best results from the sketch-based method in \cite{ref19}. This superiority is particularly pronounced in the MSE and LBP distance metrics, where the newer work achieves dramatically lower median values, indicating significant improvements in both pixel-level accuracy and texture fidelity.
+
+It is worth noting that while quantitative metrics provide objective evaluation, they may not fully align with qualitative assessment. Ferreira et al. \cite{ref19} observed that although Type D had the best quantitative scores for DSSIM and LBP Distance, Type E produced the most visually realistic images. Similarly, we supplemented our findings with a detailed qualitative analysis involving domain experts, who concluded that the synthetic images were "virtually indistinguishable" from real ones, with the F1-score difference being less than 2\%.
 
 
 \begin{figure}
@@ -474,7 +502,7 @@ Based on the three metrics, Group 3 consistently demonstrates the best overall p
 	\label{fig:boxplots}
 \end{figure}
 
-\vspace{5mm} { \textcolor{red} {\textbf{DOING}}}  \vspace{5mm}
+%\vspace{5mm} { \textcolor{red} {\textbf{DOING}}}  %\vspace{5mm}
 
 %todo show groups boxplots
 
