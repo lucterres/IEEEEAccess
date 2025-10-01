@@ -17,3 +17,4 @@ latex_build/
 *.fdb_latexmk
 *.fls
 *.run.xml
+*.gz
