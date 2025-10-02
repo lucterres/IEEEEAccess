@@ -18,3 +18,5 @@ latex_build/
 *.fls
 *.run.xml
 *.gz
+*.pdf
+*.synctex.gz
