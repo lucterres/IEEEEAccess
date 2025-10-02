@@ -1,10 +1,5 @@
 \documentclass{ieeeaccess}
-%\usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-
-%\usepackage{algorithmic}
-%\usepackage{algorithm}
-%\usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage[utf8]{inputenc}
@@ -13,8 +8,7 @@
 \addbibresource{references.bib} % conecta o arquivo externo
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern} % Or \usepackage{cm-super}
-\usepackage{mathptmx}
+\usepackage{newtxtext,newtxmath}
 
 \usepackage{booktabs}
 \usepackage{siunitx}
@@ -22,17 +16,6 @@
 \usepackage{comment}
 
 \usepackage{bm}
-% \makeatletter
-% \AtBeginDocument{\DeclareMathVersion{bold}
-% \SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
-% \SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
-% \SetMathAlphabet{\mathrm}{bold}{T1}{times}{b}{n}
-% \SetMathAlphabet{\mathit}{bold}{T1}{times}{b}{it}
-% \SetMathAlphabet{\mathbf}{bold}{T1}{times}{b}{n}
-% \SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
-% \SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
-% \renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
-% \makeatother
 
 
 %Your document starts from here ___________________________________________________
@@ -94,7 +77,7 @@ Henriques et al. \cite{ref1} proposed a very similar Data Augmentation method ba
 \subsection{Context Generation Using a Variational Autoencoder}
 
 The proposed data augmentation scheme detects and generates new rock geometries with a Variational Autoencoder, as shown in Fig.~\ref{fig:vae1}.  
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/vaesGen.png}
     \caption{Samples of generated structural salt masks. The Variational Autoencoder learns the distribution and reproduce new structural masks.}
@@ -102,7 +85,7 @@ The proposed data augmentation scheme detects and generates new rock geometries 
 \end{figure}
 
 A dataset of seismic images used to generate new salt masks is illustrated in Fig. \ref{fig:vae1}. The natural intersection between two different rocks are their boundaries, and in the case of salt rock this boundary is usually apparent, as seen in Fig. \ref{fig:edge1}. During the VAE training process, only salt masks with a considerable amount of salt are used, varying from 10 to 90 percent of the total area.
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/edge detection.png}
     \caption{Sample of the boundaries identification between salt and other sediments represented in a dilated edge segment.}
@@ -111,7 +94,7 @@ A dataset of seismic images used to generate new salt masks is illustrated in Fi
 
 The generated masks are used as contexts for the seismic texture synthesis process. Once the boundaries of a salt body are known, the region interior to the closed boundary is expected to be salt. Auto-Encoding Variational Bayes, commonly known as Variational Autoencoders (VAEs), is a deep learning technique~\cite{ref8} used in this work as a generative model for learning a probabilistic mapping from an input space to a latent space and back, allowing data reconstruction and new data generation. The VAE model used is a simple feedforward network for the encoder and decoder. The encoder contains four stacked dense layers, and the decoder contains five stacked dense layers. During the inference time, the latent variables $z$ are sampled from the prior distribution $\pi(z)$, and then $z$ is decoded with the VAE´s decoder to generate the salt mask with the inferred distribution.
 
-The main task of VAEs is to model the underlying probability distribution of a data set $\mathbf{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$. The model introduces a latent variable $\mathbf{z}$ obtained by maximizing the marginal likelihood:
+The main task of VAEs is to model the underlying probability distribution of a data set $\bm{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$. The model introduces a latent variable $\bm{z}$ obtained by maximizing the marginal likelihood:
 
 \begin{equation}
 p_\theta(x) = \int p_\theta(x | z) p(z) \, dz
@@ -213,21 +196,6 @@ Conversely, diffusion models present practical and conceptual disadvantages \cit
 
 Therefore, targeting efficiency and ease of training, VAEs have simpler and more stable training, as they do not rely on an iterative refinement process like diffusion models. This can be a decisive factor when there are time and computational resource constraints.
 
-\begin{comment}
-\begin{algorithm}[H]
-\caption{Seismic Image Synthesis Algorithm}\label{alg:alg1}
-\begin{algpseudocode}
-\begin{enumerate}
-    \State \textbf{Data Preparation}
-    \State \textbf{Training the Variational Autoencoder Model}
-    \State \textbf{Generating New Salt Body Masks}
-    \State \textbf{Contextual Data Augmentation}
-    \State \textbf{Texture Synthesis Context-oriented}
-    \State \textbf{Final Sample Output}
-\end{enumerate}
-\end{algpseudocode}
-\end{algorithm}
-\end{comment}
 
 
 \subsection{Non-Parametric Context-oriented Texture Synthesis}
@@ -256,14 +224,14 @@ where $\sigma$ controls the influence of distances on the pixel $q$ selection pr
 
 Next, the process of seismic image synthesis is detailed. Various patches are used as inputs. These patches correspond to different parts of the seismic image and are based on the context mask generated by the VAE model. The synthesized sample has three main components, namely, salt zone, boundary zone, and conventional rock zone. Initially, the boundary, or frontier, zones between the two rocks, which also is called edge zone, is  created. The boundary zones is created by using edge detection to identify the interface between the two types of rocks, and to make it thicker, creating an edge strip. As seeing in Fig.\ref{fig:edge1}, this strip is an area of high seismic contrast appearing as light and dark bands. Also, there are various parallel lines that make up this boundary, and their angles can be seen in Fig. \ref{fig:line1}. A dataset composed of edges pieces and their corresponding angles is used as input for the boundary synthesis process. Then, for each edge segment in the mask of the image to be synthesized, its texture is synthesized based on the patch with the most similar angle (see Fig.\ref{fig:edge2}). This process is repeated until all the segments of the edge band are covered.
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/7.png}
     \caption{The Green lines at original image identify border zones and angles to orient the patch selection for patch database construction process.}
     \label{fig:line1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
         \centering
         \includegraphics[width=1\linewidth]{images/edge3.jpg}
         \caption{The Construction of new boundaries in generated images uses  texture sinthesys over selected samples from patch database.}
@@ -272,7 +240,7 @@ Next, the process of seismic image synthesis is detailed. Various patches are us
 
 In order to synthesis the salt zones, the corresponding source image region is used as a seismic texture reference to generate new synthesized pixels. Finally, the conventional rock zone is synthesized using the corresponding sediment regions in the source sample. The seismic image synthesis is divided in steps to conform to the specific characteristics of this kind of image, such as the edge, saline rock, conventional rock zones, as seen in Fig. \ref{fig:source1}. Similarly, the algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data.
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/2.png}
     \caption{Real seismic saline images divided by context zones as input to the texture synthesis process.}
@@ -295,7 +263,7 @@ In order to synthesis the salt zones, the corresponding source image region is u
 
 The salt body dataset was obtained from the TGS Salt Identification Challenge, a machine learning competition on Kaggle. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{ref13}. 
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/fig8.png}
     \caption{Comparison between real sample, geoscience specialist selection over saline area and ground truth (saline mask).}
@@ -337,7 +305,7 @@ Fig. \ref{fig:expert2} illustrates the ground truth image and the specialist eva
 
 Related to a quantitative comparison, following "Generating Sketch-Based Synthetic Seismic Images With Generative Adversarial Networks" \cite{ref19}, we assess the quality of the produced samples by comparing each synthetic image with the original seismic image that serves as a template. The template is the basis for producing the sketches, as shown in figure \ref{fig:sketches}, that guide the samples' production. To this end, we use the metrics mean squared error (MSE), Structural Similarity Index (SSIM), and Euclidean distance based on the Local Binary Pattern (LBP) texture attribute between the original seismic image that serves as a template for sketch production and the synthetic images.
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=1\linewidth]{images/sketches}
 	\caption{Image Sketches based on Original Seismic Templates}
@@ -369,7 +337,7 @@ The interpretation of DSSIM values as a distance between 0 and 1 is as follows:
 
 The LBP is a more robust texture attribute successfully applied in medical images and geosciences \cite{vatamanu_content-based_2013}, \cite{britto_mattos_assessing_2017}. The LBP calculation here uses four neighbors, distance 1, and a 64-pixel tile size. The calculation produces a histogram for each image, representing the frequency of local binary patterns. Finally, we compute the Euclidean Distance between the histograms. Therefore, the smaller the distance, the more similar the textures of the two images are. Otherwise, larger histogram distances represent different patterns.
 
-\begin{figure*}
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=1\textwidth]{images/imagens2.png}
     \caption{Synthetic Seismic Samples}
@@ -377,71 +345,46 @@ The LBP is a more robust texture attribute successfully applied in medical image
 \end{figure*}
 
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/expert.png}
     \caption{Quantitative analisys demonstration: Sample measurement between groud truth and expert analisys: Precision: 0.88 ; Recall: 0.87 ; F1-score: 0.87.}
     \label{fig:expert2}
 \end{figure}
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 \caption{Result table: real images evaluation by the experts.}
 \label{tab:real_images_evaluation}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{11}{|c|}{\textbf{Database Real Images}} \\
-\hline
-~ & \multicolumn{3}{c|}{\textbf{Expert 1}} & \multicolumn{3}{c|}{\textbf{Expert 2}} & \multicolumn{3}{c|}{\textbf{Expert 3}} & \textbf{Mean} \\
-\cline{2-11}
-\textbf{Metrics} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{F1-score} \\
-\hline
-Standard Deviation & 0,06034 & 0,04584 & 0,04037 & 0,05429 & 0,04763 & 0,04408 & 0,04780 & 0,05288 & 0,03414 & 0,03953 \\
-\hline
-Mean & 0,91480 & 0,91563 & 0,91396 & 0,91845 & 0,90420 & 0,91064 & 0,82958 & 0,81400 & 0,82017 & 0,88159 \\
-\hline
-\end{tabular}
+\sisetup{output-decimal-marker = {,}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+\textbf{Metrics} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
+\midrule
+Std Dev & 0.06034 & 0.04584 & 0.04037 & 0.05429 & 0.04763 & 0.04408 & 0.04780 & 0.05288 & 0.03414 & 0.03953 \\
+Mean & 0.91480 & 0.91563 & 0.91396 & 0.91845 & 0.90420 & 0.91064 & 0.82958 & 0.81400 & 0.82017 & 0.88159 \\
+\bottomrule
+\end{tabular*}
 \end{table*}
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 \caption{Result table: Synthetic images evaluation by the experts.}
 \label{tab:synthetic_images_evaluation}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{11}{|c|}{\textbf{Synthetic Samples}} \\
-\hline
-~ & \multicolumn{3}{c|}{\textbf{Expert 1}} & \multicolumn{3}{c|}{\textbf{Expert 2}} & \multicolumn{3}{c|}{\textbf{Expert 3}} & \textbf{Mean} \\
-\cline{2-11}
-\textbf{Metrics} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{F1-score} \\
-\hline
-Standard Deviation & 0,06706 & 0,04698 & 0,04509 & 0,05597 & 0,05397 & 0,04433 & 0,05221 & 0,05644 & 0,03889 & 0,04277 \\
-\hline
-Mean & 0,90439 & 0,89575 & 0,89868 & 0,88823 & 0,87772 & 0,88186 & 0,83354 & 0,82261 & 0,82648 & 0,86901 \\
-\hline
-\end{tabular}
+\sisetup{output-decimal-marker = {,}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+\textbf{Metrics} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
+\midrule
+Std Dev & 0.06706 & 0.04698 & 0.04509 & 0.05597 & 0.05397 & 0.04433 & 0.05221 & 0.05644 & 0.03889 & 0.04277 \\
+Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.82261 & 0.82648 & 0.86901 \\
+\bottomrule
+\end{tabular*}
 \end{table*}
-
-
-
-\begin{table}[h!]
-\centering
-\caption{Statistics for sinthesys group \texttt{0bdd44d530} with 100 images}
-\resizebox{0.5\textwidth}{!}{%
-\begin{tabular}{|l|c|c|c|c|c|c|}
-\hline
-\textbf{Metric} & \textbf{Min} & \textbf{Q1} & \textbf{Median} & \textbf{Q3} & \textbf{Max} & \textbf{Mean} \\
-\hline
-MSE           & 770.51 & 941.16 & 966.90 & 1655.75 & 2385.39 & 1308.31 \\
-\hline
-LBP Distance  & 0.09   & 0.13   & 0.15   & 0.20    & 0.21    & 0.16 \\
-\hline
-DSSIM         & 0.28   & 0.28   & 0.29   & 0.31    & 0.34    & 0.30 \\
-\hline
-\end{tabular}
-}
-\end{table}
-
 
 \subsection{Qualitative Evaluation by Experts}
 
@@ -494,50 +437,48 @@ Overall, the context-oriented synthesis approach demonstrates superior quantitat
 It is worth noting that while quantitative metrics provide objective evaluation, they may not fully align with qualitative assessment. Ferreira et al. \cite{ref19} observed that although Type D had the best quantitative scores for DSSIM and LBP Distance, Type E produced the most visually realistic images. Similarly, we supplemented our findings with a detailed qualitative analysis involving domain experts, who concluded that the synthetic images were "virtually indistinguishable" from real ones, with the F1-score difference being less than 2\%.
 
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=1\linewidth]{images/boxplots}
 	\caption{Box plot of DSSIM values for sketches groups}
 	\label{fig:boxplots}
 \end{figure}
 
-%\vspace{5mm} { \textcolor{red} {\textbf{DOING}}}  %\vspace{5mm}
 
-%todo show groups boxplots
-
-\begin{table*}[h!]
+\begin{table*}[htbp]
 	\centering
-	\begin{tabular}{|l|c|c|c|c|c|}
-		\hline
-		& \textbf{Group 1} & \textbf{Group 2} & \textbf{Group 3} & \textbf{Group 4} & \textbf{Total} \\
-		\hline
-		\multicolumn{6}{|c|}{\textbf{MSE}} \\
-		\hline
+    \sisetup{output-decimal-marker = {.}}
+	\caption{Summary statistics for MSE, DSSIM, and LBP Distance across four groups and total.}
+	\label{tab:metricsSummary}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=4.2] S[table-format=4.2] S[table-format=4.2] S[table-format=4.2] S[table-format=4.2]@{}}
+		\toprule
+		& {\textbf{Group 1}} & {\textbf{Group 2}} & {\textbf{Group 3}} & {\textbf{Group 4}} & {\textbf{Total}} \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{MSE}} \\
+		\midrule
 		Min    & 718.12  & 651.21 & 511.83 & 987.74  & 511.83 \\
 		Q1     & 855.92  & 686.99 & 535.13 & 1056.76 & 643.62 \\
 		Median & 916.33  & 718.47 & 542.87 & 1093.89 & 779.19 \\
 		Q3     & 963.64  & 740.92 & 556.09 & 1127.13 & 1005.90 \\
 		Max    & 1098.81 & 794.37 & 620.87 & 1202.46 & 1202.46 \\
-		\hline
-		\multicolumn{6}{|c|}{\textbf{DSSIM}} \\
-		\hline
+		\midrule
+		\multicolumn{6}{c}{\textbf{DSSIM}} \\
+		\midrule
 		Min    & 0.2544 & 0.2279 & 0.2608 & 0.2683 & 0.2279 \\
 		Q1     & 0.2741 & 0.2395 & 0.2701 & 0.2842 & 0.2567 \\
 		Median & 0.2814 & 0.2424 & 0.2746 & 0.2900 & 0.2766 \\
 		Q3     & 0.2876 & 0.2475 & 0.2798 & 0.2947 & 0.2870 \\
 		Max    & 0.3057 & 0.2572 & 0.2963 & 0.3098 & 0.3098 \\
-		\hline
-		\multicolumn{6}{|c|}{\textbf{LBP - DISTANCE}} \\
-		\hline
+		\midrule
+		\multicolumn{6}{c}{\textbf{LBP - DISTANCE}} \\
+		\midrule
 		Min    & 0.0800 & 0.1200 & 0.0400 & 0.1900 & 0.0400 \\
 		Q1     & 0.1500 & 0.1300 & 0.0700 & 0.2200 & 0.1043 \\
 		Median & 0.2000 & 0.1500 & 0.0800 & 0.2300 & 0.1640 \\
 		Q3     & 0.2500 & 0.1700 & 0.0900 & 0.2400 & 0.2215 \\
 		Max    & 0.3900 & 0.2000 & 0.1100 & 0.2700 & 0.3900 \\
-		\hline
-	\end{tabular}
-	\caption{Summary statistics for MSE, DSSIM, and LBP Distance across four groups and total.}
-	\label{tab:metricsSummary}
+		\bottomrule
+	\end{tabular*}
 \end{table*}
 
 \section{Conclusions and Future Work}
