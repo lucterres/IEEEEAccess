@@ -14,6 +14,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern} % Or \usepackage{cm-super}
+\usepackage{mathptmx}
 
 \usepackage{booktabs}
 \usepackage{siunitx}
@@ -21,17 +22,17 @@
 \usepackage{comment}
 
 \usepackage{bm}
-\makeatletter
-\AtBeginDocument{\DeclareMathVersion{bold}
-\SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
-\SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
-\SetMathAlphabet{\mathrm}{bold}{T1}{times}{b}{n}
-\SetMathAlphabet{\mathit}{bold}{T1}{times}{b}{it}
-\SetMathAlphabet{\mathbf}{bold}{T1}{times}{b}{n}
-\SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
-\SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
-\renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
-\makeatother
+% \makeatletter
+% \AtBeginDocument{\DeclareMathVersion{bold}
+% \SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
+% \SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
+% \SetMathAlphabet{\mathrm}{bold}{T1}{times}{b}{n}
+% \SetMathAlphabet{\mathit}{bold}{T1}{times}{b}{it}
+% \SetMathAlphabet{\mathbf}{bold}{T1}{times}{b}{n}
+% \SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
+% \SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
+% \renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
+% \makeatother
 
 
 %Your document starts from here ___________________________________________________
@@ -89,7 +90,7 @@ Henriques et al. \cite{ref1} proposed a very similar Data Augmentation method ba
 
 \section{Proposed Methodology}
 
-The Context-Oriented Seismic Image Synthesis methodology combines a deep learning model based on VAE with a texture synthesis algorithm. It generates seismic image samples for data augmentation within a specific context mask, as outlined below. The convolutional neural network is a variational auto-encoder model (VAE) that generates salt body masks corresponding to a given salt geometry. Using the generated mask geometry, a new image is synthesized using a non-parametric texture synthesis algorithm. The proposed method focuses on context zones and on the characteristics of seismic images with salt domes. %A schema of the proposed method is presented in Algorithm.  ~\ref{alg:alg1}.
+\PARstart{T}{he} Context-Oriented Seismic Image Synthesis methodology combines a deep learning model based on VAE with a texture synthesis algorithm. It generates seismic image samples for data augmentation within a specific context mask, as outlined below. The convolutional neural network is a variational auto-encoder model (VAE) that generates salt body masks corresponding to a given salt geometry. Using the generated mask geometry, a new image is synthesized using a non-parametric texture synthesis algorithm. The proposed method focuses on context zones and on the characteristics of seismic images with salt domes. %A schema of the proposed method is presented in Algorithm.  ~\ref{alg:alg1}.
 
 
 \subsection{Context Generation Using a Variational Autoencoder}
@@ -283,7 +284,7 @@ In order to synthesis the salt zones, the corresponding source image region is u
 
 \section{Experimental Results and Evaluation}
 
-The enhancement of the proposed approach can be demonstrated through qualitative and quantitative evaluations comparing the results of the method with existing state-of-the-art techniques. The article demonstrates the effectiveness of the model by the following criteria:
+\PARstart{T}{he} enhancement of the proposed approach can be demonstrated through qualitative and quantitative evaluations comparing the results of the method with existing state-of-the-art techniques. The article demonstrates the effectiveness of the model by the following criteria:
 
 \begin{enumerate}
     \item \textbf{Qualitative Evaluation by Experts}: Experts try to identify the portions of salt dome structures inside the seismic samples. The expert produces a mask label that will be compared with the ground truth mask. Quantitative metrics, such as the F1 score, are used to evaluate the difference between the expert prediction and the ground truth. 
@@ -464,9 +465,9 @@ LBP (Local Binary Pattern) Distance as a metric often used for texture analysis,
 
 Based on the three metrics, Group 3 consistently demonstrates the best overall performance with the lowest median and lowest variability (IQR and Range) for both MSE (error magnitude) and LBP - DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in DSSIM, which refers to better structural similarity.  The box plot in figure \ref{fig:boxplots} confirms the group's performance in the DSSIM metric.
 
-\section*{Comparison of Synthetic Seismic Image Generation Methods}
+\section{Comparison of Synthetic Seismic Image Generation Methods}
 
-A quantitative analysis was conducted to compare the performance of our proposed method with the sketch-based approach from Ferreira et al. \cite{ref19}. The comparison focuses on the results presented in Table \ref{tab:metricsSummary} and Table I of \cite{ref19}, respectively. Both studies employ key metrics to measure the similarity between synthetic and original seismic images: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For all metrics, lower values indicate superior performance.
+\PARstart{A} quantitative analysis was conducted to compare the performance of our proposed method with the sketch-based approach from Ferreira et al. \cite{ref19}. The comparison focuses on the results presented in Table \ref{tab:metricsSummary} and Table I of \cite{ref19}, respectively. Both studies employ key metrics to measure the similarity between synthetic and original seismic images: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For all metrics, lower values indicate superior performance.
 
 The work by Ferreira et al. \cite{ref19} evaluated five sketch types (A through E), with Types D and E yielding the most favorable outcomes. Our study analyzed four groups (1 through 4), where Group 3 demonstrated the most consistent and generally superior performance across all metrics. The following subsections detail the comparison based on the median values reported, which provide a robust representation of each network's typical performance.
 
@@ -543,7 +544,7 @@ It is worth noting that while quantitative metrics provide objective evaluation,
 
 \section{Conclusions and Future Work}
 
-This work proposed a data augmentation scheme based on the context-oriented synthetic generation of seismic image data containing salt bodies, since such imagery data can be relevant for training robust seismic image analysis methods for prospecting petroleum in deep waters. The proposed scheme combines a deep neural network model with non-parametric synthesis. The experimental results used the TGS-Dataset as input, and suggest that the proposed methodology potentially can be effective for generating seismic imagery data containing salt bodies, as indicated by the evaluation conducted by experts in the field, showing similar measures of precision, recall, and F1-scores for the real and the synthesized seismic image data. 
+\PARstart{T}{his} work proposed a data augmentation scheme based on the context-oriented synthetic generation of seismic image data containing salt bodies, since such imagery data can be relevant for training robust seismic image analysis methods for prospecting petroleum in deep waters. The proposed scheme combines a deep neural network model with non-parametric synthesis. The experimental results used the TGS-Dataset as input, and suggest that the proposed methodology potentially can be effective for generating seismic imagery data containing salt bodies, as indicated by the evaluation conducted by experts in the field, showing similar measures of precision, recall, and F1-scores for the real and the synthesized seismic image data. 
 
 The synthetic samples potentially can be used in geological studies and situations where real data may be scarce or unavailable. The close resemblance between synthetic and real images suggests that the synthesized datasets may be used in geoscience research.
 
