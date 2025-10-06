@@ -1,0 +1,548 @@
+\documentclass{ieeeaccess}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+
+\usepackage[backend=biber, style=ieee]{biblatex}
+\addbibresource{references.bib} % conecta o arquivo externo
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathptmx}
+
+\usepackage{booktabs}
+\usepackage{siunitx}
+
+\usepackage{comment}
+
+\usepackage{bm}
+
+%Your document starts from here ___________________________________________________
+\begin{document}
+\history{Date of publication 2025 12, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.2024.0429000}
+
+\title{Context-oriented Synthesis of Salt Domes in Labeled Seismic Images}
+\author{\uppercase{Luciano D. Terres}\authorrefmark{1} and
+\uppercase{Jacob Scharcanski}\authorrefmark{1}, \IEEEmembership{Senior Member, IEEE} }
+
+\address[1]{Institute of Informatics,
+Federal University of Rio Grande do Sul, Porto Alegre, RS, Brasil, 91501-970 (e-mail: ldterres@inf.ufrgs.br; jacobs@inf.ufrgs.br)}
+
+\markboth
+{Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
+{Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
+
+\corresp{Corresponding author: Jacob Scharcanski (e-mail: jacobs@inf.ufrgs.br).}
+
+
+\begin{abstract}
+Advanced remote sensing and seismic image interpretation methods often rely on large annotated datasets for training robust advanced machine learning models. However, in practice, obtaining such large training datasets can be hard in applications such as offshore oil exploration. Besides, expert annotation of large seismic image datasets can be costly and demanding. This work proposes a new seismic image data augmentation method focused in the context of images containing saline dome rocks, by artificially generating seismic image data containing saline rocks, as well as their mask labels at pixel level. A combination of variational autoencoders (VAE) and texture synthesis algorithms is used to generate synthetic labeled samples. VAEs are used to learn real rock geometries and generate new ones with annotated correspondent mask information. The masks will drive a non-parametric texture synthesizer of seismic images. The experimental results were validated by experts and suggest that the proposed methodology can be used efficiently to increase the number of seismic images samples. 
+\end{abstract}
+
+\begin{keywords}
+Data augmentation, Deep learning, Image segmentation, seismic images, seismic interpretation, texture synthesis, and variational autoencoders.
+\end{keywords}
+
+\titlepgskip=-21pt
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+\PARstart{A} relevant task in seismic imaging and interpretation is to distinguish accurately saline bodies from other sediments. However, seismic reflections in salt rocks pose a challenge to seismic imaging researchers due to their distinct acoustic characteristics and complex geometry. The boundaries of saline bodies can be identified by trained experts \cite{ref5}, but this process involves massive amounts of data and is labor intensive, making it a potential candidate for being handled by smart image segmentation methods. Nevertheless, public databases of annotated seismic images are scarce, and such data is needed for training seismic image segmentation methods based on deep neural networks, such as RESNET and UNET, which are specialized in image segmentation and recognition. Therefore, researchers have recently directed their efforts towards data augmentation through seismic image synthesis \cite{ref1}.
+
+In this work, a mechanism for synthesizing annotated seismic image samples containing salt domes is proposed. A combination of a variational autoencoder (VAE) neural network and a context-oriented texture synthesis method is used to generate new seismic image samples. The VAE is a multilayer neural network containing an encoder and a decoder. The VAE encoder maps the multidimensional seismic image into a low-dimensional deep feature space. Then, the decoder maps the deep features back into the image space to reconstruct the seismic image. The objective is to minimize the difference between the input data and the reconstructed (synthesized) image samples \cite{ref3}.
+
+Visual texture synthesis can learn how to generate new seismic samples of a particular seismic image by inferring its generation process from examples. The generated (synthesized) seismic textures should be indistinguishable from real natural seismic data from the human experts point of view. If the experts cannot distinguish between an original seismic texture and a synthesized one, the synthesis process is considered successful \cite{ref4}. This work innovates by combining VAEs to generate the salt and rock shapes and by creating a context for the seismic texture synthesis process, which can work with non-stationary seismic image textures of salt bodies, conventional rocks, and their boundaries. 
+
+\section{Related Work}
+
+\PARstart{O}{ver} the past decades, a broad spectrum of algorithms has been proposed to address the challenges in seismic image synthesis. In the early days, before the rise of neural networks, researchers relied on traditional methods like model-based approaches and basic texture synthesis techniques. These methods worked reasonably well for simple tasks but often struggled with complex geological features and non-uniform textures commonly found in seismic data. The primary limitation of these early techniques was their inability to handle non-stationary textures, which are textures that change across different regions of an image \cite{ref16}.
+
+In recent years, the adoption of deep learning techniques has significantly advanced the field of seismic image synthesis \cite{ref5}. The introduction of neural networks around 2010 marked a major turning point. Convolutional Neural Networks (CNNs), in particular, brought a new level of sophistication to seismic image synthesis. CNNs excel at extracting detailed features from images, such as horizontal and vertical lines, and can even complete entire objects within an image. This capability allowed for more accurate and realistic seismic images, enabling better interpretation of subsurface structures \cite{ref14}. 
+
+However, the success of CNNs came with a significant challenge: these learning structures require large, annotated datasets for training. In seismic imaging, such datasets tend to be unavailable or difficult to produce. Therefore, researchers have explored various alternatives, including data augmentation with synthetic data and transfer learning. Despite these efforts, the issue of limited training data remains a hurdle in the widespread application of CNNs to seismic image synthesis \cite{ref15}.
+
+More recently, in 2020, R. S. Ferreira et al. \cite{ref19} proposed similar work for generating synthetic seismic images. In addition to using expert evaluation, they also evaluated their results using metrics that estimate the distance between synthetic and real images. The article addresses the generation of synthetic seismic images of various geological fields, including geological faults and salt domes. In this sense, we compare our results using the same metrics and methodologies, evaluating the realism of synthetic seismic images when contrasted with real images.
+
+Similarly, Henriques et al. \cite{ref1} proposed a very similar data augmentation method based on training two generative models to augment the number of samples in a seismic image dataset for the semantic segmentation of salt bodies. However, they perform an indirect evaluation of results, based on the improvement in the performance of segmentation methods based on convolutional neural networks, which could be difficult to use as a direct comparison of results with our proposed method and a different database.
+
+\section{Background and Fundamentals}
+
+\PARstart{T}{his} section provides the theoretical foundation for the proposed methodology, introducing the key concepts and techniques that underpin our approach to seismic image synthesis.
+
+\subsection{Variational Autoencoders}
+
+Variational Autoencoders (VAEs) are deep generative models that learn to encode data into a lower-dimensional latent space and then decode it back to the original space \cite{ref8}. VAEs are particularly suitable for generating new samples that follow the same distribution as the training data, making them ideal for data augmentation tasks in seismic imaging.
+
+\subsection{Texture Synthesis}
+
+Texture synthesis is a technique used in computer graphics and image processing to generate new textures that are visually similar to a given sample texture. Non-parametric texture synthesis methods \cite{ref12} create new images by sampling and recombining patches from example textures, ensuring that the statistical properties of the generated texture match those of the original.
+
+\subsection{Seismic Image Characteristics}
+
+Seismic images present unique challenges due to their non-stationary nature, where texture patterns vary significantly across different geological structures. Salt bodies, in particular, exhibit distinct acoustic properties that create characteristic boundary patterns in seismic data. Understanding these characteristics is essential for developing effective synthesis methods that can generate realistic seismic images.
+
+\section{Proposed Methodology}
+
+\subsection{Overview of the Approach}
+
+\PARstart{T}{he} Context-Oriented Seismic Image Synthesis methodology combines a deep learning model based on VAE with a texture synthesis algorithm. It generates seismic image samples for data augmentation within a specific context mask. The proposed approach consists of two main stages: (1) context generation using a Variational Autoencoder (VAE) that generates salt body masks corresponding to a given salt geometry, and (2) texture synthesis using a non-parametric algorithm that creates realistic seismic images based on the generated masks. The proposed method focuses on context zones and on the characteristics of seismic images with salt domes, ensuring that the synthetic samples preserve the structural and textural properties of real seismic data.
+
+
+\subsection{Context Generation Using a Variational Autoencoder}
+
+The proposed data augmentation scheme detects and generates new rock geometries with a Variational Autoencoder, as shown in Fig.~\ref{fig:vae1}.  
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/vaesGen.png}
+    \caption{Samples of generated structural salt masks. The Variational Autoencoder learns the distribution and reproduce new structural masks.}
+    \label{fig:vae1}
+\end{figure}
+
+A dataset of seismic images used to generate new salt masks is illustrated in Fig. \ref{fig:vae1}. The natural intersection between two different rocks are their boundaries, and in the case of salt rock this boundary is usually apparent, as seen in Fig. \ref{fig:edge1}. During the VAE training process, only salt masks with a considerable amount of salt are used, varying from 10 to 90 percent of the total area.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/edge detection.png}
+    \caption{Sample of the boundaries identification between salt and other sediments represented in a dilated edge segment.}
+    \label{fig:edge1}
+\end{figure}
+
+The generated masks are used as contexts for the seismic texture synthesis process. Once the boundaries of a salt body are known, the region interior to the closed boundary is expected to be salt. Auto-Encoding Variational Bayes, commonly known as Variational Autoencoders (VAEs), is a deep learning technique~\cite{ref8} used in this work as a generative model for learning a probabilistic mapping from an input space to a latent space and back, allowing data reconstruction and new data generation. The VAE model used is a simple feedforward network for the encoder and decoder. The encoder contains four stacked dense layers, and the decoder contains five stacked dense layers. During the inference time, the latent variables $z$ are sampled from the prior distribution $\pi(z)$, and then $z$ is decoded with the VAE´s decoder to generate the salt mask with the inferred distribution.
+
+The main task of VAEs is to model the underlying probability distribution of a data set $\bm{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$. The model introduces a latent variable $\bm{z}$ obtained by maximizing the marginal likelihood:
+
+\begin{equation}
+p_\theta(x) = \int p_\theta(x | z) p(z) \, dz
+\end{equation}
+The key VAE components are the following :
+
+\paragraph{Encoder (Recognition Model)}
+Maps an input $x$ to a latent variable $z$, and approximates the posterior distribution $q_\phi(z | x)$ assuming it is Gaussian:
+
+\begin{equation}
+q_\phi(z | x) = \mathcal{N}(z; \mu_\phi(x), \Sigma_\phi(x))
+\end{equation}
+where $\mu_\phi(x)$ and $\Sigma_\phi(x)$ are the posterior distribution $q_\phi(z | x)$ mean and the covariance, that are outputs of the encoder network.
+
+\paragraph{Decoder (Generative Model)}
+Reconstructs the data from the latent variable $z$, modeling the likelihood $p_\theta(x | z)$ assuming it as Gaussian:
+
+\begin{equation}
+p_\theta(x | z) = \mathcal{N}(x; \mu_\theta(z), \Sigma_\theta(z))
+\end{equation}
+
+where $\mu_\theta(z)$ and $\Sigma_\theta(z)$ are the posterior distribution $q_\phi(z | x)$ mean and the covariance, that are outputs of the decoder network.
+
+\paragraph{Latent Variables Priors $p(z)$}
+Usually assumed as a standard normal distribution:
+
+\begin{equation}
+p(z) = \mathcal{N}(z; 0, I)
+\end{equation}
+
+where $I$ is the identity matrix.
+
+\paragraph{Variational Inference} Since the exact posterior $p(z | x)$ is intractable, VAEs use variational inference to approximate it by optimizing the evidence lower bound (ELBO):
+
+\begin{equation}
+\log p_\theta(x) \geq \mathbb{E}_{q_\phi(z | x)} \left[ \log p_\theta(x | z) \right] - \text{KL}(q_\phi(z | x) \parallel p(z)),
+\end{equation}
+and the ELBO has two important components: reconstruction loss, and (KL) divergence loss, which are detailed next. The reconstruction loss is the expected log-likelihood of the data, which encourages an accurate sample reconstruction:
+
+\begin{equation}
+\mathbb{E}_{q_\phi(z | x)} \left[ \log p_\theta(x | z) \right]
+\end{equation}
+and the KL divergence loss is the Kullback-Leibler divergence between the approximate posterior and the prior, which acts as a regularizer:
+
+\begin{equation}
+\begin{aligned}
+\text{KL}(q_\phi(z | x) \parallel p(z)) 
+=  \\
+\frac{1}{2} \sum_{i=1}^{d} \left( \mu_\phi(x)_i^2 + \Sigma_\phi(x)_{ii} - \log \Sigma_\phi(x)_{ii} - 1 \right)
+\end{aligned}
+\end{equation}
+
+where $d$ is the dimensionality of the latent space.
+
+In order to enable the gradient-based optimization, the reparameterization trick is used so instead of sampling $z \sim q_\phi(z | x)$ directly, $z$ is expressed as:
+
+\begin{equation}
+z = \mu_\phi(x) + \Sigma_\phi(x)^{1/2} \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+\end{equation}
+allowing for gradients to be propagated through $\mu_\phi(x)$ and $\Sigma_\phi(x)$ by treating $\epsilon$ as an auxiliary variable.
+
+Finally, VAEs are trained by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
+
+\subsubsection{Advantages of Variational Autoencoders}
+The primary reasons for using VAEs are a realistic generation of synthetic samples, an increase in dataset diversity, a regularization and control of variability, and an improvement in the generalization of the segmentation model. Considering specific reasons related to the nature of seismic data and the purpose of sample generation for data augmentation, VAEs enable the generation of synthetic images that preserve the structural characteristics of real seismic data, thereby enhancing the training and performance of segmentation models \cite{ref1} \cite{ref15} \cite{ref18}.
+
+\subsubsection{Comparison with Generative Adversarial Networks (GANs)}
+
+\begin{enumerate}
+    \item \textbf{Control over Data Variability}:
+    \begin{itemize}
+        \item It is essential that the generated images preserve the structural patterns of salt bodies. VAEs ensure that synthetic images fall within the expected distribution of real seismic images. GANs, on the other hand, are more prone to generating images with high variability and may occasionally create unrealistic or inconsistent samples \cite{ref16}.
+    \end{itemize}
+    \item \textbf{Regularization and Smoothness in Image Generation}:
+    \begin{itemize}
+        \item VAEs impose a probabilistic structure on the latent space, resulting in smoother transitions between different samples and generating images that maintain coherent structural characteristics. GANs, in turn, can suffer from mode collapse \cite{ref16}, where they generate only a limited subset of possible data variations, reducing the diversity of the augmented dataset.
+    \end{itemize}
+    \item \textbf{Training Stability}:
+    \begin{itemize}
+        \item GANs require a balance between the generator and discriminator, which can make training unstable and more challenging to converge to a distribution that well represents the seismic data \cite{ref16}.
+    \end{itemize}
+\end{enumerate}
+
+Although GANs are known for generating high-quality images, VAEs were chosen in this work due to their more refined control over data variability, training stability, and preservation of the latent seismic data distribution.
+
+\subsubsection{Disadvantages of Diffusion Models}
+Conversely, diffusion models present practical and conceptual disadvantages \cite{ref17}:
+\begin{enumerate}
+    \item \textbf{Higher Computational Cost}:
+    \begin{itemize}
+        \item Diffusion models require many sampling steps to generate images, typically hundreds or thousands of denoising steps \cite{ref17}. This makes them more computationally expensive than VAEs, which generate samples in a single pass through the model.
+        \item In seismic applications, where there is a need to generate a large number of samples for data augmentation, the efficiency of VAEs can be a significant advantage. 
+    \end{itemize}
+    \item \textbf{Need for Large Volume of Training Data}:
+    \begin{itemize}
+        \item Diffusion models often require large training datasets to capture high-quality distributions  \cite{ref17}. Since labeled seismic images can be limited, VAEs may be more effective in learning useful representations even with a smaller number of samples.
+    \end{itemize}
+\end{enumerate}
+
+Therefore, targeting efficiency and ease of training, VAEs have simpler and more stable training, as they do not rely on an iterative refinement process like diffusion models. This can be a decisive factor when there are time and computational resource constraints.
+
+\subsection{Context-oriented Texture Synthesis}
+
+The typical texture synthesis algorithms use an image database and replicate the images in a picture plane according to some arrangement rules. The texture synthesis can be enhanced by working at a finer scale, from the pixel level to a small region level. At each iteration of the algorithm, a small section of the original texture, a patch, is copied and placed within the newly synthesized texture. Non-parametric sampling \cite{ref12} improved further texture synthesis by creating a new image that shares the same statistical properties as a given sample texture, while avoiding explicit models of the texture by directly sampling from example images.
+
+\subsubsection{Non-Parametric Texture Synthesis Algorithm}
+
+The proposed seismic texture synthesis method requires the following components:
+
+\textbf{1. Neighborhood Definition:} For each pixel $p$ in the image to be synthesized, a region around $p$ already filled with known values is defined (namely, a neighborhood $N(p)$;
+
+\textbf{2. Similarity Criterion:} To find a corresponding patches in the example image, the similarity between $N(p)$ and the neighborhoods $N(q)$ are computed for all pixels $q$ in the example image. A similarity measure is defined as the Euclidean distance between the pixels of the neighborhoods:
+
+\begin{equation}
+D(N(p), N(q)) = \sum_{i \in N} \left( I_p(i) - I_q(i) \right)^2,
+\end{equation}
+where $I_p(i)$ and $I_q(i)$ are the pixel values at the image locations $i$ in the neighborhoods of $p$ and $q$, respectively;
+
+\textbf{3. Random Sampling:} A pixel $q$ is chosen randomly from the example image with probability proportional to its similarity (or inverse of $D(N(p), N(q))$) to $p$. In other words, pixels with smaller $D(N(p), N(q))$ are more likely to be chosen. The probability of choosing a pixel $q$ can be modeled as:
+
+\begin{equation}
+P(q) = \frac{\exp(-D(N(p), N(q)) / \sigma^2)}{\sum_{q'} \exp(-D(N(p), N(q')) / \sigma^2)}
+\end{equation}
+where $\sigma$ controls the influence of distances on the pixel $q$ selection probability;
+
+\textbf{4. Image Filling:} The process begins with a small initial patch in the new image and gradually expands it, pixel by pixel, using the steps described above to fill the entire image. The choice of the next pixel to be synthesized follows a raster or spiral filling path. The method produces seismic textures that are visually similar to the original input texture. 
+
+\subsubsection{Context-based Seismic Image Synthesis}
+
+The process of seismic image synthesis is based on the context masks generated by the VAE model. Various patches are used as inputs, corresponding to different parts of the seismic image. The synthesized sample has three main components, namely, salt zone, boundary zone, and conventional rock zone. Initially, the boundary, or frontier, zones between the two rocks, which is also called edge zone, is created. The boundary zone is created by using edge detection to identify the interface between the two types of rocks, and to make it thicker, creating an edge strip. As seen in Fig.\ref{fig:edge1}, this strip is an area of high seismic contrast appearing as light and dark bands. Also, there are various parallel lines that make up this boundary, and their angles can be seen in Fig. \ref{fig:line1}. A dataset composed of edge pieces and their corresponding angles is used as input for the boundary synthesis process. Then, for each edge segment in the mask of the image to be synthesized, its texture is synthesized based on the patch with the most similar angle (see Fig.\ref{fig:edge2}). This process is repeated until all the segments of the edge band are covered.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/7.png}
+    \caption{The Green lines at original image identify border zones and angles to orient the patch selection for patch database construction process.}
+    \label{fig:line1}
+\end{figure}
+
+\begin{figure}[htbp]
+        \centering
+        \includegraphics[width=1\linewidth]{images/edge3.jpg}
+        \caption{The Construction of new boundaries in generated images uses  texture sinthesys over selected samples from patch database.}
+        \label{fig:edge2}
+    \end{figure}    
+
+In order to synthesize the salt zones, the corresponding source image region is used as a seismic texture reference to generate new synthesized pixels. Finally, the conventional rock zone is synthesized using the corresponding sediment regions in the source sample. The seismic image synthesis is divided in steps to conform to the specific characteristics of this kind of image, such as the edge, saline rock, and conventional rock zones, as seen in Fig. \ref{fig:source1}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/2.png}
+    \caption{Real seismic saline images divided by context zones as input to the texture synthesis process.}
+    \label{fig:source1}
+\end{figure}
+
+\subsection{Complete Synthesis Pipeline}
+
+The complete synthesis pipeline integrates both the VAE-based context generation and the context-oriented texture synthesis. The algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data. The pipeline can be summarized as follows: (1) the VAE generates a new salt body mask defining the geometric structure, (2) edge detection identifies boundary zones between salt and sediment, (3) the texture synthesis algorithm fills each zone (edges, salt, and sediment) with appropriate textures from the training database, and (4) the final synthetic seismic image is assembled by combining all synthesized zones. This systematic approach ensures that the generated images maintain both structural consistency and textural realism.
+
+
+\section{Results and Discussion}
+
+\PARstart{T}{his} section presents comprehensive experimental results that validate the effectiveness of the proposed approach. The evaluation encompasses both qualitative assessment by domain experts and quantitative comparison with state-of-the-art methods. This dual evaluation strategy demonstrates the model's performance through the following criteria:
+
+\begin{enumerate}
+    \item \textbf{Qualitative Evaluation by Experts}: Experts try to identify the portions of salt dome structures inside the seismic samples. The expert produces a mask label that will be compared with the ground truth mask. Quantitative metrics, such as the F1 score, are used to evaluate the difference between the expert prediction and the ground truth. 
+    
+    \item \textbf{Quantitative Comparison with Related Work}:
+    A very similar work In “Generating Sketch-Based Synthetic Seismic Images With Generative Adversarial Networks” \cite{ref19}, use the metrics mean squared error (MSE), structural similarity (SSIM) and Euclidean distance based on the Local Binary Pattern (LBP) to measure texture attributes between original seismic and the samples synthesized oriented by sketches produced by the networks. We will evaluate the samples generated by our proposed method with the same metrics and compare the results.
+\end{enumerate}
+
+\subsection{Dataset}
+
+The salt body dataset was obtained from the TGS Salt Identification Challenge, a machine learning competition on Kaggle. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{ref13}. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/fig8.png}
+    \caption{Comparison between real sample, geoscience specialist selection over saline area and ground truth (saline mask).}
+    \label{fig:expert1}
+\end{figure}
+
+
+
+\subsubsection{Evaluation Metrics}
+
+Through qualitative analysis, the geoscience specialist evaluates the samples to identify the portions of salt bodies in the seismic images. To assess the quality of generation , the metrics precision, recall, and F1-score compare the synthetic seismic image with the ground truth, as detailed below:
+
+The F1 score is a widely used measure for evaluating binary classification models. It is particularly useful when a balance between precision and recall is desired. It allows access to the quality of the classification predictions. While the correct classification rate is simple to understand, it can be misleading in imbalanced datasets. Therefore, measures such as precision, recall, and the F1 score tend to provide a clearer scenario \cite{ref14}.
+
+\begin{itemize}
+    \item \textbf{Precision:} is the proportion of true positives (TP) over all predicted positive results (TP + FP).
+    \begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+    \end{equation}
+
+    \item \textbf{Recall:} or sensitivity, is the proportion of true positives over all actual positive cases (TP + FN).
+    \begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+    \end{equation}
+
+
+    \item \textbf{F1 Score:} is the harmonic mean of precision and recall, providing a single metric that considers both. 
+
+\end{itemize}
+    \begin{equation}
+    \text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+    \end{equation}
+    
+ The F1 score is particularly valuable in classification situations where the positive class is rare. It helps to understand the trade-off between false positives and false negatives. In several practical applications, the F1 score provides a balanced measure that is less susceptible to class distribution bias.
+
+The precision, recall, and F1-score measures are used for evaluating the salt bodies masks generated by the experts, and can be computed using the confusion matrix derived from these experts generated masks. To evaluate the quality of the synthesized samples, the overlap between the experts selections of pixels corresponding to the salt bodies in synthetic images, and synthetic images masks is evaluated, as shown in Fig. \ref{fig:expert1}.
+
+Fig. \ref{fig:expert2} illustrates the ground truth image and the specialist evaluation of the salt bodies locations, and the computed precision, recall, and F1-score measures for this particular case.
+
+Regarding quantitative comparison, following the methodology in "Generating Sketch-Based Synthetic Seismic Images With Generative Adversarial Networks" \cite{ref19}, we assess the quality of the produced samples by comparing each synthetic image with the original seismic image that serves as a template. The template is the basis for producing the sketches, as shown in Figure \ref{fig:sketches}, which guide the samples' production. To this end, we use the metrics mean squared error (MSE), Structural Similarity Index (SSIM), and Euclidean distance based on the Local Binary Pattern (LBP) texture attribute between the original seismic image that serves as a template for sketch production and the synthetic images.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{images/sketches}
+	\caption{Image Sketches based on Original Seismic Templates}
+	\label{fig:sketches}
+\end{figure}
+
+The Mean Squared Error (MSE) defines a pixel-to-pixel distance between two images. We calculate it as follows: subtract each synthetic pixel value from the real one. Square each error: this eliminates negative signs and penalizes larger errors. Finally, take the average of these squares as seen in equation \ref{eq:mse}.
+
+\begin{equation}
+\label{eq:mse}
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+\end{equation}
+
+The SSIM is a metric that measures the perceptual similarity between two images by incorporating some texture information, such as variances and covariances. It is widely used in computer vision and image processing to assess the quality of image reconstructions, compressions, or transmissions. It evaluates luminance (brightness), contrast, and structural attributes as local patterns and shapes. Since SSIM values are defined in the range [-1, 1], the common transformation \ref{eq:mse2} represents it as a distance to facilitate comparison, and from now on, it is called DSSIM.
+
+\begin{equation}
+\label{eq:mse2}
+\text {DSSIM(x, y)= (1 - SSIM(x, y))/2}
+\end{equation}
+
+The interpretation of DSSIM values as a distance between 0 and 1 is as follows: 
+
+\begin{itemize}
+    \item DSSIM = 0: the images are identical
+    \item DSSIM from 0,005 to 0.10: high similarity
+    \item DSSIM > 0.25: low perceptual similarity
+    \item DSSIM from 0,5 to 1: very different
+\end{itemize}
+
+The LBP is a more robust texture attribute successfully applied in medical images and geosciences \cite{vatamanu_content-based_2013}, \cite{britto_mattos_assessing_2017}. The LBP calculation here uses four neighbors, distance 1, and a 64-pixel tile size. The calculation produces a histogram for each image, representing the frequency of local binary patterns. Finally, we compute the Euclidean Distance between the histograms. Therefore, the smaller the distance, the more similar the textures of the two images are. Otherwise, larger histogram distances represent different patterns.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{images/imagens2.png}
+    \caption{Synthetic Seismic Samples}
+    \label{fig:placeholder}
+\end{figure*}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/expert.png}
+    \caption{Quantitative analisys demonstration: Sample measurement between groud truth and expert analisys: Precision: 0.88 ; Recall: 0.87 ; F1-score: 0.87.}
+    \label{fig:expert2}
+\end{figure}
+
+\begin{table*}[htbp]
+\centering
+\caption{Result table: real images evaluation by the experts.}
+\label{tab:real_images_evaluation}
+\sisetup{output-decimal-marker = {,}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+\textbf{Metrics} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
+\midrule
+Std Dev & 0.06034 & 0.04584 & 0.04037 & 0.05429 & 0.04763 & 0.04408 & 0.04780 & 0.05288 & 0.03414 & 0.03953 \\
+Mean & 0.91480 & 0.91563 & 0.91396 & 0.91845 & 0.90420 & 0.91064 & 0.82958 & 0.81400 & 0.82017 & 0.88159 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\caption{Result table: Synthetic images evaluation by the experts.}
+\label{tab:synthetic_images_evaluation}
+\sisetup{output-decimal-marker = {,}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+\textbf{Metrics} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
+\midrule
+Std Dev & 0.06706 & 0.04698 & 0.04509 & 0.05597 & 0.05397 & 0.04433 & 0.05221 & 0.05644 & 0.03889 & 0.04277 \\
+Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.82261 & 0.82648 & 0.86901 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\subsection{Qualitative Evaluation by Experts}
+
+The qualitative evaluation of the samples was conducted through a systematic and rigorous process with the support of geoscientists, experts in the field. The goal was to verify the synthesized samples' quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic interpretation participated in this evaluation. The evaluation was conducted by reviewing seismic image and selecting the regions by painting the salt bodies using a graphics computer program. The area painted by the expert is then compared with the jig established for the corresponding saline body of the image. First, the specialist's accuracy was assessed by identifying salt bodies on twenty original images from the dataset. Then, the selection of the areas is performed on a set of thirty random synthetic images. The specialists repeat the process with the same images. In addition, experts are warned that some images are added for control without any saline body.
+
+To evaluate the results, we obtained the metrics for each expert and for the group of experts. We also consolidate the averages and standard deviations. Table \ref{tab:real_images_evaluation} shows the evaluation of 20 real images, showing an average precision score of 0.88761, suggesting that experts' identifications of saline rock portions were 88.7\% accurate, leaving 11.3\% misidentified as salt, which was actually common rock. The average recall of 0.87795 indicates that 87,7\% of the saline rock portions were effectively identified, with a small remainder of 12.3\% missed salt portions. Considering the F1-score calculation, the specialists achieved an average score of 0.88159 for the real images.
+
+Table~\ref{tab:synthetic_images_evaluation} shows the results of the evaluation of 30 synthetic images, showing an average precision of 0.87539, which suggests that experts' identifications of the synthetic saline rock portions were 87.5\% correct, with 12.5\% misidentified as salt, which actually was common rock. The average recall was 0.86536 in the synthetic images, indicating that 86.5\% of the synthetic saline rock portions were effectively identified, and 13.5\% were missed since these pixels were not identified as salt. Finally, the average F1-score achieved 0.86901 for the synthetic images, considering all evaluations made by the experts.
+
+Comparing the results of the geoscience specialist evaluation for real and synthetic images, a small difference of less than 2\% can be observed in favor of the real images. Therefore, from the perspective of the specialists' evaluations, the synthetic seismic images are virtually indistinguishable from the real images. In that sense, we can conclude that, from the point of view of the geoscience specialists consulted, the synthetic images are as good as real images.
+
+\subsection{Quantitative Evaluation} 
+
+Considering the summary statistics presented in Table \ref{tab:metricsSummary} for MSE, DSSIM, and LBP-DISTANCE across the four groups and the total, we can draw several conclusions about the distribution of these metrics. First, analyzing the Mean Squared Error, Group 3 achieved the best performance, consistently showing the lowest MSE, with a median of 542.87, indicating that this group generally had the smallest errors. Group 4 has the highest median MSE at 1093.89, suggesting it had the most significant typical errors and the worst performance observed. Group 3 is the most consistent, having the smallest Interquartile Range (IQR = 20.96) and the smallest overall range (109.04), meaning its errors are tightly clustered. Group 1 is the least consistent with a high range (380.69). The total distribution shows a very large IQR (362.28) and range (690.63), which is expected when combining the wide range of performance from the individual groups.
+
+Regarding DSSIM, which is a metric where lower values indicate greater similarity, Group 2 achieves the lowest median DSSIM of 0.2424, indicating the highest structural quality (least distortion/most similarity) compared to the other groups. Group 2 is also the most consistent, with the smallest IQR (0.0080) and range (0.0293). It is worth noting that all groups show relatively low variability in DSSIM compared to MSE.
+
+Regarding LBP (Local Binary Pattern) Distance, a metric often used for texture analysis where a lower distance indicates higher similarity in texture features, Group 3 has the lowest median LBP Distance of 0.0800, indicating the highest fidelity in texture features. Group 3 is also the most consistent with the smallest IQR (0.0200), tied with Group 4. However, Group 3 has the absolute smallest range (0.0700), making it the overall most stable in terms of texture-feature quality.
+
+Based on the three metrics, Group 3 consistently demonstrates the best overall performance with the lowest median and lowest variability (IQR and Range) for both MSE (error magnitude) and LBP-DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in DSSIM, which indicates better structural similarity. The box plot in Figure \ref{fig:boxplots} confirms the group's performance in the DSSIM metric.
+
+\subsection{Comparison with State-of-the-Art Methods}
+
+A quantitative analysis was conducted to compare the performance of our proposed method with the sketch-based approach presented by Ferreira et al. \cite{ref19}. The comparison focuses on the results presented in Table \ref{tab:metricsSummary} and Table I of \cite{ref19}, respectively. Both studies employ key metrics to measure the similarity between synthetic and original seismic images: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For all metrics, lower values indicate superior performance.
+
+The work by Ferreira et al. \cite{ref19} evaluated five sketch types (A through E), with Types D and E yielding the most favorable outcomes. Our study analyzed four groups (1 through 4), where Group 3 demonstrated the most consistent and generally superior performance across all metrics. The following subsections detail the comparison based on the median values reported, which provide a robust representation of each method's typical performance.
+
+\subsubsection{Mean Squared Error (MSE)}
+
+The MSE quantifies the pixel-wise distance between two images; a smaller value signifies a closer match in pixel intensities.
+
+In the work of Ferreira et al. \cite{ref19}, the best performance was achieved with Sketch Type E, which recorded a median MSE of 4712.1. In contrast, our context-oriented approach yielded its best result with Group 3, achieving a median MSE of 542.87. This demonstrates drastically superior performance in terms of pixel-wise error. The median MSE is significantly lower than that obtained by the best-performing sketch type in \cite{ref19}. This substantial difference indicates a much more precise correspondence of pixel intensity between the synthetic and original images.
+
+\subsubsection{Structural Similarity Dissimilarity (DSSIM)}
+
+The DSSIM metric assesses structural similarity by incorporating texture information such as variances and covariances. It is derived from the Structural Similarity Index (SSIM) via the transformation $DSSIM(x, y) = (1 - SSIM(x, y))/2$. Values closer to 0 indicate higher structural similarity.
+
+The best median DSSIM in \cite{ref19} was 0.39, obtained with Sketch Type D. In contrast, our results show that the best median DSSIM was 0.2424, achieved by Group 2. This result is substantially lower than the best result from Ferreira et al. (Type D: 0.39). As noted, a DSSIM value above 0.25 may be interpreted as "low perceptual similarity." The median value for Type D (0.39) falls within this range, whereas Group 2's median is just below this threshold, indicating clear superiority in preserving structural and textural features. Furthermore, Group 2 was not only the highest-performing in terms of structural quality (lowest median DSSIM) but also the most consistent, exhibiting the smallest Interquartile Range (IQR = 0.0080) and overall range.
+
+\subsubsection{LBP Distance}
+
+LBP Distance measures the Euclidean distance between LBP feature vectors, providing a robust assessment of texture similarity. Lower values signify a closer match in textural characteristics.
+
+In \cite{ref19}, the lowest median LBP Distance was 0.17, achieved by Sketch Type D. In comparison, our proposed method produced its best result with Group 3, which recorded a median LBP Distance of 0.0800. This value is less than half the value achieved by the best sketch type (0.17) in \cite{ref19}, suggesting that our proposed method generated textures with significantly higher fidelity to the original images. Moreover, Group 3 was also identified as the most consistent in terms of texture feature quality.
+
+\subsection{Discussion}
+
+Overall, the context-oriented synthesis approach demonstrates superior quantitative performance across all three metrics when compared to the best results from the sketch-based method in \cite{ref19}. This superiority is particularly pronounced in the MSE and LBP distance metrics, where the newer work achieves dramatically lower median values, indicating significant improvements in both pixel-level accuracy and texture fidelity.
+
+It is worth noting that while quantitative metrics provide objective evaluation, they may not fully align with qualitative assessment. Ferreira et al. \cite{ref19} observed that although Type D had the best quantitative scores for DSSIM and LBP Distance, Type E produced the most visually realistic images. Similarly, we supplemented our findings with a detailed qualitative analysis involving domain experts, who concluded that the synthetic images were "virtually indistinguishable" from real ones, with the F1-score difference being less than 2\%.
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{images/boxplots}
+	\caption{Box plot of DSSIM values for sketches groups}
+	\label{fig:boxplots}
+\end{figure}
+
+
+\begin{table*}[htbp]
+	\centering
+    \sisetup{output-decimal-marker = {.}}
+	\caption{Summary statistics for MSE, DSSIM, and LBP Distance across four groups and total.}
+	\label{tab:metricsSummary}
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=4.2] S[table-format=4.2] S[table-format=4.2] S[table-format=4.2] S[table-format=4.2]@{}}
+		\toprule
+		& {\textbf{Group 1}} & {\textbf{Group 2}} & {\textbf{Group 3}} & {\textbf{Group 4}} & {\textbf{Total}} \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{MSE}} \\
+		\midrule
+		Min    & 718.12  & 651.21 & 511.83 & 987.74  & 511.83 \\
+		Q1     & 855.92  & 686.99 & 535.13 & 1056.76 & 643.62 \\
+		Median & 916.33  & 718.47 & 542.87 & 1093.89 & 779.19 \\
+		Q3     & 963.64  & 740.92 & 556.09 & 1127.13 & 1005.90 \\
+		Max    & 1098.81 & 794.37 & 620.87 & 1202.46 & 1202.46 \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{DSSIM}} \\
+		\midrule
+		Min    & 0.2544 & 0.2279 & 0.2608 & 0.2683 & 0.2279 \\
+		Q1     & 0.2741 & 0.2395 & 0.2701 & 0.2842 & 0.2567 \\
+		Median & 0.2814 & 0.2424 & 0.2746 & 0.2900 & 0.2766 \\
+		Q3     & 0.2876 & 0.2475 & 0.2798 & 0.2947 & 0.2870 \\
+		Max    & 0.3057 & 0.2572 & 0.2963 & 0.3098 & 0.3098 \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{LBP - DISTANCE}} \\
+		\midrule
+		Min    & 0.0800 & 0.1200 & 0.0400 & 0.1900 & 0.0400 \\
+		Q1     & 0.1500 & 0.1300 & 0.0700 & 0.2200 & 0.1043 \\
+		Median & 0.2000 & 0.1500 & 0.0800 & 0.2300 & 0.1640 \\
+		Q3     & 0.2500 & 0.1700 & 0.0900 & 0.2400 & 0.2215 \\
+		Max    & 0.3900 & 0.2000 & 0.1100 & 0.2700 & 0.3900 \\
+		\bottomrule
+	\end{tabular*}
+\end{table*}
+
+\section{Conclusions and Future Work}
+
+\PARstart{T}{his} work proposed a data augmentation scheme based on the context-oriented synthetic generation of seismic image data containing salt bodies, since such imagery data can be relevant for training robust seismic image analysis methods for prospecting petroleum in deep waters. The proposed scheme combines a deep neural network model with non-parametric synthesis. The experimental results, using the TGS-Dataset as input, suggest that the proposed methodology can be potentially effective for generating seismic imagery data containing salt bodies, as indicated by the evaluation conducted by experts in the field. The results show similar measures of precision, recall, and F1-scores for both the real and the synthesized seismic image data. 
+
+The synthetic samples potentially can be used in geological studies and situations where real data may be scarce or unavailable. The close resemblance between synthetic and real images suggests that the synthesized datasets may be used in geoscience research.
+
+As future work, we plan to test the proposed method in other datasets to assess the resilience of the proposed methodology and to evaluate the benefit of training smart seismic image segmentation schemes using the synthesized seismic images as data augmentation.
+
+
+\printbibliography % imprime a bibliografia aqui
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in, clip,keepaspectratio]{images/luciano.jpg}}]{Luciano D. Terres}
+Received the B.S. degree in Computer Science from the Federal University of Rio
+Grande do Sul (UFRGS), Brazil, in 1996. In 2010 received the M.S. degree in
+Engineering and Computer Systems from the Federal University of Rio de Janeiro (UFRJ-COPPE), Brazil.
+Currently, he is a Ph.D. student in Computer Science at UFRGS. Since 2005 has been a researcher at Petrobras Cenpes Research Center.
+His research interests include petroleum exploration, petroleum systems simulation, computer vision, image processing, and pattern recognition.
+
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics
+[width=1in,height=1.25in,clip,
+keepaspectratio]{images/jacob.jpg}}]
+{Jacob Scharcanski}
+received the B.Sc. degree in electrical engineering in 1981 and the M.Sc.
+degree in computer science in 1987, both from the Federal University of Rio
+Grande do Sul (UFRGS), Brazil, and the Ph.D. degree in systems design
+engineering from the University of Waterloo, Canada, in 1993. Currently, he
+is a Full Professor in computer science at UFRGS.  He has authored and
+co-authored over 170 refereed journal and conference papers, and has
+contributed to several books on imaging and measurements. In addition to his
+academic publications, he has several technology transfers to the private
+sector. Presently, he serves as an Associate Editor for two journals and has
+served on dozens of International Conference Committees. Prof. Scharcanski is
+a Senior Member of the IEEE, and served as an IEEE IMS Distinguished Lecturer
+in several occasions. His areas of expertise are Image Processing, Pattern
+Recognition, Imaging Measurements and Computational Methods in Finance.
+\end{IEEEbiography}
+
+\EOD
+\end{document}
