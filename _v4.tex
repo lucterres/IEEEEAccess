@@ -57,7 +57,11 @@ In this work, a mechanism for synthesizing annotated seismic image samples conta
 
 Visual texture synthesis can learn how to generate new seismic samples of a particular seismic image by inferring its generation process from examples. The generated (synthesized) seismic textures should be indistinguishable from real natural seismic data from the human experts point of view. If the experts cannot distinguish between an original seismic texture and a synthesized one, the synthesis process is considered successful \cite{ref4}. This work innovates by combining VAEs to generate the salt and rock shapes and by creating a context for the seismic texture synthesis process, which can work with non-stationary seismic image textures of salt bodies, conventional rocks, and their boundaries. 
 
+\subsection{Organization of the Paper}
+The remainder of this paper is organized as follows. Section~\ref{sec:related} reviews the related work in seismic image synthesis and generative models. Section~\ref{sec:background} provides the theoretical background on variational autoencoders, texture synthesis, and seismic image characteristics. Section~\ref{sec:methodology} presents the proposed methodology, detailing the VAE architecture, the texture synthesis approach, and the complete pipeline for generating synthetic seismic images. Section~\ref{sec:results} discusses the experimental setup, evaluation metrics, and results obtained from the proposed method. Finally, Section~\ref{sec:conclusion} concludes the paper and suggests directions for future work.
+
 \section{Related Work}
+\label{sec:related}
 
 \PARstart{O}{ver} the past decades, a broad spectrum of algorithms has been proposed to address the challenges in seismic image synthesis. In the early days, before the rise of neural networks, researchers relied on traditional methods like model-based approaches and basic texture synthesis techniques. These methods worked reasonably well for simple tasks but often struggled with complex geological features and non-uniform textures commonly found in seismic data. The primary limitation of these early techniques was their inability to handle non-stationary textures, which are textures that change across different regions of an image \cite{ref16}.
 
@@ -70,6 +74,7 @@ More recently, in 2020, R. S. Ferreira et al. \cite{ref19} proposed similar work
 Similarly, Henriques et al. \cite{ref1} proposed a very similar data augmentation method based on training two generative models to augment the number of samples in a seismic image dataset for the semantic segmentation of salt bodies. However, they perform an indirect evaluation of results, based on the improvement in the performance of segmentation methods based on convolutional neural networks, which could be difficult to use as a direct comparison of results with our proposed method and a different database.
 
 \section{Background and Fundamentals}
+\label{sec:background}
 
 \PARstart{T}{his} section provides the theoretical foundation for the proposed methodology, introducing the key concepts and techniques that underpin our approach to seismic image synthesis.
 
@@ -86,6 +91,7 @@ Texture synthesis is a technique used in computer graphics and image processing 
 Seismic images present unique challenges due to their non-stationary nature, where texture patterns vary significantly across different geological structures. Salt bodies, in particular, exhibit distinct acoustic properties that create characteristic boundary patterns in seismic data. Understanding these characteristics is essential for developing effective synthesis methods that can generate realistic seismic images.
 
 \section{Proposed Methodology}
+\label{sec:methodology}
 
 \subsection{Overview of the Approach}
 
@@ -273,6 +279,7 @@ The complete synthesis pipeline integrates both the VAE-based context generation
 
 
 \section{Results and Discussion}
+\label{sec:results}
 
 \PARstart{T}{his} section presents comprehensive experimental results that validate the effectiveness of the proposed approach. The evaluation encompasses both qualitative assessment by domain experts and quantitative comparison with state-of-the-art methods. This dual evaluation strategy demonstrates the model's performance through the following criteria:
 
@@ -506,6 +513,7 @@ It is worth noting that while quantitative metrics provide objective evaluation,
 \end{table*}
 
 \section{Conclusions and Future Work}
+\label{sec:conclusion}
 
 \PARstart{T}{his} work proposed a data augmentation scheme based on the context-oriented synthetic generation of seismic image data containing salt bodies, since such imagery data can be relevant for training robust seismic image analysis methods for prospecting petroleum in deep waters. The proposed scheme combines a deep neural network model with non-parametric synthesis. The experimental results, using the TGS-Dataset as input, suggest that the proposed methodology can be potentially effective for generating seismic imagery data containing salt bodies, as indicated by the evaluation conducted by experts in the field. The results show similar measures of precision, recall, and F1-scores for both the real and the synthesized seismic image data. 
 
