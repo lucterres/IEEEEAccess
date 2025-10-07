@@ -73,6 +73,10 @@ More recently, in 2020, R. S. Ferreira et al. \cite{ref19} proposed similar work
 
 Similarly, Henriques et al. \cite{ref1} proposed a very similar data augmentation method based on training two generative models to augment the number of samples in a seismic image dataset for the semantic segmentation of salt bodies. However, they perform an indirect evaluation of results, based on the improvement in the performance of segmentation methods based on convolutional neural networks, which could be difficult to use as a direct comparison of results with our proposed method and a different database.
 
+Choi et al. \cite{Choi2025} address the scarcity of labeled seismic data for training deep learning models by employing advanced generative techniques. They propose a method for generating synthetic seismic images using diffusion models, a class of generative models proficient in various image synthesis tasks. While the primary focus is on generating data for fault detection, their conditional diffusion model incorporates geological context, ensuring the synthetic images are not only realistic but also geologically plausible. The study demonstrates that diffusion models can effectively capture the complex patterns and textures in seismic data, yielding high-quality synthetic images. The results confirm that these synthetic images enhance the training of fault detection algorithms, leading to improved performance in identifying subsurface structures.
+
+In summary, while there has been significant progress in the field of seismic image synthesis, challenges remain in terms of data availability, evaluation methodologies, and the need for more robust generative models. Our work aims to address these challenges by leveraging VAEs and advanced texture synthesis techniques to produce high-quality synthetic seismic images.
+
 \section{Background and Fundamentals}
 \label{sec:background}
 
