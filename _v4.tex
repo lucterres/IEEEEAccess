@@ -490,6 +490,30 @@ Based on the three metrics, Group 3 consistently demonstrates the best overall p
 
 To provide a quantitative comparison, we evaluated our proposed method against the sketch-based approach of Ferreira et al.~\cite{Ferreira2020}, referencing our results in Table~\ref{tab:metricsSummary} and theirs in Table I from the original study. Both methodologies measure the similarity between synthetic and original seismic images using three key metrics: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these metrics, lower values signify better performance.
 
+\subsubsection{Overview of the Sketch-Based GAN Method}
+
+The baseline method proposed by Ferreira et al.~\cite{Ferreira2020} employs a Generative Adversarial Network (GAN) architecture to synthesize seismic images from user-provided sketches. Their approach consists of two main stages:
+
+\paragraph{Sketch Generation} The method begins with hand-drawn or computer-generated sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
+\begin{itemize}
+    \item \textbf{Type A}: Basic contour sketches showing only the main boundaries
+    \item \textbf{Type B}: Enhanced contours with additional structural details
+    \item \textbf{Type C}: Sketches incorporating intensity gradients
+    \item \textbf{Type D}: Detailed sketches with textural hints
+    \item \textbf{Type E}: Comprehensive sketches combining structural and textural information
+\end{itemize}
+
+\paragraph{GAN-Based Image Synthesis} The core of their method employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The generator network takes the sketch as input and learns to produce realistic seismic images that match the sketch's structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
+\begin{enumerate}
+    \item Training the generator to map sketches to realistic seismic images
+    \item Training the discriminator to distinguish between real and synthetic seismic images
+    \item Optimizing both networks through adversarial training until convergence
+\end{enumerate}
+
+The GAN-based approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
+
+\subsubsection{Comparative Analysis}
+
 The referenced work assessed five sketch types (A--E) and found that types D and E produced the best results. In our work, we analyzed four distinct groups, with Group 3 achieving the most consistent and superior performance. The subsequent subsections present a detailed comparison based on the median values, which offer a robust measure of each method's typical performance.
 
 \subsubsection{Mean Squared Error (MSE)}
