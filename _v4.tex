@@ -17,6 +17,8 @@
 \usepackage{comment}
 
 \usepackage{bm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 %Your document starts from here ___________________________________________________
 \begin{document}
@@ -279,7 +281,44 @@ In order to synthesize the salt zones, the corresponding source image region is 
 
 \subsection{Complete Synthesis Pipeline}
 
-The complete synthesis pipeline integrates both the VAE-based context generation and the context-oriented texture synthesis. The algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data. The pipeline can be summarized as follows: (1) the VAE generates a new salt body mask defining the geometric structure, (2) edge detection identifies boundary zones between salt and sediment, (3) the texture synthesis algorithm fills each zone (edges, salt, and sediment) with appropriate textures from the training database, and (4) the final synthetic seismic image is assembled by combining all synthesized zones. This systematic approach ensures that the generated images maintain both structural consistency and textural realism.
+The complete synthesis pipeline integrates both the VAE-based context generation and the context-oriented texture synthesis. The algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data. The pipeline can be summarized as follows: (1) the VAE generates a new salt body mask defining the geometric structure, (2) edge detection identifies boundary zones between salt and sediment, (3) the texture synthesis algorithm fills each zone (edges, salt, and sediment) with appropriate textures from the training database, and (4) the final synthetic seismic image is assembled by combining all synthesized zones. This systematic approach, detailed in Algorithm~\ref{alg:synthesis}, ensures that the generated images maintain both structural consistency and textural realism.
+
+\begin{algorithm}[htbp]
+\caption{Context-Oriented Seismic Image Synthesis}
+\label{alg:synthesis}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Trained VAE model $D_\theta$, Texture Database $T_{db}$
+\State \textbf{Output:} Synthetic Seismic Image $I_{synth}$
+
+\vspace{0.2cm}
+\Statex \textit{// Stage 1: Context Generation}
+\State Sample latent vector $z \sim \mathcal{N}(0, I)$
+\State Generate salt mask $M_{salt} \leftarrow D_\theta(z)$
+\State Identify boundary mask $M_{boundary}$ from $M_{salt}$ via edge detection and dilation
+\State Define sediment mask $M_{sediment} \leftarrow \neg(M_{salt} \cup M_{boundary})$
+\State Initialize $I_{synth}$ as an empty image
+
+\vspace{0.2cm}
+\Statex \textit{// Stage 2: Context-Oriented Texture Synthesis}
+\State \textit{// Synthesize Boundary Zone}
+\For{each segment $s$ in $M_{boundary}$}
+    \State Compute local orientation $\alpha_s$
+    \State Select best patch $P_{boundary} \in T_{db}$ based on $\alpha_s$
+    \State Synthesize texture for $s$ in $I_{synth}$ using $P_{boundary}$
+\EndFor
+
+\State \textit{// Synthesize Salt Zone}
+\State Select salt patches $P_{salt} \in T_{db}$
+\State Synthesize texture for region $M_{salt}$ in $I_{synth}$ using $P_{salt}$
+
+\State \textit{// Synthesize Sediment Zone}
+\State Select sediment patches $P_{sediment} \in T_{db}$
+\State Synthesize texture for region $M_{sediment}$ in $I_{synth}$ using $P_{sediment}$
+
+\vspace{0.2cm}
+\State \Return $I_{synth}$
+\end{algorithmic}
+\end{algorithm}
 
 
 \section{Results and Discussion}
