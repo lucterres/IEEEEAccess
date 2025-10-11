@@ -513,7 +513,42 @@ It is important to note that quantitative metrics may not always align with qual
 		\bottomrule
 	\end{tabular*}
 \end{table*}
+\section{Ablation Study}
+\label{sec:ablation}
 
+\PARstart{T}{o} assess the contribution of each component of our proposed methodology, we suggest a series of ablation studies. These experiments are designed to isolate the impact of the VAE-based context generation and the context-oriented texture synthesis on the final quality of the synthetic images.
+
+\subsection{Impact of Context-Oriented Synthesis}
+
+A key innovation of our method is the division of the synthesis process into three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this separation, we propose an experiment where this context-oriented approach is removed.
+
+\begin{itemize}
+    \item \textbf{Experiment}: A single, non-parametric texture synthesis model would be used to generate the entire image, guided only by the binary salt/non-salt mask produced by the VAE. This model would not differentiate between the interior of the salt dome, the surrounding rock, and the crucial boundary region.
+    \item \textbf{Hypothesis}: We expect a significant degradation in image quality. The model would likely struggle to reproduce the sharp, geologically complex interfaces between salt and sediment, resulting in blurred or unrealistic boundaries.
+    \item \textbf{Evaluation}: The results would be compared against our full method using the same quantitative metrics (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our context-oriented approach.
+\end{itemize}
+
+\subsection{Contribution of the VAE for Mask Generation}
+
+Our method relies on a VAE to generate realistic and diverse salt body geometries. An ablation study could quantify the benefit of this component compared to simpler alternatives.
+
+\begin{itemize}
+    \item \textbf{Experiment}: Replace the VAE with a more basic mask generation technique. For instance, new masks could be created by applying simple geometric transformations (e.g., rotation, scaling, elastic deformation) to the existing ground-truth masks from the training set.
+    \item \textbf{Hypothesis}: While simpler, this approach would likely yield a less diverse and geologically plausible set of masks. We hypothesize that the VAE's ability to learn a rich latent distribution of salt geometries is crucial for generating high-quality and varied synthetic samples.
+    \item \textbf{Evaluation}: The quality of the final synthetic images generated using these simpler masks would be assessed. A lower score in expert evaluations and quantitative metrics would underscore the VAE's contribution to the realism and diversity of the augmented dataset.
+\end{itemize}
+
+\subsection{Relevance of Boundary-Specific Synthesis}
+
+The proposed method gives special treatment to the boundary zone, using patch selection oriented by local angles to construct the interface. The importance of this specific step can be evaluated as follows:
+
+\begin{itemize}
+    \item \textbf{Experiment}: The angle-aware patch selection for the boundary zone would be disabled. The boundary would be synthesized using the same standard non-parametric texture synthesis applied to the salt and rock interiors, without considering the local orientation of the interface.
+    \item \textbf{Hypothesis}: We predict that this change would lead to less coherent and realistic boundaries. The fine-grained textural details that align with the curve of the salt dome would be lost, resulting in visible artifacts and a less convincing transition between the geological layers.
+    \item \textbf{Evaluation}: A direct comparison of the boundary regions between this ablated version and the full model, both qualitatively by experts and quantitatively (if a suitable metric for boundary coherence is defined), would highlight the value of this specialized synthesis step.
+\end{itemize}
+
+These proposed studies would systematically validate our design choices and provide a deeper understanding of why the proposed context-oriented approach is effective for synthesizing high-fidelity seismic images.
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
 
