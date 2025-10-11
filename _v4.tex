@@ -101,8 +101,14 @@ Seismic images present unique challenges due to their non-stationary nature, whe
 
 \subsection{Overview of the Approach}
 
-\PARstart{T}{he} Context-Oriented Seismic Image Synthesis methodology combines a deep learning model based on VAE with a texture synthesis algorithm. It generates seismic image samples for data augmentation within a specific context mask. The proposed approach consists of two main stages: (1) context generation using a Variational Autoencoder (VAE) that generates salt body masks corresponding to a given salt geometry, and (2) texture synthesis using a non-parametric algorithm that creates realistic seismic images based on the generated masks. The proposed method focuses on context zones and on the characteristics of seismic images with salt domes, ensuring that the synthetic samples preserve the structural and textural properties of real seismic data.
+\PARstart{T}{he} Context-Oriented Seismic Image Synthesis methodology combines a deep learning model based on VAE with a texture synthesis algorithm. It generates seismic image samples for data augmentation within a specific context mask. The proposed approach consists of two main stages: (1) context generation using a Variational Autoencoder (VAE) that generates salt body masks corresponding to a given salt geometry, and (2) texture synthesis using a non-parametric algorithm that creates realistic seismic images based on the generated masks. The proposed method focuses on context zones and on the characteristics of seismic images with salt domes, ensuring that the synthetic samples preserve the structural and textural properties of real seismic data. Figure~\ref{fig:synthesis_pipeline} illustrates the complete synthesis pipeline, showing how the VAE-generated masks are combined with context-oriented texture synthesis to produce realistic synthetic seismic images.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/g50.png}
+    \caption{Complete pipeline of the proposed context-oriented seismic image synthesis methodology, showing the integration of VAE-based mask generation and context-aware texture synthesis.}
+    \label{fig:synthesis_pipeline}
+\end{figure}
 
 \subsection{Context Generation Using a Variational Autoencoder}
 
