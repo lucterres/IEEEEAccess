@@ -44,5 +44,10 @@
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.synctex.afterBuild.enabled": true,
   "latex-workshop.latex.clean.enabled": true,
-  "latex-workshop.latex.clean.fileTypes": ["aux", "bbl", "blg", "log", "out", "synctex.gz", "fls", "fdb_latexmk"]
+  "latex-workshop.latex.clean.fileTypes": ["aux", "bbl", "blg", "log", "out", "synctex.gz", "fls", "fdb_latexmk"],
+
+  "latex-workshop.message.error.show": true,
+  "latex-workshop.message.warning.show": false,
+  "latex-workshop.linting.chktex.enabled": false,
+  "latex-workshop.linting.lacheck.enabled": false
 }
