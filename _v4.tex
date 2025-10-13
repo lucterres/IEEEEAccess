@@ -69,7 +69,7 @@ Data augmentation, deep learning, image segmentation, seismic images, seismic in
 \label{sec:introduction}
 \PARstart{A} relevant task in seismic imaging and interpretation is to distinguish accurately saline bodies from other sediments. However, seismic reflections in salt rocks pose a challenge to seismic imaging researchers due to their distinct acoustic characteristics and complex geometry. The boundaries of saline bodies can be identified by trained experts~\cite{Zeng2019}, but this process involves massive amounts of data and is labor intensive, making it a potential candidate for being handled by smart image segmentation methods. Nevertheless, public databases of annotated seismic images are scarce, and such data is needed for training seismic image segmentation methods based on deep neural networks, such as RESNET~\cite{He2016} and UNET~\cite{Ronneberger2015}, which are specialized in image segmentation and recognition. Therefore, researchers have recently directed their efforts towards data augmentation through seismic image synthesis~\cite{Henriques2021}.
 
-In this work, a mechanism for synthesizing annotated seismic image samples containing salt domes is proposed. A combination of Variational Autoencoder (VAE) and a context-oriented texture synthesis method is used to generate new samples. The VAE comprises an encoder that maps the multidimensional input into a low-dimensional latent space, and a decoder that reconstructs the output from these latent features. The objective is to minimize the difference between the input and reconstructed samples~\cite{Li2020}.
+In this work, we propose a mechanism for synthesizing annotated seismic image samples containing salt domes. We use a combination of Variational Autoencoder (VAE) and a context-oriented texture synthesis method to generate new samples. The VAE comprises an encoder that maps the multidimensional input into a low-dimensional latent space, and a decoder that reconstructs the output from these latent features. We aim to minimize the difference between the input and reconstructed samples~\cite{Li2020}.
 
 Visual texture synthesis learns to generate new samples from a particular image by inferring its generation process from examples. The generated textures should be indistinguishable from real data from the human experts' point of view. If experts cannot distinguish between an original texture and a synthesized one, the synthesis process is considered successful~\cite{Gatys2015}. This work innovates by combining VAEs to generate salt and rock shapes with a context-oriented texture synthesis process, which handles non-stationary textures of salt bodies, conventional rocks, and their boundaries. 
 
@@ -134,7 +134,7 @@ The proposed data augmentation scheme detects and generates new rock geometries 
     \label{fig:vae1}
 \end{figure}
 
-A dataset of seismic images used to generate new salt masks is illustrated in Fig.~\ref{fig:vae1}. The natural intersection between two different rocks are their boundaries, and in the case of salt rock this boundary is usually apparent, as seen in Fig.~\ref{fig:edge1}. During the VAE training process, only salt masks with a considerable amount of salt are used, varying from 10 to 90 percent of the total area.
+Fig.~\ref{fig:vae1} illustrates a dataset of seismic images used to generate new salt masks. The natural intersection between two different rocks are their boundaries, and in the case of salt rock this boundary is usually apparent, as Fig.~\ref{fig:edge1} shows. During the VAE training process, we use only salt masks with a considerable amount of salt, varying from 10 to 90 percent of the total area.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/edge detection.png}
@@ -142,7 +142,7 @@ A dataset of seismic images used to generate new salt masks is illustrated in Fi
     \label{fig:edge1}
 \end{figure}
 
-The generated masks are used as contexts for the texture synthesis process. Once the boundaries of a salt body are known, the interior region is expected to be salt. The VAE model used in this work is a simple feedforward network for the encoder and decoder. The encoder contains four stacked dense layers, and the decoder contains five stacked dense layers. During inference, the latent variables $z$ are sampled from the prior distribution $\pi(z)$, and then $z$ is decoded with the VAE's decoder to generate the salt mask with the inferred distribution.
+We use the generated masks as contexts for the texture synthesis process. Once we know the boundaries of a salt body, we expect the interior region to be salt. The VAE model we use in this work employs a simple feedforward network for the encoder and decoder. The encoder contains four stacked dense layers, and the decoder contains five stacked dense layers. During inference, we sample the latent variables $z$ from the prior distribution $\pi(z)$, and then decode $z$ with the VAE's decoder to generate the salt mask with the inferred distribution.
 
 The main task of VAEs is to model the underlying probability distribution of a data set $\bm{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$, where each $x^{(i)}$ represents an individual sample. The model introduces a latent variable $\bm{z}$ (a lower-dimensional representation) and parameters $\theta$ to maximize the marginal likelihood $p_\theta(x)$, where $x$ is the observed data:
 
@@ -201,14 +201,14 @@ and the KL divergence loss is the Kullback-Leibler divergence between the approx
 
 where $d$ is the dimensionality of the latent space, and $\mu_\phi(x)_i$ and $\Sigma_\phi(x)_{ii}$ denote the $i$-th component of the mean vector and the $i$-th diagonal element of the covariance matrix, respectively.
 
-In order to enable gradient-based optimization, the reparameterization trick is used. Instead of sampling $z \sim q_\phi(z | x)$ directly, $z$ is expressed as:
+To enable gradient-based optimization, we use the reparameterization trick. Instead of sampling $z \sim q_\phi(z | x)$ directly, we express $z$ as:
 
 \begin{equation}
 z = \mu_\phi(x) + \Sigma_\phi(x)^{1/2} \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, \mathrm{I})
 \end{equation}
 where $\epsilon$ is an auxiliary random variable sampled from a standard normal distribution, and $\odot$ denotes element-wise multiplication. This formulation allows gradients to be propagated through $\mu_\phi(x)$ and $\Sigma_\phi(x)$.
 
-Finally, VAEs are trained by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
+Finally, we train VAEs by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
 
 \subsubsection{Advantages of Variational Autoencoders}
 The primary reasons for using VAEs are a realistic generation of synthetic samples, an increase in dataset diversity, a regularization and control of variability, and an improvement in the generalization of the segmentation model. Considering specific reasons related to the nature of seismic data and the purpose of sample generation for data augmentation, VAEs enable the generation of synthetic images that preserve the structural characteristics of real seismic data, thereby enhancing the training and performance of segmentation models~\cite{Henriques2021,Wang2021,Anjom2024}.
@@ -230,7 +230,7 @@ The primary reasons for using VAEs are a realistic generation of synthetic sampl
     \end{itemize}
 \end{enumerate}
 
-Although GANs are known for generating high-quality images, VAEs were chosen in this work due to their more refined control over data variability, training stability, and preservation of the latent seismic data distribution.
+Although GANs are known for generating high-quality images, we chose VAEs in this work due to their more refined control over data variability, training stability, and preservation of the latent seismic data distribution.
 
 \subsubsection{Disadvantages of Diffusion Models}
 Conversely, diffusion models present practical and conceptual disadvantages~\cite{Zhou2024}:
@@ -258,14 +258,14 @@ The proposed seismic texture synthesis method requires the following components:
 
 \textbf{1. Neighborhood Definition:} For each pixel $p$ in the image to be synthesized, a region around $p$ already filled with known values is defined (namely, a neighborhood $N(p)$);
 
-\textbf{2. Similarity Criterion:} To find corresponding patches in the example image, the similarity between $N(p)$ and the neighborhoods $N(q)$ are computed for all pixels $q$ in the example image. A similarity measure is defined as the Euclidean distance $D$ between the pixels of the neighborhoods:
+\textbf{2. Similarity Criterion:} To find corresponding patches in the example image, we compute the similarity between $N(p)$ and the neighborhoods $N(q)$ for all pixels $q$ in the example image. We define a similarity measure as the Euclidean distance $D$ between the pixels of the neighborhoods:
 
 \begin{equation}
 D(N(p), N(q)) = \sum_{i \in N} \left( I_p(i) - I_q(i) \right)^2,
 \end{equation}
 where $I_p(i)$ and $I_q(i)$ are the pixel intensity values at location $i$ in the neighborhoods of pixels $p$ and $q$, respectively, and $N$ denotes the set of pixel locations in the neighborhood;
 
-\textbf{3. Random Sampling:} A pixel $q$ is chosen randomly from the example image with probability proportional to its similarity (or inverse of $D(N(p), N(q))$) to $p$. In other words, pixels with smaller distance $D(N(p), N(q))$ are more likely to be chosen. The probability $P(q)$ of selecting pixel $q$ can be modeled as:
+\textbf{3. Random Sampling:} We choose a pixel $q$ randomly from the example image with probability proportional to its similarity (or inverse of $D(N(p), N(q))$) to $p$. In other words, pixels with smaller distance $D(N(p), N(q))$ are more likely to be chosen. We can model the probability $P(q)$ of selecting pixel $q$ as:
 
 \begin{equation}
 P(q) = \frac{\exp(-D(N(p), N(q)) / \sigma^2)}{\sum_{q'} \exp(-D(N(p), N(q')) / \sigma^2)}
@@ -276,7 +276,7 @@ where $\sigma$ is a temperature parameter that controls the influence of distanc
 
 \subsubsection{Context-based Seismic Image Synthesis}
 
-The process of seismic image synthesis is based on the context masks generated by the VAE model. Various patches are used as inputs, corresponding to different parts of the seismic image. The synthesized sample has three main components, namely, salt zone, boundary zone, and conventional rock zone. Initially, the boundary, or frontier, zones between the two rocks, which is also called edge zone, is created. The boundary zone is created by using edge detection to identify the interface between the two types of rocks, and to make it thicker, creating an edge strip. As seen in Fig.~\ref{fig:edge1}, this strip is an area of high seismic contrast appearing as light and dark bands. Also, there are various parallel lines that make up this boundary, and their angles can be seen in Fig.~\ref{fig:line1}. A dataset composed of edge pieces and their corresponding angles is used as input for the boundary synthesis process. Then, for each edge segment in the mask of the image to be synthesized, its texture is synthesized based on the patch with the most similar angle (see Fig.~\ref{fig:edge2}). This process is repeated until all the segments of the edge band are covered.
+We base the process of seismic image synthesis on the context masks generated by the VAE model. We use various patches as inputs, corresponding to different parts of the seismic image. The synthesized sample has three main components, namely, salt zone, boundary zone, and conventional rock zone. Initially, we create the boundary, or frontier, zones between the two rocks, which we also call edge zone. We create the boundary zone by using edge detection to identify the interface between the two types of rocks, and make it thicker, creating an edge strip. As Fig.~\ref{fig:edge1} shows, this strip is an area of high seismic contrast appearing as light and dark bands. Also, various parallel lines make up this boundary, and Fig.~\ref{fig:line1} shows their angles. We use a dataset composed of edge pieces and their corresponding angles as input for the boundary synthesis process. Then, for each edge segment in the mask of the image to be synthesized, we synthesize its texture based on the patch with the most similar angle (see Fig.~\ref{fig:edge2}). We repeat this process until all the segments of the edge band are covered.
 
 \begin{figure}[htbp]
     \centering
@@ -288,11 +288,11 @@ The process of seismic image synthesis is based on the context masks generated b
 \begin{figure}[htbp]
         \centering
         \includegraphics[width=1\linewidth]{images/edge3.jpg}
-        \caption{The Construction of new boundaries in generated images uses  texture sinthesys over selected samples from patch database.}
+        \caption{The Construction of new boundaries in generated images uses texture synthesis over selected samples from patch database.}
         \label{fig:edge2}
     \end{figure}    
 
-In order to synthesize the salt zones, the corresponding source image region is used as a seismic texture reference to generate new synthesized pixels. Finally, the conventional rock zone is synthesized using the corresponding sediment regions in the source sample. The seismic image synthesis is divided in steps to conform to the specific characteristics of this kind of image, such as the edge, saline rock, and conventional rock zones, as seen in Fig.~\ref{fig:source1}.
+To synthesize the salt zones, we use the corresponding source image region as a seismic texture reference to generate new synthesized pixels. Finally, we synthesize the conventional rock zone using the corresponding sediment regions in the source sample. We divide the seismic image synthesis into steps to conform to the specific characteristics of this kind of image, such as the edge, saline rock, and conventional rock zones, as Fig.~\ref{fig:source1} shows.
 
 \begin{figure}[htbp]
     \centering
@@ -357,7 +357,7 @@ The complete synthesis pipeline integrates both the VAE-based context generation
 
 \subsection{Dataset}
 
-The salt body dataset was obtained from the TGS Salt Identification Challenge, a machine learning competition on Kaggle. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{TGS2023}.
+We obtained the salt body dataset from the TGS Salt Identification Challenge, a machine learning competition on Kaggle. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{TGS2023}.
 
 \begin{figure}[htbp]
     \centering
@@ -395,7 +395,7 @@ The F1 score is a widely used measure for evaluating binary classification model
     
  The F1 score is particularly valuable in classification situations where the positive class is rare. It helps to understand the trade-off between false positives and false negatives. In several practical applications, the F1 score provides a balanced measure that is less susceptible to class distribution bias.
 
-The precision, recall, and F1-score measures are used for evaluating the salt bodies masks generated by the experts, and can be computed using the confusion matrix derived from these experts generated masks. To evaluate the quality of the synthesized samples, the overlap between the experts selections of pixels corresponding to the salt bodies in synthetic images, and synthetic images masks is evaluated, as shown in Fig.~\ref{fig:expert1}.
+We use the precision, recall, and F1-score measures to evaluate the salt bodies masks generated by the experts, and we can compute them using the confusion matrix derived from these expert-generated masks. To evaluate the quality of the synthesized samples, we evaluate the overlap between the experts' selections of pixels corresponding to the salt bodies in synthetic images and synthetic images masks, as Fig.~\ref{fig:expert1} shows.
 
 Fig.~\ref{fig:expert2} illustrates the ground truth image and the specialist evaluation of the salt bodies locations, and the computed precision, recall, and F1-score measures for this particular case.
 
@@ -446,7 +446,7 @@ The LBP is a more robust texture attribute successfully applied in medical image
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/expert.png}
-    \caption{Quantitative analisys demonstration: Sample measurement between groud truth and expert analisys: Precision: 0.88 ; Recall: 0.87 ; F1-score: 0.87.}
+    \caption{Quantitative analysis demonstration: Sample measurement between ground truth and expert analysis: Precision: 0.88 ; Recall: 0.87 ; F1-score: 0.87.}
     \label{fig:expert2}
 \end{figure}
 
@@ -486,7 +486,7 @@ Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.8
 
 \subsection{Qualitative Evaluation}
 
-The qualitative evaluation of the samples was conducted through a systematic and rigorous process with the support of geoscientists, experts in the field. The goal was to verify the synthesized samples' quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic interpretation participated in this evaluation. The evaluation was conducted by reviewing seismic image and selecting the regions by painting the salt bodies using a graphics computer program. The area painted by the expert is then compared with the jig established for the corresponding saline body of the image. First, the specialist's accuracy was assessed by identifying salt bodies on twenty original images from the dataset. Then, the selection of the areas is performed on a set of thirty random synthetic images. The specialists repeat the process with the same images. In addition, experts are warned that some images are added for control without any saline body.
+We conducted the qualitative evaluation of the samples through a systematic and rigorous process with the support of geoscientists, experts in the field. Our goal was to verify the synthesized samples' quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic interpretation participated in this evaluation. We conducted the evaluation by having experts review seismic images and select the regions by painting the salt bodies using a graphics computer program. We then compare the area painted by the expert with the ground truth established for the corresponding saline body of the image. First, we assessed the specialist's accuracy by having them identify salt bodies on twenty original images from the dataset. Then, we had them perform the selection of the areas on a set of thirty random synthetic images. The specialists repeat the process with the same images. In addition, we warn experts that we add some images for control without any saline body.
 
 To evaluate the results, we obtained the metrics for each expert and for the group of experts. We also consolidate the averages and standard deviations. Table~\ref{tab:real_images_evaluation} shows the evaluation of 20 real images, showing an average precision score of 0.88761, suggesting that experts' identifications of saline rock portions were 88.7\% accurate, leaving 11.3\% misidentified as salt, which was actually common rock. The average recall of 0.87795 indicates that 87.7\% of the saline rock portions were effectively identified, with a small remainder of 12.3\% missed salt portions. Considering the F1-score calculation, the specialists achieved an average score of 0.88159 for the real images.
 
@@ -603,7 +603,7 @@ It is important to note that quantitative metrics may not always align with qual
 \section{Ablation Study}
 \label{sec:ablation}
 
-\PARstart{T}{o} assess the contribution of each component of our proposed methodology, we suggest a series of ablation studies. These experiments are designed to isolate the impact of the VAE-based context generation and the context-oriented texture synthesis on the final quality of the synthetic images.
+\PARstart{T}{o} assess the contribution of each component of our proposed methodology, we suggest a series of ablation studies. We design these experiments to isolate the impact of the VAE-based context generation and the context-oriented texture synthesis on the final quality of the synthetic images.
 
 \subsection{Impact of Context-Oriented Synthesis}
 
@@ -630,8 +630,8 @@ Our method relies on a VAE to generate realistic and diverse salt body geometrie
 The proposed method gives special treatment to the boundary zone, using patch selection oriented by local angles to construct the interface. The importance of this specific step can be evaluated as follows:
 
 \begin{itemize}
-    \item \textbf{Experiment}: The angle-aware patch selection for the boundary zone would be disabled. The boundary would be synthesized using the same standard non-parametric texture synthesis applied to the salt and rock interiors, without considering the local orientation of the interface.
-    \item \textbf{Hypothesis}: We predict that this change would lead to less coherent and realistic boundaries. The fine-grained textural details that align with the curve of the salt dome would be lost, resulting in visible artifacts and a less convincing transition between the geological layers.
+    \item \textbf{Experiment}: We would disable the angle-aware patch selection for the boundary zone. We would synthesize the boundary using the same standard non-parametric texture synthesis applied to the salt and rock interiors, without considering the local orientation of the interface.
+    \item \textbf{Hypothesis}: We predict that this change would lead to less coherent and realistic boundaries. We would lose the fine-grained textural details that align with the curve of the salt dome, resulting in visible artifacts and a less convincing transition between the geological layers.
     \item \textbf{Evaluation}: A direct comparison of the boundary regions between this ablated version and the full model, both qualitatively by experts and quantitatively (if a suitable metric for boundary coherence is defined), would highlight the value of this specialized synthesis step.
 \end{itemize}
 
@@ -728,7 +728,7 @@ academic publications, he has several technology transfers to the private
 sector. Presently, he serves as an Associate Editor for two journals and has
 served on dozens of International Conference Committees. Prof. Scharcanski is
 a Senior Member of the IEEE, and served as an IEEE IMS Distinguished Lecturer
-in several occasions. His areas of expertise are Image Processing, Pattern
+on several occasions. His areas of expertise are Image Processing, Pattern
 Recognition, Imaging Measurements and Computational Methods in Finance.
 \end{IEEEbiography}
 
