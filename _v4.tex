@@ -211,7 +211,7 @@ where $\epsilon$ is an auxiliary random variable sampled from a standard normal 
 Finally, we train VAEs by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
 
 \subsubsection{Advantages of Variational Autoencoders}
-The primary reasons for using VAEs are a realistic generation of synthetic samples, an increase in dataset diversity, a regularization and control of variability, and an improvement in the generalization of the segmentation model. Considering specific reasons related to the nature of seismic data and the purpose of sample generation for data augmentation, VAEs enable the generation of synthetic images that preserve the structural characteristics of real seismic data, thereby enhancing the training and performance of segmentation models~\cite{Henriques2021,Wang2021,Anjom2024}.
+The primary reasons for using VAEs are a realistic generation of synthetic samples, an increase in dataset diversity, a regularization and control of variability, and an improvement in the generalization of the segmentation model. When we consider specific reasons related to the nature of seismic data and the purpose of sample generation for data augmentation, VAEs enable the generation of synthetic images that preserve the structural characteristics of real seismic data, thereby enhancing the training and performance of segmentation models~\cite{Henriques2021,Wang2021,Anjom2024}.
 
 \subsubsection{Comparison with Generative Adversarial Networks (GANs)}
 
@@ -370,7 +370,7 @@ We obtained the salt body dataset from the TGS Salt Identification Challenge, a 
 
 \subsection{Evaluation Metrics}
 
-Through qualitative analysis, the geoscience specialist evaluates the samples to identify the portions of salt bodies in the seismic images. To assess the quality of generation , the metrics precision, recall, and F1-score compare the synthetic seismic image with the ground truth, as detailed below:
+Through qualitative analysis, the geoscience specialist evaluates the samples to identify the portions of salt bodies in the seismic images. To assess the quality of generation, the metrics precision, recall, and F1-score compare the synthetic seismic image with the ground truth, as detailed below:
 
 The F1 score is a widely used measure for evaluating binary classification models. It is particularly useful when a balance between precision and recall is desired. It allows access to the quality of the classification predictions. While the correct classification rate is simple to understand, it can be misleading in imbalanced datasets. Therefore, measures such as precision, recall, and the F1 score tend to provide a clearer scenario~\cite{Powers2011}.
 
@@ -408,7 +408,7 @@ Regarding quantitative comparison, following the methodology of Ferreira et al.~
 	\label{fig:sketches}
 \end{figure}
 
-The MSE defines a pixel-to-pixel distance between two images. We calculate it as follows: subtract each synthetic pixel value from the real one, square each error (this eliminates negative signs and penalizes larger errors), and finally take the average of these squares:
+The MSE defines a pixel-to-pixel distance between two images. We calculate it as follows:  subtract each synthetic pixel value from the real one, square each error (this eliminates negative signs and penalizes larger errors), and finally take the average of these squares:
 
 \begin{equation}
 \label{eq:mse}
