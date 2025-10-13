@@ -144,67 +144,69 @@ A dataset of seismic images used to generate new salt masks is illustrated in Fi
 
 The generated masks are used as contexts for the texture synthesis process. Once the boundaries of a salt body are known, the interior region is expected to be salt. The VAE model used in this work is a simple feedforward network for the encoder and decoder. The encoder contains four stacked dense layers, and the decoder contains five stacked dense layers. During inference, the latent variables $z$ are sampled from the prior distribution $\pi(z)$, and then $z$ is decoded with the VAE's decoder to generate the salt mask with the inferred distribution.
 
-The main task of VAEs is to model the underlying probability distribution of a data set $\bm{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$. The model introduces a latent variable $\bm{z}$ obtained by maximizing the marginal likelihood:
+The main task of VAEs is to model the underlying probability distribution of a data set $\bm{x} = \{x^{(1)}, x^{(2)}, \ldots, x^{(N)}\}$, where each $x^{(i)}$ represents an individual sample. The model introduces a latent variable $\bm{z}$ (a lower-dimensional representation) and parameters $\theta$ to maximize the marginal likelihood $p_\theta(x)$, where $x$ is the observed data:
 
 \begin{equation}
 p_\theta(x) = \int p_\theta(x | z) p(z) \, dz
 \end{equation}
-The key VAE components are the following :
+where $p_\theta(x | z)$ is the likelihood of $x$ given $z$, and $p(z)$ is the prior distribution over the latent variables.
+
+The key VAE components are the following:
 
 \paragraph{Encoder (Recognition Model)}
-Maps an input $x$ to a latent variable $z$, and approximates the posterior distribution $q_\phi(z | x)$ assuming it is Gaussian:
+Maps an input $x$ to a latent variable $z$, and approximates the posterior distribution $q_\phi(z | x)$ (parameterized by $\phi$) assuming it is Gaussian:
 
 \begin{equation}
 q_\phi(z | x) = \mathcal{N}(z; \mu_\phi(x), \Sigma_\phi(x))
 \end{equation}
-where $\mu_\phi(x)$ and $\Sigma_\phi(x)$ are the posterior distribution $q_\phi(z | x)$ mean and the covariance, that are outputs of the encoder network.
+where $\mu_\phi(x)$ and $\Sigma_\phi(x)$ are the mean and covariance of the posterior distribution $q_\phi(z | x)$, which are outputs of the encoder network.
 
 \paragraph{Decoder (Generative Model)}
-Reconstructs the data from the latent variable $z$, modeling the likelihood $p_\theta(x | z)$ assuming it as Gaussian:
+Reconstructs the data from the latent variable $z$, modeling the likelihood $p_\theta(x | z)$ (parameterized by $\theta$) assuming it as Gaussian:
 
 \begin{equation}
 p_\theta(x | z) = \mathcal{N}(x; \mu_\theta(z), \Sigma_\theta(z))
 \end{equation}
 
-where $\mu_\theta(z)$ and $\Sigma_\theta(z)$ are the posterior distribution $q_\phi(z | x)$ mean and the covariance, that are outputs of the decoder network.
+where $\mu_\theta(z)$ and $\Sigma_\theta(z)$ are the mean and covariance of the likelihood distribution, which are outputs of the decoder network.
 
 \paragraph{Latent Variables Priors $p(z)$}
 Usually assumed as a standard normal distribution:
 
 \begin{equation}
-p(z) = \mathcal{N}(z; 0, I)
+p(z) = \mathcal{N}(z; 0, \mathrm{I})
 \end{equation}
 
-where $I$ is the identity matrix.
+where $\mathrm{I}$ is the identity matrix.
 
-\paragraph{Variational Inference} Since the exact posterior $p(z | x)$ is intractable, VAEs use variational inference to approximate it by optimizing the evidence lower bound (ELBO):
+\paragraph{Variational Inference} Since the exact posterior $p(z | x)$ is intractable, VAEs use variational inference to approximate it by optimizing the evidence lower bound (ELBO), where $\text{KL}(\cdot \parallel \cdot)$ denotes the Kullback-Leibler divergence:
 
 \begin{equation}
 \log p_\theta(x) \geq \mathbb{E}_{q_\phi(z | x)} \left[ \log p_\theta(x | z) \right] - \text{KL}(q_\phi(z | x) \parallel p(z)),
 \end{equation}
-and the ELBO has two important components: reconstruction loss, and (KL) divergence loss, which are detailed next. The reconstruction loss is the expected log-likelihood of the data, which encourages an accurate sample reconstruction:
+and the ELBO has two important components: reconstruction loss and Kullback-Leibler (KL) divergence loss, which are detailed next. The reconstruction loss is the expected log-likelihood of the data, which encourages accurate sample reconstruction:
 
 \begin{equation}
 \mathbb{E}_{q_\phi(z | x)} \left[ \log p_\theta(x | z) \right]
 \end{equation}
-and the KL divergence loss is the Kullback-Leibler divergence between the approximate posterior and the prior, which acts as a regularizer:
+and the KL divergence loss is the Kullback-Leibler divergence between the approximate posterior and the prior, which acts as a regularizer. For Gaussian distributions, this can be computed in closed form as:
 
 \begin{equation}
 \begin{aligned}
-\text{KL}(q_\phi(z | x) \parallel p(z)) 
+\text{KL}(q_\phi(z | x) \parallel p(z))
 =  \\
 \frac{1}{2} \sum_{i=1}^{d} \left( \mu_\phi(x)_i^2 + \Sigma_\phi(x)_{ii} - \log \Sigma_\phi(x)_{ii} - 1 \right)
 \end{aligned}
 \end{equation}
 
-where $d$ is the dimensionality of the latent space.
+where $d$ is the dimensionality of the latent space, and $\mu_\phi(x)_i$ and $\Sigma_\phi(x)_{ii}$ denote the $i$-th component of the mean vector and the $i$-th diagonal element of the covariance matrix, respectively.
 
-In order to enable the gradient-based optimization, the reparameterization trick is used so instead of sampling $z \sim q_\phi(z | x)$ directly, $z$ is expressed as:
+In order to enable gradient-based optimization, the reparameterization trick is used. Instead of sampling $z \sim q_\phi(z | x)$ directly, $z$ is expressed as:
 
 \begin{equation}
-z = \mu_\phi(x) + \Sigma_\phi(x)^{1/2} \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+z = \mu_\phi(x) + \Sigma_\phi(x)^{1/2} \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, \mathrm{I})
 \end{equation}
-allowing for gradients to be propagated through $\mu_\phi(x)$ and $\Sigma_\phi(x)$ by treating $\epsilon$ as an auxiliary variable.
+where $\epsilon$ is an auxiliary random variable sampled from a standard normal distribution, and $\odot$ denotes element-wise multiplication. This formulation allows gradients to be propagated through $\mu_\phi(x)$ and $\Sigma_\phi(x)$.
 
 Finally, VAEs are trained by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
 
@@ -254,21 +256,21 @@ The typical texture synthesis algorithms use an image database and replicate the
 
 The proposed seismic texture synthesis method requires the following components:
 
-\textbf{1. Neighborhood Definition:} For each pixel $p$ in the image to be synthesized, a region around $p$ already filled with known values is defined (namely, a neighborhood $N(p)$;
+\textbf{1. Neighborhood Definition:} For each pixel $p$ in the image to be synthesized, a region around $p$ already filled with known values is defined (namely, a neighborhood $N(p)$);
 
-\textbf{2. Similarity Criterion:} To find a corresponding patches in the example image, the similarity between $N(p)$ and the neighborhoods $N(q)$ are computed for all pixels $q$ in the example image. A similarity measure is defined as the Euclidean distance between the pixels of the neighborhoods:
+\textbf{2. Similarity Criterion:} To find corresponding patches in the example image, the similarity between $N(p)$ and the neighborhoods $N(q)$ are computed for all pixels $q$ in the example image. A similarity measure is defined as the Euclidean distance $D$ between the pixels of the neighborhoods:
 
 \begin{equation}
 D(N(p), N(q)) = \sum_{i \in N} \left( I_p(i) - I_q(i) \right)^2,
 \end{equation}
-where $I_p(i)$ and $I_q(i)$ are the pixel values at the image locations $i$ in the neighborhoods of $p$ and $q$, respectively;
+where $I_p(i)$ and $I_q(i)$ are the pixel intensity values at location $i$ in the neighborhoods of pixels $p$ and $q$, respectively, and $N$ denotes the set of pixel locations in the neighborhood;
 
-\textbf{3. Random Sampling:} A pixel $q$ is chosen randomly from the example image with probability proportional to its similarity (or inverse of $D(N(p), N(q))$) to $p$. In other words, pixels with smaller $D(N(p), N(q))$ are more likely to be chosen. The probability of choosing a pixel $q$ can be modeled as:
+\textbf{3. Random Sampling:} A pixel $q$ is chosen randomly from the example image with probability proportional to its similarity (or inverse of $D(N(p), N(q))$) to $p$. In other words, pixels with smaller distance $D(N(p), N(q))$ are more likely to be chosen. The probability $P(q)$ of selecting pixel $q$ can be modeled as:
 
 \begin{equation}
 P(q) = \frac{\exp(-D(N(p), N(q)) / \sigma^2)}{\sum_{q'} \exp(-D(N(p), N(q')) / \sigma^2)}
 \end{equation}
-where $\sigma$ controls the influence of distances on the pixel $q$ selection probability;
+where $\sigma$ is a temperature parameter that controls the influence of distances on the pixel selection probability, and $q'$ denotes all candidate pixels in the example image;
 
 \textbf{4. Image Filling:} The process begins with a small initial patch in the new image and gradually expands it, pixel by pixel, using the steps described above to fill the entire image. The choice of the next pixel to be synthesized follows a raster or spiral filling path. The method produces seismic textures that are visually similar to the original input texture. 
 
@@ -366,7 +368,7 @@ The salt body dataset was obtained from the TGS Salt Identification Challenge, a
 
 
 
-\subsubsection{Evaluation Metrics}
+\subsection{Evaluation Metrics}
 
 Through qualitative analysis, the geoscience specialist evaluates the samples to identify the portions of salt bodies in the seismic images. To assess the quality of generation , the metrics precision, recall, and F1-score compare the synthetic seismic image with the ground truth, as detailed below:
 
@@ -406,18 +408,20 @@ Regarding quantitative comparison, following the methodology of Ferreira et al.~
 	\label{fig:sketches}
 \end{figure}
 
-The Mean Squared Error (MSE) defines a pixel-to-pixel distance between two images. We calculate it as follows: subtract each synthetic pixel value from the real one. Square each error: this eliminates negative signs and penalizes larger errors. Finally, take the average of these squares as seen in~\eqref{eq:mse}.
+The MSE defines a pixel-to-pixel distance between two images. We calculate it as follows: subtract each synthetic pixel value from the real one, square each error (this eliminates negative signs and penalizes larger errors), and finally take the average of these squares:
 
 \begin{equation}
 \label{eq:mse}
 \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
 \end{equation}
 
-The SSIM is a metric that measures the perceptual similarity between two images by incorporating some texture information, such as variances and covariances. It is widely used in computer vision and image processing to assess the quality of image reconstructions, compressions, or transmissions. It evaluates luminance (brightness), contrast, and structural attributes as local patterns and shapes. Since SSIM values are defined in the range [-1, 1], the common transformation~\eqref{eq:mse2} represents it as a distance to facilitate comparison, and from now on, it is called DSSIM.
+where $n$ is the total number of pixels, $y_i$ is the $i$-th pixel value in the original image, and $\hat{y}_i$ is the corresponding pixel value in the synthetic image.
+
+The SSIM is a metric that measures the perceptual similarity between two images $x$ and $y$ by incorporating texture information, such as variances and covariances. It is widely used in computer vision and image processing to assess the quality of image reconstructions, compressions, or transmissions. It evaluates luminance (brightness), contrast, and structural attributes as local patterns and shapes. Since SSIM values are defined in the range $[-1, 1]$, the common transformation (2) represents it as a distance to facilitate comparison, and from now on, it is called DSSIM:
 
 \begin{equation}
 \label{eq:mse2}
-\text {DSSIM(x, y)= (1 - SSIM(x, y))/2}
+\text{DSSIM}(x, y) = \frac{1 - \text{SSIM}(x, y)}{2}
 \end{equation}
 
 The interpretation of DSSIM values as a distance between 0 and 1 is as follows: 
@@ -480,7 +484,7 @@ Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.8
 \end{tabular*}
 \end{table*}
 
-\subsection{Qualitative Evaluation by Experts}
+\subsection{Qualitative Evaluation}
 
 The qualitative evaluation of the samples was conducted through a systematic and rigorous process with the support of geoscientists, experts in the field. The goal was to verify the synthesized samples' quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic interpretation participated in this evaluation. The evaluation was conducted by reviewing seismic image and selecting the regions by painting the salt bodies using a graphics computer program. The area painted by the expert is then compared with the jig established for the corresponding saline body of the image. First, the specialist's accuracy was assessed by identifying salt bodies on twenty original images from the dataset. Then, the selection of the areas is performed on a set of thirty random synthetic images. The specialists repeat the process with the same images. In addition, experts are warned that some images are added for control without any saline body.
 
@@ -534,9 +538,9 @@ The referenced work assessed five sketch types (A--E) and found that types D and
 
 The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. While the sketch-based method achieved a median MSE of 4712.1 with their best-performing sketch type, our context-oriented approach yielded a median MSE of 542.87. This result is approximately 8.7 times lower, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
 
-\subsubsection{Structural Similarity Dissimilarity (DSSIM)}
+\subsubsection{Structural Similarity Distance (DSSIM)}
 
-The DSSIM metric, derived from SSIM as shown in Equation~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity metric. In this context, values closer to 0 indicate higher structural similarity between the images.
+The DSSIM metric, derived from SSIM as shown in (2), transforms a structural similarity measure into a dissimilarity metric. In this context, values closer to 0 indicate higher structural similarity between the images.
 
 In the comparative study, the best median DSSIM achieved was 0.39 (with Sketch Type D). Our method surpassed this, with Group 2 achieving a median DSSIM of 0.2424. This result is significantly better, as a DSSIM value above 0.25 can be interpreted as "low perceptual similarity." While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
 
