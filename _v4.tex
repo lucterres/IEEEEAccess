@@ -664,21 +664,13 @@ The proposed methodology enables several important applications in the geoscienc
 
 While this work demonstrates promising results on the TGS Salt Identification Challenge dataset, several avenues for future research merit exploration:
 
-\begin{enumerate}
-    \item \textbf{Extended Geological Structures}: Adapting the methodology to synthesize other complex geological features such as faults, channels, and stratigraphic layers would broaden its applicability across different exploration contexts.
-    
-    \item \textbf{Multi-scale Synthesis}: Developing hierarchical synthesis approaches that can generate seismic volumes at multiple resolutions could better capture the multi-scale nature of geological structures and improve computational efficiency.
-    
-    \item \textbf{Domain Adaptation}: Investigating techniques to adapt the synthesis process across different seismic acquisition parameters, geological basins, and imaging conditions would enhance the method's generalizability and practical utility.
-    
-    \item \textbf{Conditional Generation}: Incorporating additional conditioning variables such as depth, geological age, or depositional environment could provide finer control over the synthesis process and generate more geologically consistent samples.
-    
-    \item \textbf{Downstream Task Evaluation}: Conducting systematic studies on how synthetic data augmentation affects the performance of various seismic interpretation tasks, including not only segmentation but also classification, detection, and attribute prediction.
-    
-    \item \textbf{Real-time Synthesis}: Optimizing the computational efficiency of the pipeline to enable real-time or near-real-time synthesis during active learning workflows, where models request specific types of synthetic samples to address their current weaknesses.
-    
-    \item \textbf{Physics-informed Constraints}: Integrating seismic wave propagation physics and rock property constraints into the generation process could further enhance the geological realism and interpretability of synthetic samples.
-\end{enumerate}
+Adapting the methodology to synthesize other complex geological features such as faults, channels, and stratigraphic layers would broaden its applicability across different exploration contexts through \textbf{Extended Geological Structures}. Building upon this foundation, developing hierarchical \textbf{Multi-scale Synthesis} approaches that can generate seismic volumes at multiple resolutions could better capture the multi-scale nature of geological structures and improve computational efficiency.
+
+To enhance the method's generalizability and practical utility, investigating \textbf{Domain Adaptation} techniques to adapt the synthesis process across different seismic acquisition parameters, geological basins, and imaging conditions represents a crucial direction. Furthermore, incorporating additional conditioning variables such as depth, geological age, or depositional environment through \textbf{Conditional Generation} could provide finer control over the synthesis process and generate more geologically consistent samples.
+
+From a practical deployment perspective, conducting systematic studies on how synthetic data augmentation affects the performance of various seismic interpretation tasks through \textbf{Downstream Task Evaluation}—including not only segmentation but also classification, detection, and attribute prediction—would validate the method's broader impact. Additionally, optimizing the computational efficiency of the pipeline to enable \textbf{Real-time Synthesis} during active learning workflows, where models request specific types of synthetic samples to address their current weaknesses, would significantly enhance its practical value.
+
+Looking forward, integrating seismic wave propagation physics and rock property constraints into the generation process through \textbf{Physics-informed Constraints} could further enhance the geological realism and interpretability of synthetic samples, representing a promising direction that bridges data-driven and physics-based approaches.
 
 In conclusion, this work establishes a robust foundation for context-oriented seismic image synthesis, demonstrating that carefully designed generative approaches can produce training data of sufficient quality to support advanced machine learning applications in geoscience. The combination of automated mask generation, zone-specific texture synthesis, and rigorous evaluation provides a template for developing similar methodologies in other domains where labeled data scarcity constrains the application of deep learning techniques.
 
