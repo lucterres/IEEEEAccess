@@ -646,19 +646,9 @@ The significance of this work extends beyond technical metrics. In the petroleum
 
 \subsection{Practical Applications}
 
-The proposed methodology enables several important applications in the geoscience domain:
+The proposed methodology enables several important applications in the geoscience domain. The synthetic samples can augment limited real datasets to improve the robustness and generalization of deep learning models for salt body segmentation, such as U-Net and ResNet architectures, particularly where obtaining additional labeled data is impractical. This synthetic data can also serve as a pre-training corpus for transfer learning, allowing models trained on one geological basin to adapt more effectively to different regions with limited labeled samples.
 
-\begin{enumerate}
-    \item \textbf{Deep Learning Model Training}: The synthetic samples can augment limited real datasets, improving the robustness and generalization of salt body segmentation models such as U-Net and ResNet architectures, particularly in scenarios where obtaining additional labeled data is impractical.
-    
-    \item \textbf{Transfer Learning Enhancement}: Synthetic data can serve as a pre-training corpus for transfer learning applications, allowing models trained on one geological basin to adapt more effectively to different regions with limited labeled samples.
-    
-    \item \textbf{Rare Geometry Representation}: The VAE's ability to interpolate in latent space enables generation of salt geometries that are underrepresented in training datasets, helping to address class imbalance and improve model performance on edge cases.
-    
-    \item \textbf{Educational Tools}: High-quality synthetic seismic images can support training programs for geoscience professionals, providing diverse examples for teaching seismic interpretation and salt body identification skills.
-    
-    \item \textbf{Uncertainty Quantification}: By generating multiple plausible interpretations of ambiguous seismic regions, the method can support uncertainty analysis in exploration decision-making processes.
-\end{enumerate}
+Furthermore, the VAE's ability to interpolate in latent space enables the generation of salt geometries that are underrepresented in training datasets, helping to address class imbalance and improve model performance on edge cases. Beyond model training, these high-quality synthetic seismic images can support educational programs for geoscience professionals, providing diverse examples for teaching seismic interpretation and salt body identification skills. Finally, by generating multiple plausible interpretations of ambiguous seismic regions, the method can support uncertainty analysis in exploration decision-making processes.
 
 \subsection{Future Research Directions}
 
