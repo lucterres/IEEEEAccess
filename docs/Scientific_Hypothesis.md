@@ -1,259 +1,259 @@
-# Hipótese Científica do Trabalho
+# Scientific Hypothesis
 
 ## Context-Oriented Synthesis of Salt Domes in Labeled Seismic Images
 
-### Autores
+### Authors
 - Luciano D. Terres (UFRGS / Petrobras)
 - Jacob Scharcanski (UFRGS)
 
 ---
 
-## 1. Hipótese Principal
+## 1. Main Hypothesis
 
-**A combinação de Variational Autoencoders (VAEs) para geração de máscaras geométricas com síntese de textura orientada por contexto pode gerar imagens sísmicas sintéticas de domos de sal que sejam virtualmente indistinguíveis de imagens sísmicas reais por especialistas em geociências.**
-
----
-
-## 2. Problema Científico
-
-### Contexto
-- Modelos de deep learning para segmentação de corpos salinos requerem grandes volumes de dados anotados
-- Anotação de imagens sísmicas é cara e requer expertise especializado
-- Datasets limitados restringem a generalização dos modelos
-- Exploração petrolífera offshore depende de identificação precisa de estruturas salinas
-
-### Desafio Técnico
-Como gerar dados sintéticos de alta qualidade que preservem:
-1. **Características estruturais** - geometrias geologicamente plausíveis
-2. **Propriedades texturais** - padrões sísmicos realistas
-3. **Interfaces complexas** - fronteiras nítidas entre sal e sedimento
+**The combination of Variational Autoencoders (VAEs) for generating geometric masks with context-oriented texture synthesis can generate synthetic seismic images of salt domes that are virtually indistinguishable from real seismic images by geoscience experts.**
 
 ---
 
-## 3. Componentes da Hipótese
+## 2. Scientific Problem
 
-### 3.1 Geração de Geometrias (VAE)
+### Context
+- Deep learning models for salt body segmentation require large volumes of annotated data
+- Seismic image annotation is expensive and requires specialized expertise
+- Limited datasets restrict model generalization
+- Offshore oil exploration depends on precise identification of salt structures
 
-**Sub-hipótese:** Um VAE pode aprender a distribuição de probabilidade de geometrias de domos salinos e gerar novas máscaras estruturais realistas.
-
-**Fundamento Teórico:**
-- VAEs modelam distribuições de dados no espaço latente
-- Interpolação no espaço latente gera geometrias intermediárias plausíveis
-- Regularização KL garante suavidade e continuidade das formas geradas
-
-**Vantagens sobre alternativas:**
-- **vs. GANs**: Maior estabilidade de treinamento, controle de variabilidade
-- **vs. Modelos de Difusão**: Menor custo computacional, eficiência em datasets pequenos
-- **vs. Transformações Geométricas**: Maior diversidade e realismo geológico
-
-### 3.2 Síntese de Textura Orientada por Contexto
-
-**Sub-hipótese:** Dividir o processo de síntese em três zonas distintas (sal, fronteira, sedimento) produz imagens mais realistas que abordagens holísticas.
-
-**Fundamento Teórico:**
-- Imagens sísmicas são **não-estacionárias** (texturas variam espacialmente)
-- Zonas de fronteira têm características acústicas únicas
-- Síntese não-paramétrica preserva propriedades estatísticas locais
-
-**Componentes das Zonas:**
-
-#### Zona de Fronteira (Edge Zone)
-- Alto contraste sísmico
-- Padrões de bandas claras e escuras paralelas
-- Seleção de patches orientada por ângulo local
-- Detecção de bordas + dilatação morfológica
-
-#### Zona de Sal
-- Textura homogênea característica
-- Propriedades acústicas específicas do sal
-- Síntese baseada em patches de referência de sal
-
-#### Zona de Sedimento Convencional
-- Texturas estratigráficas variadas
-- Síntese baseada em patches de rocha sedimentar
-
-### 3.3 Qualidade Comparável a Dados Reais
-
-**Sub-hipótese:** As imagens sintéticas serão de qualidade suficiente para:
-1. Enganar especialistas humanos (indistinguibilidade perceptual)
-2. Servir como dados de augmentação para treinamento de modelos
-3. Superar métodos state-of-the-art em métricas quantitativas
+### Technical Challenge
+How to generate high-quality synthetic data that preserves:
+1. **Structural characteristics** - geologically plausible geometries
+2. **Textural properties** - realistic seismic patterns
+3. **Complex interfaces** - sharp boundaries between salt and sediment
 
 ---
 
-## 4. Metodologia de Validação
+## 3. Hypothesis Components
 
-### 4.1 Avaliação Qualitativa (Expert Assessment)
+### 3.1 Geometry Generation (VAE)
 
-**Protocolo:**
-- 3 geocientistas especializados em interpretação sísmica
-- Tarefa: identificar regiões de sal em imagens reais e sintéticas
-- Comparação: máscaras geradas por especialistas vs. ground truth
+**Sub-hypothesis:** A VAE can learn the probability distribution of salt dome geometries and generate new realistic structural masks.
 
-**Métricas:**
-- **Precision**: Proporção de pixels corretamente identificados como sal
-- **Recall**: Proporção de pixels de sal efetivamente detectados
-- **F1-Score**: Média harmônica entre precisão e recall
+**Theoretical Foundation:**
+- VAEs model data distributions in latent space
+- Interpolation in latent space generates plausible intermediate geometries
+- KL regularization ensures smoothness and continuity of generated shapes
 
-**Critério de Sucesso:**
-- Diferença < 5% entre F1-scores de imagens reais e sintéticas
+**Advantages over alternatives:**
+- **vs. GANs**: Greater training stability, variability control
+- **vs. Diffusion Models**: Lower computational cost, efficiency on small datasets
+- **vs. Geometric Transformations**: Greater diversity and geological realism
 
-### 4.2 Avaliação Quantitativa (Texture & Structure Metrics)
+### 3.2 Context-Oriented Texture Synthesis
 
-**Comparação com método baseline:** Ferreira et al. (2020) - GAN baseado em sketches
+**Sub-hypothesis:** Dividing the synthesis process into three distinct zones (salt, boundary, sediment) produces more realistic images than holistic approaches.
+
+**Theoretical Foundation:**
+- Seismic images are **non-stationary** (textures vary spatially)
+- Boundary zones have unique acoustic characteristics
+- Non-parametric synthesis preserves local statistical properties
+
+**Zone Components:**
+
+#### Edge Zone (Boundary Zone)
+- High seismic contrast
+- Patterns of parallel light and dark bands
+- Patch selection oriented by local angle
+- Edge detection + morphological dilation
+
+#### Salt Zone
+- Characteristic homogeneous texture
+- Specific acoustic properties of salt
+- Synthesis based on salt reference patches
+
+#### Conventional Sediment Zone
+- Varied stratigraphic textures
+- Synthesis based on sedimentary rock patches
+
+### 3.3 Quality Comparable to Real Data
+
+**Sub-hypothesis:** The synthetic images will be of sufficient quality to:
+1. Deceive human experts (perceptual indistinguishability)
+2. Serve as data augmentation for model training
+3. Surpass state-of-the-art methods in quantitative metrics
+
+---
+
+## 4. Validation Methodology
+
+### 4.1 Qualitative Evaluation (Expert Assessment)
+
+**Protocol:**
+- 3 geoscientists specialized in seismic interpretation
+- Task: identify salt regions in real and synthetic images
+- Comparison: expert-generated masks vs. ground truth
+
+**Metrics:**
+- **Precision**: Proportion of correctly identified salt pixels
+- **Recall**: Proportion of salt pixels effectively detected
+- **F1-Score**: Harmonic mean between precision and recall
+
+**Success Criterion:**
+- Difference < 5% between F1-scores of real and synthetic images
+
+### 4.2 Quantitative Evaluation (Texture & Structure Metrics)
+
+**Comparison with baseline method:** Ferreira et al. (2020) - Sketch-based GAN
 
 #### Mean Squared Error (MSE)
 ```
 MSE = (1/n) Σ(y_i - ŷ_i)²
 ```
-- Mede distância pixel-a-pixel
-- Valores menores = maior similaridade
+- Measures pixel-by-pixel distance
+- Lower values = greater similarity
 
 #### Structural Similarity (DSSIM)
 ```
 DSSIM(x,y) = [1 - SSIM(x,y)] / 2
 ```
-- Avalia luminância, contraste e estrutura
-- Valores próximos a 0 = alta similaridade
-- > 0.25 = baixa similaridade perceptual
+- Evaluates luminance, contrast, and structure
+- Values close to 0 = high similarity
+- > 0.25 = low perceptual similarity
 
 #### Local Binary Pattern Distance (LBP)
-- Histograma de padrões binários locais
-- Distância Euclidiana entre histogramas
-- Mede similaridade textural robusta
+- Histogram of local binary patterns
+- Euclidean distance between histograms
+- Measures robust textural similarity
 
 ---
 
-## 5. Resultados Obtidos
+## 5. Results Obtained
 
-### 5.1 Validação Qualitativa
+### 5.1 Qualitative Validation
 
-| Métrica | Imagens Reais | Imagens Sintéticas | Diferença |
+| Metric | Real Images | Synthetic Images | Difference |
 |---------|---------------|-------------------|-----------|
 | F1-Score | 0.88159 | 0.86901 | **< 2%** ✓ |
 | Precision | 0.88761 | 0.87539 | 1.2% |
 | Recall | 0.87795 | 0.86536 | 1.3% |
 
-**Conclusão:** Imagens sintéticas são virtualmente indistinguíveis de reais para especialistas.
+**Conclusion:** Synthetic images are virtually indistinguishable from real ones for experts.
 
-### 5.2 Validação Quantitativa
+### 5.2 Quantitative Validation
 
-Comparação com método GAN baseline (Ferreira et al., 2020):
+Comparison with GAN baseline method (Ferreira et al., 2020):
 
-| Métrica | Baseline (GAN) | Método Proposto | Melhoria |
+| Metric | Baseline (GAN) | Proposed Method | Improvement |
 |---------|----------------|-----------------|----------|
-| **MSE** | 4712.1 | **542.87** | **8.7x melhor** ✓ |
-| **DSSIM** | 0.39 | **0.2424** | 37.8% melhor ✓ |
-| **LBP Distance** | 0.17 | **0.0800** | **> 50% melhor** ✓ |
+| **MSE** | 4712.1 | **542.87** | **8.7x better** ✓ |
+| **DSSIM** | 0.39 | **0.2424** | 37.8% better ✓ |
+| **LBP Distance** | 0.17 | **0.0800** | **> 50% better** ✓ |
 
-**Conclusão:** Superioridade quantitativa em todas as métricas.
-
----
-
-## 6. Premissas Validadas
-
-### ✓ VAEs são superiores para esta aplicação
-- **Controle de variabilidade**: Distribuições regulares no espaço latente
-- **Estabilidade de treinamento**: Convergência mais confiável que GANs
-- **Eficiência**: Geração em passagem única (vs. múltiplas iterações de difusão)
-
-### ✓ Contexto geológico é crucial
-- Abordagem orientada por zonas supera síntese holística
-- Fronteiras entre sal e sedimento requerem tratamento especializado
-- Orientação por ângulo local melhora realismo das interfaces
-
-### ✓ Síntese não-paramétrica é eficaz
-- Preserva propriedades estatísticas locais
-- Evita modelagem explícita de texturas complexas
-- Amostragem direta de patches reais garante realismo
+**Conclusion:** Quantitative superiority across all metrics.
 
 ---
 
-## 7. Contribuições Científicas
+## 6. Validated Premises
 
-### 7.1 Metodológica
-1. **Abordagem híbrida inovadora**: VAE + síntese de textura não-paramétrica
-2. **Framework de avaliação dual**: Qualitativo (experts) + Quantitativo (métricas)
-3. **Síntese orientada por zonas geológicas**: Tratamento contextualizado
+### ✓ VAEs are superior for this application
+- **Variability control**: Regular distributions in latent space
+- **Training stability**: More reliable convergence than GANs
+- **Efficiency**: Single-pass generation (vs. multiple diffusion iterations)
 
-### 7.2 Prática
-1. **Augmentação de dados** para modelos de segmentação (U-Net, ResNet)
-2. **Transfer learning**: Pré-treinamento para diferentes bacias geológicas
-3. **Análise de incerteza**: Múltiplas interpretações plausíveis
-4. **Educação**: Exemplos diversos para treinamento de geocientistas
+### ✓ Geological context is crucial
+- Zone-oriented approach surpasses holistic synthesis
+- Salt-sediment boundaries require specialized treatment
+- Local angle orientation improves interface realism
 
-### 7.3 Teórica
-- Demonstra superioridade de abordagens híbridas deep learning + métodos clássicos
-- Valida importância de conhecimento de domínio em design de geradores
-- Estabelece novo paradigma para síntese de imagens geofísicas
+### ✓ Non-parametric synthesis is effective
+- Preserves local statistical properties
+- Avoids explicit modeling of complex textures
+- Direct sampling from real patches ensures realism
 
 ---
 
-## 8. Limitações e Trabalhos Futuros
+## 7. Scientific Contributions
 
-### Limitações Atuais
-- Dataset específico: TGS Salt Identification Challenge (101x101 pixels)
-- Foco em domos de sal (outras estruturas geológicas não abordadas)
-- Síntese 2D (não considera volumes 3D)
+### 7.1 Methodological
+1. **Innovative hybrid approach**: VAE + non-parametric texture synthesis
+2. **Dual evaluation framework**: Qualitative (experts) + Quantitative (metrics)
+3. **Geological zone-oriented synthesis**: Contextualized treatment
 
-### Direções Futuras
+### 7.2 Practical
+1. **Data augmentation** for segmentation models (U-Net, ResNet)
+2. **Transfer learning**: Pre-training for different geological basins
+3. **Uncertainty analysis**: Multiple plausible interpretations
+4. **Education**: Diverse examples for training geoscientists
 
-#### Estruturas Geológicas Estendidas
-- Falhas geológicas
-- Canais sedimentares
-- Camadas estratigráficas
+### 7.3 Theoretical
+- Demonstrates superiority of hybrid deep learning + classical methods approaches
+- Validates importance of domain knowledge in generator design
+- Establishes new paradigm for geophysical image synthesis
 
-#### Multi-escala
-- Síntese hierárquica em múltiplas resoluções
-- Geração de volumes sísmicos 3D
+---
 
-#### Adaptação de Domínio
-- Transferência entre diferentes parâmetros de aquisição sísmica
-- Generalização para diferentes bacias geológicas
+## 8. Limitations and Future Work
 
-#### Restrições Físicas
-- Integração de física de propagação de ondas sísmicas
-- Incorporação de propriedades petrofísicas
+### Current Limitations
+- Specific dataset: TGS Salt Identification Challenge (101x101 pixels)
+- Focus on salt domes (other geological structures not addressed)
+- 2D synthesis (does not consider 3D volumes)
+
+### Future Directions
+
+#### Extended Geological Structures
+- Geological faults
+- Sedimentary channels
+- Stratigraphic layers
+
+#### Multi-scale
+- Hierarchical synthesis at multiple resolutions
+- 3D seismic volume generation
+
+#### Domain Adaptation
+- Transfer between different seismic acquisition parameters
+- Generalization to different geological basins
+
+#### Physical Constraints
+- Integration of seismic wave propagation physics
+- Incorporation of petrophysical properties
 
 #### Active Learning
-- Síntese em tempo real durante treinamento
-- Geração dirigida para casos difíceis
+- Real-time synthesis during training
+- Directed generation for difficult cases
 
 ---
 
-## 9. Impacto Científico
+## 9. Scientific Impact
 
-### No Campo da Geociência
-- Redução de custos de anotação em 80-90%
-- Aceleração de desenvolvimento de modelos de interpretação
-- Democratização de acesso a dados de treinamento de qualidade
+### In the Geoscience Field
+- Reduction of annotation costs by 80-90%
+- Acceleration of interpretation model development
+- Democratization of access to quality training data
 
-### No Campo de Machine Learning
-- Novo benchmark para métodos de síntese de imagens
-- Validação de abordagens híbridas VAE + métodos clássicos
-- Framework de avaliação reproducível
+### In the Machine Learning Field
+- New benchmark for image synthesis methods
+- Validation of hybrid VAE + classical methods approaches
+- Reproducible evaluation framework
 
-### Na Indústria Petrolífera
-- Melhoria na detecção de reservatórios
-- Redução de riscos exploratórios
-- Otimização de investimentos em perfuração
-
----
-
-## 10. Conclusão
-
-A hipótese central foi **validada com sucesso**:
-
-> A combinação de VAEs para geração estrutural com síntese de textura orientada por contexto produz imagens sísmicas sintéticas que:
-> 1. ✓ São indistinguíveis de imagens reais por especialistas (diferença < 2%)
-> 2. ✓ Superam métodos state-of-the-art em todas as métricas quantitativas
-> 3. ✓ Preservam características geológicas e texturais essenciais
-
-Este trabalho estabelece uma nova linha de base para síntese de dados geofísicos e demonstra que conhecimento de domínio integrado a técnicas modernas de deep learning supera abordagens puramente baseadas em redes neurais.
+### In the Oil Industry
+- Improvement in reservoir detection
+- Reduction of exploratory risks
+- Optimization of drilling investments
 
 ---
 
-## Referências Principais
+## 10. Conclusion
+
+The central hypothesis was **successfully validated**:
+
+> The combination of VAEs for structural generation with context-oriented texture synthesis produces synthetic seismic images that:
+> 1. ✓ Are indistinguishable from real images by experts (difference < 2%)
+> 2. ✓ Surpass state-of-the-art methods in all quantitative metrics
+> 3. ✓ Preserve essential geological and textural characteristics
+
+This work establishes a new baseline for geophysical data synthesis and demonstrates that domain knowledge integrated with modern deep learning techniques surpasses purely neural network-based approaches.
+
+---
+
+## Main References
 
 1. Kingma & Welling (2014) - Auto-Encoding Variational Bayes
 2. Efros & Leung (1999) - Texture Synthesis by Nonparametric Sampling
@@ -263,6 +263,7 @@ Este trabalho estabelece uma nova linha de base para síntese de dados geofísic
 
 ---
 
-**Documento gerado em:** 17 de outubro de 2025  
-**Baseado em:** _v4.tex - IEEE Access Manuscript  
+**Document generated on:** October 17, 2025  
+**Based on:** _v4.tex - IEEE Access Manuscript  
 **Status:** Submitted for Publication
+
