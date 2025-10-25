@@ -28,6 +28,10 @@ How to generate high-quality synthetic data that preserves:
 2. **Textural properties** - realistic seismic patterns
 3. **Complex interfaces** - sharp boundaries between salt and sediment
 
+The technical challenge lies in generating high-quality synthetic data that simultaneously preserves three essential characteristics. First, the synthetic images must maintain structural characteristics by exhibiting geologically plausible salt dome geometries that reflect realistic subsurface formations. Second, they must replicate textural properties through authentic seismic patterns that capture the acoustic responses of different rock types. Third, and perhaps most critically, they must accurately represent complex interfaces by generating sharp, well-defined boundaries between salt bodies and surrounding sediments, as these boundaries are key features for seismic interpretation. The proposed methodology addresses these challenges through a systematic approach that separates the generation of geometric structure from textural synthesis while maintaining geological consistency throughout the process.
+
+
+
 ---
 
 ## 3. Hypothesis Components
