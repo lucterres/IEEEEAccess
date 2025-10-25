@@ -490,14 +490,11 @@ Regarding LBP (Local Binary Pattern) Distance, a measure often used for texture 
 
 Based on the three measures, Group 3 consistently demonstrates the best overall performance with the lowest median and lowest variability (IQR and Range) for both MSE (error magnitude) and LBP-DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in DSSIM, which indicates better structural similarity. The box plot in Fig.~\ref{fig:boxplots} confirms the group's performance in the DSSIM measure.
 
-\subsection{Comparison with State-of-the-Art Methods}
+\subsection{Comparison with State-of-the-Art Method}
 
 To provide a quantitative comparison, we evaluated our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}, referencing our results in Table~\ref{tab:metricsSummary} and theirs in Table I from the original study. Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance.
 
-\subsubsection{Overview of the Sketch-Based GAN Method}
-
 The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a Generative Adversarial Network (GAN) architecture to synthesize seismic images from user-provided sketches. Their approach consists of two main stages:
-
 \paragraph{Sketch Generation} The method begins with hand-drawn or computer-generated sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
 \begin{itemize}
     \item \textbf{Type A}: Basic contour sketches showing only the main boundaries
@@ -506,7 +503,6 @@ The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} emplo
     \item \textbf{Type D}: Detailed sketches with textural hints
     \item \textbf{Type E}: Comprehensive sketches combining structural and textural information
 \end{itemize}
-
 \paragraph{GAN-Based Image Synthesis} The core of their method employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The generator network takes the sketch as input and learns to produce realistic seismic images that match the sketch's structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
 \begin{enumerate}
     \item Training the generator to map sketches to realistic seismic images
@@ -519,24 +515,21 @@ The GAN-based approach offers flexibility in controlling the output through user
 \subsubsection{Comparative Analysis}
 
 The referenced work assessed five sketch types (A--E) and found that types D and E produced the best results. In our work, we analyzed four distinct groups, with Group 3 achieving the most consistent and superior performance. The subsequent subsections present a detailed comparison based on the median values, which offer a robust measure of each method's typical performance.
-
-\subsubsection{Mean Squared Error (MSE)}
+\paragraph{Mean Squared Error (MSE)}
 
 The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. While the sketch-based method achieved a median MSE of 4712.1 with their best-performing sketch type, our context-oriented approach yielded a median MSE of 542.87. This result is approximately 8.7 times lower, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
-
-\subsubsection{Structural Similarity Distance (DSSIM)}
+\paragraph{Structural Similarity Distance (DSSIM)}
 
 The DSSIM measure, derived from SSIM as shown in (2), transforms a structural similarity measure into a dissimilarity measure. In this context, values closer to 0 indicate higher structural similarity between the images.
 
 In the comparative study, the best median DSSIM achieved was 0.39 (with Sketch Type D). Our method surpassed this, with Group 2 achieving a median DSSIM of 0.2424. This result is significantly better, as a DSSIM value above 0.25 can be interpreted as "low perceptual similarity." While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
-
-\subsubsection{LBP Distance}
+\paragraph{LBP Distance}
 
 LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
 
 The baseline work reported a lowest median LBP Distance of 0.17 (Sketch Type D). In contrast, our proposed method's best result was a median of 0.0800 (Group 3). This value is less than half of the baseline, indicating that our method generated textures with substantially higher fidelity to the original images. Group 3 also demonstrated the most consistent texture feature quality.
 
-\subsection{Discussion}
+\paragraph{Discussion}
 
 Overall, our context-oriented synthesis approach demonstrates superior quantitative performance across all three measures when compared to the sketch-based method. The improvement is most pronounced in the MSE and LBP distance measures, where our method achieves significantly lower median values, indicating notable gains in pixel-level accuracy and texture fidelity.
 
@@ -621,7 +614,7 @@ The proposed method gives special treatment to the boundary zone, using patch se
 \end{itemize}
 
 These proposed studies would systematically validate our design choices and provide a deeper understanding of why the proposed context-oriented approach is effective for synthesizing high-fidelity seismic images.
-\section{Conclusions and Future Work}
+\section{Concluding Remarks and Future Directions}
 \label{sec:conclusion}
 
 \PARstart{T}{his} work introduced a novel context-oriented data augmentation methodology for synthesizing labeled seismic images containing salt dome structures, addressing a critical challenge in offshore petroleum exploration where annotated training data is scarce and expensive to obtain. By integrating Variational Autoencoders for geometric mask generation with context-aware nonparametric texture synthesis, the proposed approach successfully generates synthetic seismic images that preserve both structural integrity and textural fidelity across three distinct geological zones: salt bodies, conventional rocks, and their boundaries.
@@ -630,7 +623,7 @@ The comprehensive evaluation framework, combining expert qualitative assessment 
 
 The significance of this work extends beyond technical measures. In the petroleum industry, where seismic interpretation requires extensive expertise and labeled datasets are prohibitively expensive, our automated synthesis method offers a practical solution for generating high-quality training data at scale. The context-oriented approach ensures geological plausibility by respecting the distinct characteristics of different rock types and their interfaces, a crucial requirement for real-world applications in subsurface exploration and reservoir characterization.
 
-\subsection{Practical Applications}
+\subsection{Applications}
 
 The proposed methodology enables several important applications in the geoscience domain. The synthetic samples can augment limited real datasets to improve the robustness and generalization of deep learning models for salt body segmentation, such as U-Net and ResNet architectures, particularly where obtaining additional labeled data is impractical. This synthetic data can also serve as a pre-training corpus for transfer learning, allowing models trained on one geological basin to adapt more effectively to different regions with limited labeled samples.
 
