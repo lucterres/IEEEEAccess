@@ -240,13 +240,11 @@ Therefore, targeting efficiency and ease of training, VAEs have simpler and more
 
 \subsection{Context-oriented Texture Synthesis}
 
-Texture synthesis is a technique used in computer graphics and image processing to generate new textures that are visually similar to a given sample texture. Nonparametric texture synthesis methods~\cite{Efros1999} create new images by sampling and recombining patches from example textures, ensuring that the statistical properties of the generated texture match those of the original.
-
-The typical texture synthesis algorithms use an image database and replicate the images in a picture plane according to some arrangement rules. The texture synthesis can be enhanced by working at a finer scale, from the pixel level to a small region level. At each iteration of the algorithm, a small section of the original texture, a patch, is copied and placed within the newly synthesized texture. Nonparametric sampling~\cite{Efros1999} improved further texture synthesis by creating a new image that shares the same statistical properties as a given sample texture, while avoiding explicit models of the texture by directly sampling from example images.
+Texture synthesis is a technique used in computer graphics and image processing to generate new textures that are visually similar to a given sample texture. The typical algorithms use an image database and replicate the images in a picture plane according to some arrangement rules. The texture synthesis can be enhanced by working at a finer scale, from the pixel level to a small region level. At each iteration of the algorithm, a small section of the original texture, a patch, is copied and placed within the newly synthesized texture. Nonparametric sampling~\cite{Efros1999} improved further texture synthesis by creating a new image that shares the same statistical properties as a given sample texture, while avoiding explicit models of the texture by directly sampling from example images.
 
 \subsubsection{Nonparametric Texture Synthesis Algorithm}
 
-The proposed seismic texture synthesis method requires the following components:
+Nonparametric texture synthesis methods~\cite{Efros1999} create new images by sampling and recombining patches from example textures, ensuring that the statistical properties of the generated texture match those of the original. The proposed seismic texture synthesis method requires the following components:
 
 \textbf{1. Neighborhood Definition:} For each pixel $p$ in the image to be synthesized, a region around $p$ already filled with known values is defined (namely, a neighborhood $N(p)$);
 
@@ -293,9 +291,9 @@ To synthesize the salt zones, we use the corresponding source image region as a 
     \label{fig:source1}
 \end{figure}
 
-\subsection{Complete Synthesis Pipeline}
+\subsection{Complete Synthesis Methodology}
 
-The complete synthesis pipeline integrates both the VAE-based context generation and the context-oriented texture synthesis. The algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data. The pipeline can be summarized as follows: (1) the VAE generates a new salt body mask defining the geometric structure, (2) edge detection identifies boundary zones between salt and sediment, (3) the texture synthesis algorithm fills each zone (edges, salt, and sediment) with appropriate textures from the training database, and (4) the final synthetic seismic image is assembled by combining all synthesized zones. This systematic approach, detailed in Algorithm~\ref{alg:synthesis}, ensures that the generated images maintain both structural consistency and textural realism.
+The complete synthesis process integrates both the VAE-based context generation and the context-oriented texture synthesis. The algorithm processes all zones, one by one, to complete the seismic image synthesis process using their corresponding zone samples in the input data. The methodology can be summarized as follows: (1) the VAE generates a new salt body mask defining the geometric structure, (2) edge detection identifies boundary zones between salt and sediment, (3) the texture synthesis algorithm fills each zone (edges, salt, and sediment) with appropriate textures from the training database, and (4) the final synthetic seismic image is assembled by combining all synthesized zones. This systematic approach, detailed in Algorithm~\ref{alg:synthesis}, ensures that the generated images maintain both structural consistency and textural realism.
 
 \begin{algorithm}[htbp]
 \caption{Context-Oriented Seismic Image Synthesis}
