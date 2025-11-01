@@ -200,10 +200,12 @@ where $\epsilon$ is an auxiliary random variable sampled from a standard normal 
 
 Finally, we train VAEs by maximizing the ELBO with respect to the parameters $\theta$ and $\phi$ using stochastic gradient descent. The optimization process balances reconstruction accuracy with latent space regularization.
 
-\subsubsection{Advantages of Variational Autoencoders}
+\subsubsection{Advantages and Motivation for Using Variational Autoencoders}
 The primary reasons for using VAEs are a realistic generation of synthetic samples, an increase in dataset diversity, a regularization and control of variability, and an improvement in the generalization of the segmentation model. When we consider specific reasons related to the nature of seismic data and the purpose of sample generation for data augmentation, VAEs enable the generation of synthetic images that preserve the structural characteristics of real seismic data, thereby enhancing the training and performance of segmentation models~\cite{Henriques2021,Wang2021,Anjom2024}.
 
-\subsubsection{Generative Adversarial Networks (GANs) Comparison}
+While VAEs offer several advantages for seismic data synthesis, it is important to consider alternative generative models that have also been explored in the literature. In the following sections, we briefly discuss Generative Adversarial Networks (GANs) and Diffusion Models, highlighting their main limitations in the context of seismic image generation and data augmentation.
+
+\subsubsection{Generative Adversarial Networks (GANs) Limitations}
 
 \begin{enumerate}
     \item \textbf{Control over Data Variability}:
@@ -222,7 +224,7 @@ The primary reasons for using VAEs are a realistic generation of synthetic sampl
 
 Although GANs are known for generating high-quality images, we chose VAEs in this work due to their more refined control over data variability, training stability, and preservation of the latent seismic data distribution.
 
-\subsubsection{Disadvantages of Diffusion Models}
+\subsubsection{Diffusion Models Limitations}
 Conversely, diffusion models present practical and conceptual disadvantages~\cite{Zhou2024}:
 \begin{enumerate}
     \item \textbf{Higher Computational Cost}:
