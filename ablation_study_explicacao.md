@@ -67,3 +67,37 @@ O que seria removido? Apenas o tratamento especial dado à zona de borda, que us
 Como? A borda seria sintetizada com o mesmo método genérico usado para o interior do sal e da rocha, sem levar em conta a orientação.
 Hipótese/O que se espera provar? Que as bordas perderiam coerência e realismo. A textura da interface não se alinhariam mais com a curvatura do domo de sal, criando artefatos visuais. Isso provaria que esse detalhe da sua metodologia é importante.
 Em resumo, a seção de "Ablation Study" do seu artigo planeja uma série de testes rigorosos para justificar cientificamente cada decisão de design da sua metodologia, mostrando que cada componente escolhido tem um propósito e um impacto positivo mensurável no resultado final
+
+
+# Claude Sonnet 4.5
+Explicação da Seção Ablation Study
+A seção de Ablation Study (linhas 589-624) é uma proposta de experimentos futuros para validar sistematicamente a contribuição de cada componente da metodologia proposta. O termo "ablation" significa remover ou desabilitar partes específicas do sistema para entender sua importância.
+
+Estrutura da Seção
+A seção propõe três experimentos principais:
+
+1. Impacto da Síntese Orientada por Contexto (linhas 594-602)
+O que seria removido: A divisão do processo de síntese em três zonas distintas (sal, rocha convencional e fronteira)
+Experimento proposto: Usar um único modelo de síntese de textura para gerar a imagem inteira, sem diferenciar as regiões
+Hipótese: Haveria degradação significativa na qualidade, especialmente nas fronteiras entre sal e sedimento, resultando em interfaces borradas ou irrealistas
+Avaliação: Comparar com o método completo usando MSE, DSSIM, LBP Distance e análise qualitativa de especialistas
+2. Contribuição do VAE para Geração de Máscaras (linhas 604-612)
+O que seria removido: O VAE (Variational Autoencoder) usado para gerar geometrias de corpos salinos
+Experimento proposto: Substituir o VAE por transformações geométricas simples (rotação, escala, deformação elástica) aplicadas às máscaras existentes
+Hipótese: Essa abordagem mais simples geraria máscaras menos diversas e geologicamente plausíveis
+Avaliação: Avaliar a qualidade das imagens sintéticas finais usando essas máscaras simplificadas
+3. Relevância da Síntese Específica de Fronteira (linhas 614-622)
+O que seria removido: A seleção de patches orientada por ângulos locais para a zona de fronteira
+Experimento proposto: Sintetizar a fronteira usando a mesma síntese de textura não paramétrica aplicada ao interior do sal e das rochas, sem considerar a orientação local
+Hipótese: Isso levaria a fronteiras menos coerentes e realistas, perdendo detalhes texturais finos que se alinham com a curvatura do domo de sal
+Avaliação: Comparação direta das regiões de fronteira, qualitativa e quantitativamente
+Objetivo Geral
+Como mencionado na linha 624: "These proposed studies would systematically validate our design choices and provide a deeper understanding of why the proposed context-oriented approach is effective for synthesizing high-fidelity seismic images."
+
+Importante: Esta seção apresenta estudos propostos (futuros), não resultados já executados. Os autores estão sugerindo como validariam cada componente de sua metodologia, mas não apresentam os resultados desses experimentos no artigo atual.
+
+Contexto no Artigo
+Esta seção complementa a metodologia proposta (Seção 3) e os resultados apresentados (Seção 4), fornecendo um roteiro para trabalhos futuros que demonstrariam cientificamente a necessidade de cada componente do sistema.
+
+
+
