@@ -611,12 +611,12 @@ It is important to note that quantitative measures may not always align with qua
 
 \subsection{Impact of Context-Oriented Synthesis}
 
-A key innovation of our method is the division of the synthesis process into three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this separation, we conducted an experiment where this context-oriented approach is removed.
+A key innovation of our method is the division of the synthesis process into three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this separation, we propose an experiment where this context-oriented approach is removed. Critically, without the context-oriented synthesis, the method would not be able to properly generate samples with distinct annotated masks for the salt and rock portions, as the zone-specific texture characteristics would be lost.
 
 \begin{itemize}
-    \item \textbf{Experiment}: A single, non-parametric texture synthesis model would be used to generate the entire image, guided only by the binary salt/non-salt mask produced by the VAE. This model would not differentiate between the interior of the salt dome, the surrounding rock, and the crucial boundary region.
-    \item \textbf{Hypothesis}: We expect a significant degradation in image quality. The model would likely struggle to reproduce the sharp, geologically complex interfaces between salt and sediment, resulting in blurred or unrealistic boundaries.
-    \item \textbf{Evaluation}: The results would be compared against our full method using the same quantitative measures (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our context-oriented approach.
+    \item \textbf{Experiment}: A single, nonparametric texture synthesis model would be used to generate the entire image, guided only by the binary salt/non-salt mask produced by the VAE. This model would not differentiate between the interior of the salt dome, the surrounding rock, and the crucial boundary region. Consequently, the resulting samples would lack the zone-specific textural fidelity required to maintain accurate correspondence with the annotated masks for salt and rock portions.
+    \item \textbf{Hypothesis}: We expect a significant degradation in image quality. The model would likely struggle to reproduce the sharp, geologically complex interfaces between salt and sediment, resulting in blurred or unrealistic boundaries. Furthermore, the absence of context-oriented synthesis would prevent the proper creation of samples where the annotated masks accurately represent the distinct geological zones.
+    \item \textbf{Evaluation}: The results would be compared against our full method using the same quantitative measures (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our context-oriented approach for generating high-quality samples with reliable annotated masks.
 \end{itemize}
 
 \subsection{Contribution of the VAE for Mask Generation}
