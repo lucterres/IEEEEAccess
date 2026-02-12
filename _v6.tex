@@ -619,6 +619,8 @@ A key innovation of our method is the division of the synthesis process into thr
     \item \textbf{Evaluation}: The results would be compared against our full method using the same quantitative measures (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our context-oriented approach for generating high-quality samples with reliable annotated masks.
 \end{itemize}
 
+\textbf{Results and Analysis}: We conducted the ablation experiment by synthesizing 110 images using a single unified texture synthesis model without zone-specific processing. Critically, 44 images (40\%) had to be discarded due to lack of geological coherence, demonstrating the fundamental limitation of non-contextualized synthesis. For the remaining valid samples, the quantitative evaluation revealed median values of MSE = 837.38, DSSIM = 0.313, and LBP Distance = 0.094. In comparison, our context-oriented method consistently achieves superior performance with typical median values of MSE $<$ 800 (best group: 542.87), DSSIM $<$ 0.30 (best group: 0.2424), and LBP Distance $<$ 0.09 (best group: 0.0800). These results confirm that even after filtering out geologically incoherent samples, the ablation approach exhibits poorer performance across all metrics. The higher MSE indicates reduced pixel-level fidelity to the original images, the increased DSSIM reflects lower structural similarity, and the elevated LBP Distance demonstrates inferior texture preservation. The necessity to discard 40\% of the ablation samples, combined with the quantitatively inferior quality of the remaining images, conclusively validates that the context-oriented approach is essential for generating high-fidelity seismic images that maintain accurate correspondence with annotated geological zones.
+
 \subsection{Contribution of the VAE for Mask Generation}
 
 Our method relies on a VAE to generate realistic and diverse salt body geometries. The ablation study quantifies the benefit of this component as compared to simpler alternatives.
@@ -640,10 +642,6 @@ The proposed method gives special treatment to the boundary zone, using patch se
 \end{itemize}
 
 These ablation studies systematically validate our design choices and provide a deeper understanding of why the proposed context-oriented approach is effective for synthesizing high-fidelity seismic images.
-
-% LUCIANO: ok propostos os ablation studies MAS TENS QUE MOSTRAR OS RESULTADOS !!!!
-
-AQUIQ
 
 \section{Concluding Remarks and Future Directions}
 \label{sec:conclusion}
