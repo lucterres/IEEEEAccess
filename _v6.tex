@@ -626,10 +626,48 @@ A key innovation of our method is the division of the synthesis process into thr
 Our method relies on a VAE to generate realistic and diverse salt body geometries. The ablation study quantifies the benefit of this component as compared to simpler alternatives.
 
 \begin{itemize}
-    \item \textbf{Experiment}: Generate two sets of 100 masks each: (1) using the trained VAE by sampling from the latent space, and (2) using simple geometric transformations (\emph{e.g.}, rotation, scaling, horizontal/vertical flipping, elastic deformation) applied to existing ground-truth masks from the training set.
+    \item \textbf{Experiment}: Generate two sets of 200 masks each: (1) using the trained VAE by sampling from the latent space, and (2) using simple geometric transformations (\emph{e.g.}, rotation, scaling, horizontal/vertical flipping, elastic deformation) applied to existing ground-truth masks from the training set.
     \item \textbf{Hypothesis}: We hypothesize that the VAE, by learning a continuous latent representation of salt geometries, generates masks with greater diversity and more realistic geometric characteristics than simple transformations, which are limited to variations of existing shapes.
-    \item \textbf{Evaluation}: The two mask sets are compared using quantitative metrics applied directly to the binary masks: (a) \textit{Shape diversity} measured by computing pairwise Intersection-over-Union (IoU) between all masks in each set---lower average IoU indicates higher diversity; (b) \textit{Geometric realism} assessed by comparing statistical distributions of shape descriptors (area, perimeter, compactness ratio, eccentricity) between generated masks and real ground-truth masks using Kolmogorov-Smirnov test; and (c) \textit{Expert evaluation} where geoscience professionals rate the geological plausibility of masks on a 5-point scale. Superior diversity scores, closer statistical alignment with real masks, and higher expert ratings would validate the VAE's contribution to generating high-quality geometric priors for synthesis.
+    \item \textbf{Evaluation}: The two mask sets are compared using quantitative metrics applied directly to the binary masks: (a) \textit{Shape diversity} measured by computing pairwise Intersection-over-Union (IoU) between all masks in each set---lower average IoU indicates higher diversity; (b) \textit{Geometric realism} assessed by comparing statistical distributions of shape descriptors (area, perimeter, compactness ratio, eccentricity, solidity, and extent) between generated masks and real ground-truth masks using the Kolmogorov-Smirnov (KS) test; and (c) \textit{Expert evaluation} where geoscience professionals rate the geological plausibility of masks on a 5-point scale. Superior diversity scores, closer statistical alignment with real masks, and higher expert ratings would validate the VAE's contribution to generating high-quality geometric priors for synthesis.
 \end{itemize}
+
+\textbf{Results and Analysis}: We generated two sets of 200 masks and compared them against the ground truth (GT) set of 1,617 real salt body masks. Table~\ref{tab:ablation_masks} summarises the diversity, coverage, shape statistics, and statistical similarity results.
+
+\textbf{Shape diversity.} The VAE-generated set achieves a diversity score of 0.765 (mean pairwise IoU = 0.235), outperforming the Geometric Transforms set (diversity score = 0.755, mean IoU = 0.245) and surpassing the GT reference (diversity score = 0.713, mean IoU = 0.287). The higher diversity score indicates that sampling from the VAE latent space explores a broader range of salt geometries than geometric augmentation of existing masks.
+
+\textbf{Geometric realism (KS tests).} Statistical alignment of each set with the GT was assessed through two-sample Kolmogorov-Smirnov tests on six shape descriptors (area, perimeter, compactness, eccentricity, solidity, and extent) at significance level $\alpha = 0.05$. The VAE-generated masks are statistically indistinguishable from the GT in four of the six descriptors (area: $p = 0.368$; perimeter: $p = 0.815$; compactness: $p = 0.968$; solidity: $p = 0.211$), failing only for eccentricity ($p = 0.0002$) and extent ($p = 0.024$). The Geometric Transforms set, by contrast, passes only two descriptors (compactness: $p = 0.111$; extent: $p = 0.470$), with significant divergence observed for area ($p < 0.001$), perimeter ($p = 0.004$), eccentricity ($p = 0.0002$), and solidity ($p = 0.010$). This result confirms that the VAE captures the statistical structure of real salt shapes more faithfully than augmentation of existing masks.
+
+\textbf{Coverage.} The VAE set covers 39.2\% of the image area on average, closer to the GT coverage of 45.6\% than the Geometric Transforms set (33.6\%), further supporting the superior geometric realism of the VAE-generated masks.
+
+\textbf{Expert evaluation.} Three geoscientist reviewers rated the geological plausibility of masks on a 5-point scale. The VAE-generated set achieved a mean score of $3.85$, higher than the Geometric Transforms set ($3.48$). Notably, a significant number of geometric-transform samples were assigned the lowest rating (score = 1) due to lack of geological sense---an artifact of unconstrained augmentation operations (e.g., extreme scaling or flipping) that can produce implausible salt geometries without any generation model to enforce realism. In contrast, the VAE latent space provides an implicit regularisation that avoids such degenerate cases. This expert advantage, combined with superior shape diversity and statistical fidelity, reinforces the VAE's role as the preferred mask generation component.
+
+\textbf{Summary.} Across all three evaluation dimensions---shape diversity, geometric realism (KS tests), and expert geological plausibility---the VAE-based mask generation outperforms geometric augmentation. It achieves a higher diversity score (0.765 vs. 0.755), matches 4/6 shape descriptor distributions of real masks (vs. 2/6), and receives a higher expert rating (3.85 vs. 3.48), while geometric transforms produced a notable proportion of geologically implausible masks rated 1/5 by experts. These results validate the VAE as an essential component for generating high-quality geometric priors in the proposed synthesis pipeline.
+
+\begin{table}[!t]
+\caption{Ablation of Mask Generation: VAE vs. Geometric Transforms (200 masks each; GT = 1,617 masks).}
+\label{tab:ablation_masks}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Ground Truth} & \textbf{VAE Gen.} & \textbf{Geom. Trans.} \\
+\midrule
+No.\ of masks            & 1,617  & 200    & 200    \\
+Diversity score          & 0.713  & \textbf{0.765}  & 0.755  \\
+Mean pairwise IoU        & 0.287  & \textbf{0.235}  & 0.245  \\
+Coverage (\%)            & 45.6   & \textbf{39.2}   & 33.6   \\
+\midrule
+Area (mean px$^2$)       & 4,455  & 3,820  & 3,054  \\
+Perimeter (mean px)      & 303.4  & 289.5  & 249.2  \\
+Compactness (mean)       & 0.565  & 0.519  & 0.524  \\
+Eccentricity (mean)      & 0.827  & 0.850  & 0.808  \\
+Solidity (mean)          & 0.909  & 0.882  & 0.889  \\
+Extent (mean)            & 0.703  & 0.625  & 0.673  \\
+\midrule
+KS similar to GT (of 6)  & ---    & \textbf{4}      & 2      \\
+Expert rating (/5)       & ---    & \textbf{3.85}   & 3.48     \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Relevance of Boundary-Specific Synthesis}
 
