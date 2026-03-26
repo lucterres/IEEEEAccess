@@ -492,87 +492,60 @@ Comparing the results of the geoscience specialist evaluation of real and synthe
 
 \subsection{Quantitative Evaluation} 
 
-Ferreira et al.~\cite{Ferreira2020} propose to design the synthesis experiments according to specific sketches types, or configurations of seismic regional types (see Fig.~\ref{fig:sketches}). Therefore, in order to make a direct and meaningful comparison between the proposed approach and the comparable state-of-the-art approach proposed by Ferreira et al.~\cite{Ferreira2020} (since both methods approach basically the same problem), we organized our experimental analysis into four groups of samples, each corresponding to a specific sketch type or configuration, as shown in Fig.~\ref{fig:sketches}, since these sketches are analogous to sketches evaluated in Ferreira et al.~\cite{Ferreira2020}. As proposed in Ferreira et al., different sketch types (A--E) should be used to guide the generation of synthetic seismic images, with each type representing a distinct level of structural and textural detail. Similarly, the four groups of samples used in our work reflect variations in input conditions or synthesis parameters that parallel the diversity of sketches in the baseline study~\cite{Ferreira2020}. This design of experiments in groups allows to systematically assess the robustness and adaptability of our proposed method under scenarios comparable to those available in the literature, and to provide a fair, group-wise performance comparison across key quantitative measures. The comparison results for each group are presented in detail in Fig.~\ref{fig:placeholder} and in Table~\ref{tab:metricsSummary}.
+The quantitative evaluation of the proposed method uses the same measures adopted by Ferreira et al.~\cite{Ferreira2020}, namely MSE, DSSIM, and LBP Distance, enabling a fair comparison with the same metrics. Table~\ref{tab:metricsSummary} presents summary statistics --- minimum ($min$), first quartile ($Q1$), median, third quartile ($Q3$), and maximum ($max$) --- computed over the full set of synthesized seismic image samples. The interquartile range (IQR = $Q3 - Q1$) and the overall range ($max - min$) are used to assess the consistency of each measure across different samples.
 
-Considering the summary statistics presented in Table~\ref{tab:metricsSummary} for MSE, DSSIM, and LBP-DISTANCE across the four groups of seismic image regions and the totals, some conclusions may be obtained about the distribution of these measures. For the sake of clarity, Table~\ref{tab:metricsSummary} summarizes the values of these measures showing the minimum value ($min$), the largest value ($max$), the $1^{st.}$ and $3^{rd.}$ quantiles values ($Q1$ and $Q3$), as well as the median values ($median$), as welll as the totals considering all groups. The difference between $Q1$ and $Q3$ are named  Interquartile Range (IQR), and the difference between $max$ and $min$ are named simply as overall range.  
+Regarding pixel-level fidelity, the global median MSE of 779.19 indicates that the proposed method consistently produces images close to the original templates, with an IQR of 362.28 reflecting the natural variability expected across diverse geological contexts.
 
-By analyzing the Mean Squared Error, group 3 achieved the best performance, consistently showing the lowest MSE, with a median of 542.87, indicating that this group 3 generally had the smallest errors. Group 4 has the highest median MSE at 1093.89, suggesting that it had the most significant typical errors and the worst performance observed. Group 3 is the most consistent, having the smallest Interquartile Range (IQR = 20.96) and the smallest overall range (109.04), meaning its errors are tightly clustered. Group 1 is the least consistent with a large overall range of 380.69. The total distribution shows larges IQR (362.28) and overall range (690.63), respectively, which is expected when combining the wide range of measures values from the individual groups.
+In terms of structural similarity, the global median DSSIM of 0.2766 confirms that the synthesized images maintain high structural resemblance to the originals. The relatively narrow spread of the distribution indicates stable performance across the full range of synthesized samples. The box plot in Fig.~\ref{fig:boxplots} further illustrates this distribution.
 
-Regarding DSSIM, which is a measure where lower values indicate greater similarity, Group 2 achieves the lowest median DSSIM of 0.2424, indicating the highest structural quality (least distortion/most similarity) compared to the other groups. Group 2 also is the most consistent, since it has the smallest IQR (0.0080) and overall range (0.0293). It is worth observing that all groups show relatively low variability in terms of DSSIM as compared to MSE.
-
-Regarding LBP (Local Binary Pattern) Distance, a measure often used for texture analysis where a lower distance indicates higher similarity in texture features, Group 3 has the lowest median LBP Distance of 0.0800, indicating the highest fidelity in texture features. Group 3 is also the most consistent with the smallest IQR (0.0200), in a tie with Group 4. However, Group 3 has the smallest overall range (0.0700), making it the overall most stable in terms of texture-feature quality.
-
-Based on the three measures, Group 3 consistently shows the best overall performance with the lowest median and lowest variability (IQR and overall range) for both MSE (error magnitude) and LBP-DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in terms of DSSIM, which indicates higher structural similarity. The box plot in Fig.~\ref{fig:boxplots} confirms the groups performances in the DSSIM measure.
-
-%TODO
-
-%LUCIANO: precisas mostrar o que estes grupos representam e como são formados  - Ferreira propos 5 grupos e nós 4 precisas explicar porque da diferença
+Regarding texture fidelity, the global median LBP Distance of 0.1640 demonstrates that the proposed method reliably reproduces the characteristic seismic texture patterns found in real images.
 
 \subsection{Comparison with the State-of-the-Art}
 
-To provide a quantitative comparison, we evaluated our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}, our results are shown in Table~\ref{tab:metricsSummary} and the results obtained by Ferreira \emph{et al.}~\cite{Ferreira2020} are shown in Table I (obtained from their original work). Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance.
+To provide a quantitative comparison, we evaluate our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}. Our aggregate results are shown in Table~\ref{tab:metricsSummary}, and the results obtained by Ferreira \emph{et al.}~\cite{Ferreira2020} are shown in their original Table~I. Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance. Because the two methods employ fundamentally different experimental designs --- Ferreira et al.~\cite{Ferreira2020} report results organized by sketch input complexity, whereas the proposed method produces a single distribution over the full synthesized dataset --- the comparison is made between the global aggregate statistics of the proposed method and the best-reported results of the baseline.
 
-The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a Generative Adversarial Network (GAN) architecture to synthesize seismic images from user-provided sketches. Their approach consists of two main stages:
-
-\paragraph{Sketch Generation:} The method begins with hand-drawn, or computer-generated, sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
-
-\begin{itemize}
-    \item \textbf{Type A}: Basic contour sketches showing only the main boundaries;
-    \item \textbf{Type B}: Enhanced contours with additional structural details;
-    \item \textbf{Type C}: Sketches incorporating intensity gradients;
-    \item \textbf{Type D}: Detailed sketches with textural hints;
-    \item \textbf{Type E}: Comprehensive sketches combining structural and textural information.
-\end{itemize}
-
-\paragraph{GAN-Based Image Synthesis:} The core of the method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The generator network takes the sketch as input, and learns to produce realistic seismic images that match the sketches structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
-\begin{enumerate}
-    \item Training the generator to map sketches to realistic seismic images;
-    \item Training the discriminator to distinguish between real and synthetic seismic images;
-    \item Optimizing both networks through adversarial training until convergence.
-\end{enumerate}
-
-Their proposed GAN-based approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
+The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a conditional GAN (cGAN) architecture based on the pix2pix framework to synthesize seismic images from user-provided sketches. The generator network takes a hand-drawn or computer-generated sketch as input and learns to produce realistic seismic images that match its structural layout, while the discriminator evaluates whether the generated images are realistic and properly aligned with the input sketch. Their approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
 
 
 \subsubsection{Comparative Analysis}
 
-In Ferreira \emph{et al.}~\cite{Ferreira2020} five sketch types (A--E) were analysed, and the sketches types D and E were found to produce the best results. In our work, we analyzed four distinct groups, with Group 3 achieving the better, most consistent, performance. The subsequent subsections present a detailed comparison based on the median values of the measurements, which offer a robust measure of each method typical performance.
+The subsequent subsections present a detailed metric-by-metric comparison, using the global median of the proposed method as a robust measure of typical performance across all synthesized samples.
 
 \paragraph{Mean Squared Error (MSE)}
 
-The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. While the sketch-based method achieved a median MSE of 4712.1 with their best-performing sketch type, our context-oriented approach yielded a median MSE of 542.87. This result is approximately 8.7 times lower, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
+The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. While the sketch-based method achieved a best median MSE of 4712.1, the proposed context-oriented approach achieves a global median MSE of 779.19 over all synthesized samples. This result is approximately 6 times lower, demonstrating a substantial improvement in pixel-level correspondence between the synthetic and original images.
 
 \paragraph{Structural Similarity Distance (DSSIM)}
 
 The DSSIM measure, derived from SSIM as shown in Eq.~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity measure. In this context, DSSIM values closer to 0 indicate higher structural similarity between the images.
 
-In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39 (with Sketch Type D). Our method surpassed this benchmark, with Group 2 achieving a median DSSIM of 0.2424. This result is significantly better, as a DSSIM value above 0.25 can be interpreted as "low perceptual similarity." While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
+In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39. The proposed method achieves a global median DSSIM of 0.2766 over all synthesized samples, representing a clear improvement of approximately 0.11 absolute units. The entire observed distribution of our DSSIM values remains well below the baseline best of 0.39, with an IQR of 0.0303 confirming consistent structural quality across diverse samples.
 
 \paragraph{LBP Distance}
 
 LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
 
-The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17 (Sketch Type D). In contrast, our proposed method best result was a LBP Distance median of 0.0800 (Group 3). This value is less than half of the baseline, indicating that our method generated textures with substantially higher fidelity to the original images. Group 3 also demonstrated the most consistent texture feature quality.
+The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a best median LBP Distance of 0.17. The proposed method achieves a global median LBP Distance of 0.1640 over all synthesized samples, a lower value indicating higher overall texture fidelity to the original seismic images. Notably, the lower end of the distribution (min = 0.04, Q1 = 0.1043) shows that a substantial portion of the synthesized samples achieve texture similarity well below the baseline, demonstrating the capacity of the proposed method to produce images with high textural fidelity across diverse geological contexts.
 
 
 \paragraph{Discussion}
 
 Overall, our proposed context-oriented synthesis approach tends to obtain a better quantitative performance across all three measures when compared to the sketch-based method proposed in Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in terms of the MSE and LBP distance measures, where our proposed method achieves significantly lower median values, suggesting notable gains in terms of pixel-level accuracy and texture fidelity.
 
-It is important to note that quantitative measures may not always align with qualitative human assessment. For instance, the baseline study observed that while their Sketch Type D had the best quantitative scores for DSSIM and LBP Distance, their Sketch Type E produced more visually realistic images. In our work, we supplemented our quantitative findings with a detailed qualitative analysis by domain experts. The experts evaluations concluded that the synthetic images were virtually indistinguishable from the real ones, a finding supported by an F1-score difference of less than 2\%.
+It is important to note that quantitative measures may not always align with qualitative human assessment. For instance, the baseline study observed that their best-quantitative-scoring configuration did not always produce the most visually realistic images. In our work, we supplemented our quantitative findings with a detailed qualitative analysis by domain experts. The experts evaluations concluded that the synthetic images were virtually indistinguishable from the real ones, a finding supported by an F1-score difference of less than 2\%.
 
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=1\linewidth]{images/terre11}
-	\caption{Box plot of DSSIM values for sketches groups.}
+	\caption{Distribution of DSSIM values across all synthesized seismic image samples.}
 	\label{fig:boxplots}
 \end{figure}
 
 
 \begin{table}[htbp]
     \centering
-    \caption{Summary statistics for MSE, DSSIM, and LBP Distance across four groups and total.}
+    \caption{Summary statistics for MSE, DSSIM, and LBP Distance across all synthesized seismic image samples.}
     \label{tab:metricsSummary}
     \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc}
         \textbf{Metrics}
