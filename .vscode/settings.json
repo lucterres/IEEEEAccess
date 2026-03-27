@@ -1,5 +1,5 @@
 {
-  "latex-workshop.latex.autoBuild.enabled": true,
+  "editor.lineNumbers": "off","latex-workshop.latex.autoBuild.enabled": true,
   "latex-workshop.latex.autoBuild.run": "onSave",
   "latex-workshop.latex.outDir": "latex_build",
 
