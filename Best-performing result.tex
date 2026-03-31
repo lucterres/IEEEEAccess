@@ -1,19 +1,20 @@
 Best-performing result
 
 %TODO
-
 %LUCIANO: precisas mostrar o que estes grupos representam e como são formados  - Ferreira propos 5 grupos e nós 4 precisas explicar porque da diferença
-
 
 O problema fundamental: os critérios de formação de grupos não são equivalentes
 
+Não há uma definição explícita do que cada grupo representa em _v6.tex. O texto atual faz referência aos 4 grupos (1 a 4) mas não descreve como foram criados ou o que representam. Já os grupos de Ferreira são claramente definidos com base na complexidade do sketch de entrada (tipos A a E).
 
-\section{Resultado de Melhor Desempenho}
+
 Resultado de melhor desempenho
 
-Como os dois métodos operam sob paradigmas fundamentalmente distintos --- Ferreira et al.~\cite{Ferreira2020} utilizam esboços(sketches) manuais de complexidade variável como entrada condicional, enquanto o método proposto é totalmente autônomo e não requer entrada manual --- uma correspondência direta entre grupos não é aplicável. Em vez disso, a comparação é realizada entre o resultado de melhor desempenho de cada método, representando o desfecho mais favorável alcançável nas condições experimentais de cada abordagem. Em Ferreira et al.~\cite{Ferreira2020}, os tipos de esboço D e E apresentaram os melhores resultados quantitativos. Para o método proposto, os melhores resultados nas três métricas são extraídos diretamente da Tabela~\ref{tab:metricsSummary}. As subseções a seguir apresentam essa comparação de melhor caso com base em valores de mediana, que fornecem uma caracterização robusta do desempenho típico de cada método.
+Como os dois métodos operam sob paradigmas fundamentalmente distintos --- Ferreira et al.~\cite{Ferreira2020} utilizam esboços(sketches) manuais de complexidade variável como entrada condicional, enquanto o método proposto é totalmente autônomo e não requer entrada manual --- uma correspondência direta entre grupos não é aplicável. Em vez disso, a comparação é realizada entre o resultado de melhor desempenho de cada método, representando o desfecho mais favorável alcançável nas condições experimentais de cada abordagem. Em Ferreira et al.~\cite{Ferreira2020}, os tipos de esboço D e E apresentaram os melhores resultados quantitativos. Para o método proposto, os melhores resultados nas três métricas são extraídos diretamente da Tabela~\ref{tab:metricsSummary}. 
 
 O método proposto, baseado em VAE, é totalmente autônomo e não requer entrada manual.
+
+Solução: Reescrever toda a análise quantitativa para focar nas estatísticas globais (coluna Total da tabela), remover as referências por grupo nos parágrafos de análise e atualizar os valores da comparação com Ferreira.
 
 Em Ferreira \emph{et al.}~\cite{Ferreira2020}, a melhor mediana de DSSIM alcançada foi 0.39 (com o Tipo de Esboço D). O método proposto superou esse referencial, alcançando a melhor mediana de DSSIM de 0.2424. Esse resultado é significativamente superior, pois um valor de DSSIM acima de 0.25 pode ser interpretado como ``baixa similaridade perceptual''. Enquanto o resultado de referência se encontra nessa faixa, nossa melhor mediana está ligeiramente abaixo desse limiar, refletindo maior similaridade estrutural com as imagens sísmicas originais.
 
@@ -21,7 +22,10 @@ O trabalho de referência de Ferreira \emph{et al.}~\cite{Ferreira2020} reportou
 
 
 
-There is no explicit definition of what each group represents in _v6.tex. O texto atual faz referência aos 4 grupos (1 a 4) mas não descreve como foram criados ou o que representam. Já os grupos de Ferreira são claramente definidos com base na complexidade do sketch de entrada (tipos A a E).
+
+
+
+
 
 Ferreira (tipos A–E)	
     Variável de agrupamento	Complexidade do sketch de entrada
@@ -45,11 +49,7 @@ o objetivo da comparação é mostrar que o método proposto é melhor
 
 
 
- Deixa eu ler o estado atual das seções após as edições anteriores: 
-
-Read [](file:///d%3A/0Code/_phdSeismic/IEEE_Access/_v6.tex#493-493), lines 493 to 570
-
-Agora vejo o estado completo. Vou reescrever toda a análise quantitativa para focar nas estatísticas globais (coluna Total da tabela), remover as referências por grupo nos parágrafos de análise e atualizar os valores da comparação com Ferreira. 
+Vou reescrever toda a análise quantitativa para focar nas estatísticas globais (coluna Total da tabela), remover as referências por grupo nos parágrafos de análise e atualizar os valores da comparação com Ferreira. 
 
 Read [](file:///d%3A/0Code/_phdSeismic/IEEE_Access/_v6.tex#430-430), lines 430 to 440
 
