@@ -357,7 +357,13 @@ The complete synthesis pipeline integrates the VAE-based context generation and 
 
 \subsection{Dataset}
 
-The salt body dataset from the TGS Salt Identification Challenge is used in these experiments. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{TGS2023}.
+Two seismic datasets were used in this work for different evaluation purposes:
+
+\paragraph{TGS Salt Identification Challenge Dataset}
+The salt body dataset from the TGS Salt Identification Challenge is employed for qualitative expert evaluation. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface, with dimensions of 101 x 101 pixels, where each pixel is classified as either salt or sediment \cite{TGS2023}. This dataset enables assessment by geoscience domain experts to evaluate the visual quality and geological realism of synthetic seismic images.
+
+\paragraph{F3 Seismic Dataset}
+The F3 dataset, containing 3D post-stack seismic data from the Dutch North Sea, is used for quantitative comparison with the state-of-the-art method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020}. This dataset is widely recognized as a benchmark in seismic interpretation and image synthesis research~\cite{Baroni2018}. Using the same dataset and evaluation protocol as the baseline method ensures a direct and fair comparison based on quantitative metrics (MSE, DSSIM, and LBP Distance).
 
 \begin{figure}[htbp]
     \centering
@@ -493,7 +499,7 @@ To enable a direct and fair comparison with Ferreira \emph{et al.}~\cite{Ferreir
 
 To provide a quantitative comparison on the F3 dataset, we evaluated our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}. Our results are shown in Table~\ref{tab:metricsSummary} alongside the results reported by Ferreira \emph{et al.}~\cite{Ferreira2020} in their original work. Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance.
 
-The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a conditional Generative Adversarial Network (cGAN) architecture based on the pix2pix framework to synthesize seismic images from user-provided sketches. The generator network takes a sketch as input and learns to produce realistic seismic images matching its structural layout, while the discriminator evaluates the realism and alignment of the generated images. Their approach requires manual sketch creation as a conditional input, whereas our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
+The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a conditional Generative Adversarial Network (cGAN) architecture based on the pix2pix framework to synthesize seismic images from original seismic images with user-provided sketches. The generator network takes a sketch as input and learns to produce realistic seismic images matching its structural layout, while the discriminator evaluates the realism and alignment of the generated images. Their approach requires manual sketch creation as a conditional input, whereas our proposed method with context-oriented texture synthesis operates autonomously, generating the corresponding seismic textures without requiring manual intervention.
 
 
 \subsubsection{Comparative Analysis}
