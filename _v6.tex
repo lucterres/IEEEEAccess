@@ -435,7 +435,7 @@ The LBP is a more robust texture attribute successfully applied in medical image
     \centering
     \includegraphics[width=1\textwidth]{images/terre9.png}
     \caption{Synthetic Seismic Samples.}
-    \label{fig:placeholder}
+    \label{fig:synthetic_samples}
 \end{figure*}
 
 
@@ -483,7 +483,7 @@ Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.8
 
 \subsection{Qualitative Evaluation}
 
-We conducted the qualitative evaluation of the synthesized seismic image samples through a systematic process with the support of geoscientists, who are experts in the field. Our goal is to verify the synthesized samples quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic analysis and interpretation participated in this evaluation. We conducted the evaluation by having experts reviewing the seismic images, and selecting the different regions types by painting the salt bodies using a graphics computer program. We then compare the area painted by the expert with the ground truth established for the corresponding saline body of the seismic image. Then, we assessed the specialists accuracies by having them identifying salt bodies on twenty original seismic images of the dataset. Afterwards, they selected and painted (marked) the same types of areas on a set of thirty random synthetic seismic images. In addition, we warned the experts that we add some images for control without any saline body.
+We conducted the qualitative evaluation of the synthesized seismic image samples through a systematic process with the support of geoscientists, who are experts in the field. Our goal is to verify the synthesized samples quality, relevance, and reliability using the knowledge and experience of qualified professionals. Three geoscientists who routinely work in seismic analysis and interpretation participated in this evaluation. We conducted the evaluation by having experts reviewing the seismic images, and selecting the different regions types by painting the salt bodies using a graphics computer program. We then compare the area painted by the expert with the ground truth established for the corresponding saline body of the seismic image. Then, we assessed the specialists accuracies by having them identifying salt bodies on twenty original seismic images of the dataset. Afterwards, they selected and painted (marked) the same types of areas on a set of thirty random synthetic seismic images, examples of which are shown in Fig.~\ref{fig:synthetic_samples}. In addition, we warned the experts that we add some images for control without any saline body.
 
 To evaluate the results, the measures described in Section~\ref{eval:meas:sect} were calculated for each expert and for the group of experts, and we consolidate their averages and standard deviations. Table~\ref{tab:real_images_evaluation} shows these evaluations for 20 real seismic images, showing an average precision score of 0.88761, suggesting that experts identifications of saline rock portions were 88.7\% accurate, leaving 11.3\% misidentified as salt, which was actually common rock. The obtained average recall of 0.87795 indicates that 87.7\% of the saline rock portions were effectively identified, with a small remainder of 12.3\% missed salt portions. Considering the F1-score calculation, the specialists achieved an average score of 0.88159 for the real seismic images.
 
