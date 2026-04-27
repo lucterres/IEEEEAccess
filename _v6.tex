@@ -502,19 +502,19 @@ The following subsections present a detailed comparison based on the median valu
 
 \paragraph{Mean Squared Error (MSE)}
 
-The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. The sketch-based baseline method~\cite{Ferreira2020} achieved a median MSE of 4712.1 with their best-performing configuration. Our context-oriented approach achieved a median MSE of \textit{[TODO: F3 result]}, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
+The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. The sketch-based baseline method~\cite{Ferreira2020} achieved a median MSE of 4712.1 with their best-performing configuration. Our context-oriented approach achieved a median MSE of 2037.88, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
 
 \paragraph{Structural Similarity Distance (DSSIM)}
 
 The DSSIM measure, derived from SSIM as shown in Eq.~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity measure. Values closer to 0 indicate higher structural similarity between the images.
 
-In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39. Our method achieved a median DSSIM of \textit{[TODO: F3 result]}. Recall that a DSSIM value above 0.25 can be interpreted as ``low perceptual similarity.''
+In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39. Our method achieved a median DSSIM of 0.1537. Recall that a DSSIM value above 0.25 can be interpreted as ``low perceptual similarity.''
 
 \paragraph{LBP Distance}
 
 LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
 
-The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17. In contrast, our proposed method achieved a LBP Distance median of \textit{[TODO: F3 result]}, indicating that our method generated textures with substantially higher fidelity to the original images.
+The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17. In contrast, our proposed method achieved a LBP Distance median of 0.0283, indicating that our method generated textures with substantially higher fidelity to the original images.
 
 \paragraph{Discussion}
 
@@ -535,7 +535,7 @@ It is important to note that quantitative measures may not always align with qua
         \textbf{Method} & \textbf{MSE} & \textbf{DSSIM} & \textbf{LBP Distance} \\
         \midrule
         Ferreira \emph{et al.}~\cite{Ferreira2020} & 4712.1 & 0.39 & 0.17 \\
-        Proposed method & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} \\
+        Proposed method & 2037.88 & 0.1537 & 0.0283 \\
         \bottomrule
     \end{tabular}
 \end{table}
