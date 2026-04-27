@@ -1,0 +1,147 @@
+# Known Errors and Workarounds — Latexdiff for LaTeX Manuscripts
+
+## Error 1: DIFdel Wrapping List Items
+
+### Symptoms
+```
+! Argument of \DIFdel has an extra }.
+! Paragraph ended before \DIFdel was complete.
+```
+
+Repeated multiple times in the log, typically 5–10 occurrences in sequence.
+
+### Cause
+When an entire `\begin{itemize}` or `\begin{enumerate}` block is deleted, latexdiff generates one `\DIFdel{...}` per `\item`, wrapping them in fragmented AUX blocks:
+
+```latex
+\begin{itemize}%DIFAUXCMD
+%DIFDELCMD <     \item %%%
+\item%DIFAUXCMD
+\textbf{\DIFdel{Type A}}%DIFAUXCMD
+\DIFdel{: description text...
+    }%DIFDELCMD < \item %%%
+```
+
+LaTeX cannot process `\DIFdel` that spans list structure boundaries.
+
+### Fix
+Replace the entire fragmented block (from `%DIFDELCMD < \begin{itemize}` through `%DIFDELCMD < \end{itemize}`) with a comment:
+
+```latex
+% (Sketch types A-E deleted in this revision)
+```
+
+Same approach for `\begin{enumerate}`:
+```latex
+% (Training process steps deleted in this revision)
+```
+
+---
+
+## Error 2: DIFdelFL in Multi-Column Tables
+
+### Symptoms
+```
+! Argument of \DIFdelFL has an extra }.
+! Paragraph ended before \DIFdelFL was complete.
+! Missing } inserted.
+! Extra }, or forgotten \endgroup.
+```
+
+### Cause
+When a table with many columns (> 4) is replaced by a simpler table, latexdiff generates `\DIFdelFL{}` wrappers inside `\begin{tabular*}` cells, with dangling `%DIFDELCMD < & %%%` tokens:
+
+```latex
+\DIFdelFL{511.83 }%DIFDELCMD < & %%%
+\DIFdelFL{987.74  }%DIFDELCMD < & %%%
+```
+
+These fragment LaTeX's column parsing.
+
+### Fix
+Use a PowerShell regex replacement to rewrite the entire table block with a clean, markup-free version:
+
+```powershell
+$p = 'review.tex'
+$raw = Get-Content $p -Raw
+$replacement = @'
+\begin{table}[htbp]
+    \centering
+    \caption{<CAPTION>}
+    \label{<LABEL>}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Method} & \textbf{MSE} & \textbf{DSSIM} & \textbf{LBP Distance} \\
+        \midrule
+        Ferreira \emph{et al.}~\cite{Ferreira2020} & 4712.1 & 0.39 & 0.17 \\
+        Proposed method & 2037.88 & 0.1537 & 0.0283 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+'@
+$new = [regex]::Replace($raw,
+    '\\DIFdelend \\begin\{table\}\[htbp\][\s\S]*?\\DIFaddendFL \\end\{table\}',
+    $replacement, 1)
+Set-Content $p $new
+```
+
+---
+
+## Error 3: DIFdel Wrapping Nested Paragraph Subsection
+
+### Symptoms
+```
+! LaTeX Error: Not allowed in LR mode.
+! Extra }, or forgotten \endgroup.
+```
+
+### Cause
+Latexdiff wraps `\paragraph{...}` heading lines in `\DIFdel{}`, which is not allowed inside LaTeX's restricted horizontal mode for headings.
+
+```latex
+\paragraph{\DIFdel{GAN-Based Image Synthesis:}} %DIFAUXCMD
+```
+
+### Fix
+Replace the entire deleted `\paragraph{...}` block (heading + associated content + following list if any) with a comment:
+
+```latex
+% GAN-Based Image Synthesis section deleted in this revision
+```
+
+---
+
+## Error 4: Unicode Characters from Latexdiff
+
+### Symptoms
+```
+! LaTeX Error: Unicode character Ôö£ (U+251C)
+! LaTeX Error: Unicode character Ôòæ (U+2551)
+```
+
+### Cause
+Latexdiff occasionally inserts box-drawing Unicode characters (U+251C, U+2551, etc.) in its output on Windows when the terminal encoding is not UTF-8.
+
+### Fix
+These are non-fatal and can be ignored in `nonstopmode`. If they prevent compilation, strip them:
+
+```powershell
+$content = Get-Content review.tex -Encoding UTF8
+$content | ForEach-Object { $_ -replace '[^\x00-\x7F\u00C0-\u024F]', '' } |
+    Set-Content review_clean.tex -Encoding UTF8
+Move-Item review_clean.tex review.tex -Force
+```
+
+---
+
+## Decision Table: Error → Fix
+
+| Error Pattern | Root Cause | Fix |
+|---|---|---|
+| `Argument of \DIFdel has an extra }` | DIFdel inside list `\item` | Replace whole list with comment |
+| `Argument of \DIFdelFL has an extra }` | DIFdelFL inside tabular cell | Rewrite table without DIFdelFL |
+| `Paragraph ended before \DIFdel was complete` | DIFdel spans blank lines | Consolidate on one line or remove |
+| `Not allowed in LR mode` | DIFdel around `\paragraph{}` | Remove entire paragraph block |
+| `Unicode character U+251C` | latexdiff inserted box chars | Strip non-ASCII or ignore in nonstopmode |
+| Missing `review.pdf` after build | Fatal error in nonstopmode | Find `^!` in log and fix |
+| `??` citations in PDF | Single-pass compilation | Run pdflatex a second time |
