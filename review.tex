@@ -1,7 +1,7 @@
 \documentclass{ieeeaccess}
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL _v6_HEAD.tex   Fri Apr 24 15:44:11 2026
-%DIF ADD _v6.tex        Fri Apr 24 15:02:12 2026
+%DIF DEL _v6_base_419c68f.tex   Mon Apr 27 12:16:55 2026
+%DIF ADD _v6.tex                Fri Apr 24 18:21:24 2026
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -607,7 +607,9 @@ propose to design the synthesis experiments according to specific sketches types
 %DIFDELCMD < %%%
 \DIFdel{Considering the summary statistics presented in Table~\ref{tab:metricsSummary} for MSE, DSSIM, and LBP-DISTANCE across the four groups of seismic image regions and the totals, some conclusions may be obtained about the distribution of these measures. For the sake of clarity, Table~\ref{tab:metricsSummary} summarizes the values of these measures showing the minimum value ($min$), the largest value ($max$), the $1^{st.}$ }\DIFdelend \DIFaddbegin \DIFadd{fair comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\mbox{%DIFAUXCMD
 \cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-, we repeated the synthesis experiment using the F3 seismic dataset employed in their original work. The F3 dataset contains 3D post-stack seismic data from the Dutch North Sea, widely used as a benchmark in seismic interpretation and image synthesis. Following the same evaluation protocol, each synthetic image is compared against the original seismic image that served as its template, using MSE, DSSIM, }\DIFaddend and \DIFdelbegin \DIFdel{$3^{rd.}$ quantiles values ($Q1$ and $Q3$), as well as the median values ($median$), as welll as the totals considering all groups. The difference between $Q1$ and $Q3$ are named  Interquartile Range (IQR), and the difference between $max$ and $min$ are named simply as overall range.  
+, we repeated the synthesis experiment using the F3 seismic dataset employed in their original work. The F3 dataset contains 3D post-stack seismic data from the Dutch North Sea, widely used as a benchmark in seismic interpretation and image synthesis~\mbox{%DIFAUXCMD
+\cite{Baroni2018}}\hskip0pt%DIFAUXCMD
+. Following the same evaluation protocol, each synthetic image is compared against the original seismic image that served as its template, using MSE, DSSIM, }\DIFaddend and \DIFdelbegin \DIFdel{$3^{rd.}$ quantiles values ($Q1$ and $Q3$), as well as the median values ($median$), as welll as the totals considering all groups. The difference between $Q1$ and $Q3$ are named  Interquartile Range (IQR), and the difference between $max$ and $min$ are named simply as overall range.  
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
@@ -629,7 +631,7 @@ propose to design the synthesis experiments according to specific sketches types
 \DIFdelbegin %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-%DIF < LUCIANO: precisas mostrar o que estes grupos representam e como s├úo formados  - Ferreira propos 5 grupos e n├│s 4 precisas explicar porque da diferen├ºa
+%DIF < LUCIANO: precisas mostrar o que estes grupos representam e como são formados  - Ferreira propos 5 grupos e nós 4 precisas explicar porque da diferença
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
@@ -641,28 +643,10 @@ The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} emplo
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\paragraph{\DIFdel{Sketch Generation:}} %DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-\DIFdel{The method begins with hand-drawn, or computer-generated, sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
-}%DIFDELCMD < 
-
-%DIFDELCMD < \begin{itemize}
-% (Sketch types A-E deleted in this revision)%DIFAUXCMD
-%DIFDELCMD < \end{itemize}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-% GAN-Based Image Synthesis paragraph deleted in this revision
-\DIFdel{The core of the method proposed by Ferreira }\emph{\DIFdel{et al.}}%DIFAUXCMD
-\DIFdel{~\mbox{%DIFAUXCMD
-\cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend generator network takes \DIFdelbegin \DIFdel{the }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend sketch as input \DIFdelbegin \DIFdel{, }\DIFdelend and learns to produce realistic seismic images \DIFdelbegin \DIFdel{that match the sketches structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
-}%DIFDELCMD < \begin{enumerate}
-% (Training process steps deleted in this revision)%DIFAUXCMD
-%DIFDELCMD < \end{enumerate}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
+% The deleted Sketch Generation and GAN-Based Image Synthesis substructure
+% was simplified to avoid invalid latexdiff wrappers around list environments.
+\DIFdelbegin \DIFdel{Their approach consists of two main stages, including sketch generation and GAN-based image synthesis. }\DIFdelend
+\DIFaddbegin \DIFadd{The }\DIFaddend generator network takes \DIFaddbegin \DIFadd{a }\DIFaddend sketch as input and learns to produce realistic seismic images
 \DIFdel{Their proposed GAN-based approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, }\DIFdelend \DIFaddbegin \DIFadd{matching its structural layout, while the discriminator evaluates the realism and alignment of the generated images. Their approach requires manual sketch creation as a conditional input, whereas }\DIFaddend our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
 
 
@@ -677,13 +661,13 @@ five sketch types (A--E) were analysed, and the sketches types D and E were foun
 
 The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. \DIFdelbegin \DIFdel{While the }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend sketch-based \DIFdelbegin \DIFdel{method }\DIFdelend \DIFaddbegin \DIFadd{baseline method~\mbox{%DIFAUXCMD
 \cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-}\DIFaddend achieved a median MSE of 4712.1 with their best-performing \DIFdelbegin \DIFdel{sketch type, our }\DIFdelend \DIFaddbegin \DIFadd{configuration. Our }\DIFaddend context-oriented approach \DIFdelbegin \DIFdel{yielded }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median MSE of \DIFdelbegin \DIFdel{542.87. This result is approximately 8.7 times lower}\DIFdelend \DIFaddbegin \textit{[\DIFadd{TODO: F3 result}]}\DIFaddend , demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
+}\DIFaddend achieved a median MSE of 4712.1 with their best-performing \DIFdelbegin \DIFdel{sketch type, our }\DIFdelend \DIFaddbegin \DIFadd{configuration. Our }\DIFaddend context-oriented approach \DIFdelbegin \DIFdel{yielded }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median MSE of \DIFdelbegin \DIFdel{542.87. This result is approximately 8.7 times lower}\DIFdelend \DIFaddbegin \DIFadd{2037.88}\DIFaddend , demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
 
 \paragraph{Structural Similarity Distance (DSSIM)}
 
 The DSSIM measure, derived from SSIM as shown in Eq.~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity measure. \DIFdelbegin \DIFdel{In this context, DSSIM values }\DIFdelend \DIFaddbegin \DIFadd{Values }\DIFaddend closer to 0 indicate higher structural similarity between the images.
 
-In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39\DIFdelbegin \DIFdel{(with Sketch Type D)}\DIFdelend . Our method \DIFdelbegin \DIFdel{surpassed this benchmark, with Group 2 achieving }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median DSSIM of \DIFdelbegin \DIFdel{0.2424. This result is significantly better, as }\DIFdelend \DIFaddbegin \textit{[\DIFadd{TODO: F3 result}]}\DIFadd{. Recall that }\DIFaddend a DSSIM value above 0.25 can be interpreted as \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend low perceptual similarity.\DIFdelbegin \DIFdel{" While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
+In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39\DIFdelbegin \DIFdel{(with Sketch Type D)}\DIFdelend . Our method \DIFdelbegin \DIFdel{surpassed this benchmark, with Group 2 achieving }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median DSSIM of \DIFdelbegin \DIFdel{0.2424. This result is significantly better, as }\DIFdelend \DIFaddbegin \DIFadd{0.1537. Recall that }\DIFaddend a DSSIM value above 0.25 can be interpreted as \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend low perceptual similarity.\DIFdelbegin \DIFdel{" While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
 }\DIFdelend \DIFaddbegin \DIFadd{''
 }\DIFaddend 
 
@@ -691,7 +675,7 @@ In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved wa
 
 LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
 
-The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17\DIFdelbegin \DIFdel{(Sketch Type D)}\DIFdelend . In contrast, our proposed method \DIFdelbegin \DIFdel{best result was }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a LBP Distance median of \DIFdelbegin \DIFdel{0.0800 (Group 3). This value is less than half of the baseline}\DIFdelend \DIFaddbegin \textit{[\DIFadd{TODO: F3 result}]}\DIFaddend , indicating that our method generated textures with substantially higher fidelity to the original images.
+The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17\DIFdelbegin \DIFdel{(Sketch Type D)}\DIFdelend . In contrast, our proposed method \DIFdelbegin \DIFdel{best result was }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a LBP Distance median of \DIFdelbegin \DIFdel{0.0800 (Group 3). This value is less than half of the baseline}\DIFdelend \DIFaddbegin \DIFadd{0.0283}\DIFaddend , indicating that our method generated textures with substantially higher fidelity to the original images.
 \DIFdelbegin \DIFdel{Group 3 also demonstrated the most consistent texture feature quality.
 }\DIFdelend 
 
@@ -717,6 +701,7 @@ It is important to note that quantitative measures may not always align with qua
 %DIFDELCMD < \end{figure}
 %DIFDELCMD < 
 
+%DIFDELCMD < %%%
 \begin{table}[htbp]
     \centering
     \caption{Quantitative comparison on the F3 dataset (median values; lower is better).}
@@ -726,7 +711,7 @@ It is important to note that quantitative measures may not always align with qua
         \textbf{Method} & \textbf{MSE} & \textbf{DSSIM} & \textbf{LBP Distance} \\
         \midrule
         Ferreira \emph{et al.}~\cite{Ferreira2020} & 4712.1 & 0.39 & 0.17 \\
-        Proposed method & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} \\
+        Proposed method & 2037.88 & 0.1537 & 0.0283 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -800,7 +785,7 @@ Adapting the methodology to synthesize other complex geological features such as
 
 To enhance the method's generalizability and practical utility, investigating \textbf{Domain Adaptation} techniques to adapt the synthesis process across different seismic acquisition parameters, geological basins, and imaging conditions represents a crucial direction. Furthermore, incorporating additional conditioning variables such as depth, geological age, or depositional environment through \textbf{Conditional Generation} could provide finer control over the synthesis process and generate more geologically consistent samples.
 
-From a practical deployment perspective, conducting systematic studies on how synthetic data augmentation affects the performance of various seismic interpretation tasks through \textbf{Downstream Task Evaluation}ÔÇöincluding not only segmentation but also classification, detection, and attribute predictionÔÇöwould validate the method's broader impact. Additionally, optimizing the computational efficiency of the pipeline to enable \textbf{Real-time Synthesis} during active learning workflows, where models request specific types of synthetic samples to address their current weaknesses, would significantly enhance its practical value.
+From a practical deployment perspective, conducting systematic studies on how synthetic data augmentation affects the performance of various seismic interpretation tasks through \textbf{Downstream Task Evaluation}—including not only segmentation but also classification, detection, and attribute prediction—would validate the method's broader impact. Additionally, optimizing the computational efficiency of the pipeline to enable \textbf{Real-time Synthesis} during active learning workflows, where models request specific types of synthetic samples to address their current weaknesses, would significantly enhance its practical value.
 
 Looking forward, integrating seismic wave propagation physics and rock property constraints into the generation process through \textbf{Physics-informed Constraints} could further enhance the geological realism and interpretability of synthetic samples, representing a promising direction that bridges data-driven and physics-based approaches.
 
@@ -819,7 +804,7 @@ K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image recognit
 O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-Net: Convolutional networks for biomedical image segmentation,'' in \emph{Medical Image Computing and Computer-Assisted Intervention -- MICCAI 2015}, 2015, pp. 234--241.
 
 \bibitem{Henriques2021}
-L.~Henriques, S.~Colcher, R.~Milidi├║, A.~Bulc├úo, and P.~Barros, ``Generating data augmentation samples for semantic segmentation of salt bodies in a synthetic seismic image dataset,'' arXiv, Jun. 2021. [Online]. Available: http://arxiv.org/abs/2106.08269
+L.~Henriques, S.~Colcher, R.~Milidiú, A.~Bulcão, and P.~Barros, ``Generating data augmentation samples for semantic segmentation of salt bodies in a synthetic seismic image dataset,'' arXiv, Jun. 2021. [Online]. Available: http://arxiv.org/abs/2106.08269
 
 \bibitem{Li2020}
 K.~Li, S.~Chen, and G.~Hu, ``Seismic labeled data expansion using variational autoencoders,'' \emph{Artif. Intell. Geosci.}, vol. 1, pp. 24--30, Dec. 2020, doi: 10.1016/j.aiig.2020.12.002.
@@ -853,6 +838,11 @@ Y.~Zhou, R.~Xiao, D.~Lischinski, D.~Cohen-Or, and H.~Huang, ``Generating non-sta
 
 \bibitem{TGS2023}
 TGS Kaggle, ``TGS Salt Identification Challenge | Kaggle,'' 2023. [Online]. Available: https://www.kaggle.com/competitions/tgs-salt-identification-challenge/data
+\DIFaddbegin 
+
+\bibitem{Baroni2018}
+\DIFadd{L.~Baroni, R.~M.~Silva, R.~S.~Ferreira, D.~Chevitarese, D.~Szwarcman, and E.~Vital Brazil, ``Netherlands F3 Interpretation Dataset,'' Zenodo, Sep. 20, 2018, doi: 10.5281/zenodo.1422787.
+}\DIFaddend 
 
 \bibitem{Ferreira2020}
 R.~S.~Ferreira, J.~Noce, D.~A.~B.~Oliveira, and E.~V.~Brazil, ``Generating sketch-based synthetic seismic images with generative adversarial networks,'' \emph{IEEE Geoscience and Remote Sensing Letters}, vol. 17, no. 8, pp. 1460--1464, Aug. 2020, doi: 10.1109/LGRS.2019.2945680.
@@ -895,3 +885,4 @@ Recognition, Imaging Measurements and Computational Methods in Finance.
 
 \EOD
 \end{document}
+
