@@ -134,6 +134,52 @@ Move-Item review_clean.tex review.tex -Force
 
 ---
 
+## Error 5: `\DIFaddbegin` Disabled by `%` Comment
+
+### Symptoms
+```
+! Argument of \DIFaddFL has an extra }.
+! Paragraph ended before \DIFaddFL was complete.
+```
+
+Often appears after manually commenting out a deleted heading and keeping `\DIFaddbegin` on the same line.
+
+### Cause
+If a line starts with `% ... \DIFaddbegin`, LaTeX treats everything after `%` as comment, so `\DIFaddbegin` is not executed. A later `\DIFaddend` then becomes unmatched.
+
+### Fix
+Split into two lines:
+
+```latex
+% (Deleted subsection heading)
+\DIFaddbegin ...
+```
+
+---
+
+## Error 6: Mixed FL Markers Corrupting a Table Row
+
+### Symptoms
+```
+! Argument of \DIFaddFL has an extra }.
+! Missing } inserted.
+! Extra }, or forgotten \endgroup.
+```
+
+### Cause
+Latexdiff may split a single numeric/table cell with mixed add/delete markers across row boundaries, e.g.:
+
+```latex
+\DIFaddFL{3}\DIFaddendFL ,\DIFdelbeginFL ... \DIFdelendFL \DIFaddbeginFL \DIFaddFL{820}
+```
+
+This breaks both `\DIF...` grouping and tabular parsing.
+
+### Fix
+Replace the full table environment with a clean final table (no `\DIFaddFL`/`\DIFdelFL` inside cells). This is usually faster and safer than trying to patch cell-by-cell.
+
+---
+
 ## Decision Table: Error → Fix
 
 | Error Pattern | Root Cause | Fix |
@@ -143,5 +189,7 @@ Move-Item review_clean.tex review.tex -Force
 | `Paragraph ended before \DIFdel was complete` | DIFdel spans blank lines | Consolidate on one line or remove |
 | `Not allowed in LR mode` | DIFdel around `\paragraph{}` | Remove entire paragraph block |
 | `Unicode character U+251C` | latexdiff inserted box chars | Strip non-ASCII or ignore in nonstopmode |
+| `Argument of \DIFaddFL has an extra }` after `% ... \DIFaddbegin` | `\DIFaddbegin` commented out | Move `\DIFaddbegin` to next line |
+| `Missing } inserted` + `Extra }, or forgotten \endgroup` in table | Mixed FL markers in one row/cell | Replace full table with clean version |
 | Missing `review.pdf` after build | Fatal error in nonstopmode | Find `^!` in log and fix |
 | `??` citations in PDF | Single-pass compilation | Run pdflatex a second time |

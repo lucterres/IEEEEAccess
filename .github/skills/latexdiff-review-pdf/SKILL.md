@@ -14,7 +14,19 @@ argument-hint: '<commit-base> (optional git commit hash to compare against; defa
 
 ## Procedure
 
-### Step 1 — Identify Comparison Base
+### Step 1 — Define Base and New Versions
+
+Choose explicitly which file is the baseline and which is the updated manuscript.
+
+Example in this repository:
+- Base: `Jacob/_v6_Jacob.tex`
+- New: `_v6.tex`
+
+Or, if comparing with git history:
+- Base: `_v6_base.tex` exported from a commit
+- New: `_v6.tex`
+
+### Step 2 — Identify Comparison Base (Git mode)
 
 ```powershell
 cd "d:\0Code\_phdSeismic\IEEE_Access"
@@ -23,13 +35,21 @@ git log --oneline --decorate -10
 
 Use the commit hash provided by the user, or select the most meaningful ancestor commit (e.g., the last commit on `main` before current branch diverged).
 
-### Step 2 — Export Baseline Version
+### Step 3 — Export Baseline Version (Git mode)
 
 ```powershell
 git show <COMMIT_HASH>:_v6.tex > _v6_base.tex
 ```
 
-### Step 3 — Generate Diff with Latexdiff
+### Step 4 — Generate Diff with Latexdiff
+
+For direct file-to-file comparison:
+
+```powershell
+latexdiff --math-markup=0 --append-textcmd="PARstart" <BASE_FILE>.tex <NEW_FILE>.tex > review.tex
+```
+
+For commit-vs-working-tree comparison:
 
 ```powershell
 latexdiff --math-markup=0 --append-textcmd="PARstart" _v6_base.tex _v6.tex > review.tex
@@ -39,16 +59,19 @@ Required flags for this repository:
 - `--math-markup=0` — prevents invalid DIFdel inside math environments
 - `--append-textcmd="PARstart"` — marks `\PARstart` as safe text command
 
-### Step 4 — Check for Structural Errors
+If a section was heavily rewritten (lists turned into paragraphs/tables, table schema changed, moved subsections), expect manual cleanup in `review.tex` before successful build.
+
+### Step 5 — Check for Structural Errors
 
 ```powershell
 pdflatex -interaction=nonstopmode review.tex > review_build_check.log 2>&1
 Select-String "^!" review_build_check.log | Select-Object -First 20
+Select-String "l\.\d+" review_build_check.log | Select-Object -First 20
 ```
 
-If errors appear, proceed to [Step 5 — Fix Errors](./references/fix-errors.md). Otherwise skip to Step 6.
+If errors appear, proceed to [Step 6 — Fix Errors](./references/fix-errors.md). Otherwise skip to Step 7.
 
-### Step 5 — Fix Structural Errors (if any)
+### Step 6 — Fix Structural Errors (if any)
 
 See [fix-errors.md](./references/fix-errors.md) for the full catalogue of known errors and workarounds.
 
@@ -66,14 +89,23 @@ See [fix-errors.md](./references/fix-errors.md) for the full catalogue of known 
 3. **Paragraph-level DIFdel spanning blank lines**:
    Consolidate into a single `\DIFdel{full paragraph text}` on one line, or remove if too complex.
 
-### Step 6 — Compile (Two Passes)
+4. **`\textbf{\DIFdel{...}}` / `\textbf{\DIFadd{...}}` in rewritten list/table sections**:
+   Replace with plain `\textbf{...}` in that problematic block.
+
+5. **Broken mixed FL markers in table rows** (e.g., `\DIFaddFL{3}\DIFaddendFL ,\DIFdelbeginFL ...`):
+   Replace the entire affected table with a clean, markup-free table containing the final intended content.
+
+6. **Comment line accidentally swallowing `\DIFaddbegin`**:
+   Ensure `% comment` and `\DIFaddbegin` are on separate lines.
+
+### Step 7 — Compile (Two Passes)
 
 ```powershell
 pdflatex -interaction=nonstopmode review.tex > review_build1.log 2>&1
 pdflatex -interaction=nonstopmode review.tex > review_build2.log 2>&1
 ```
 
-### Step 7 — Validate Output
+### Step 8 — Validate Output
 
 ```powershell
 if (Test-Path review.pdf) {
@@ -90,7 +122,7 @@ Expected output:
 - Size ≥ 2 MB (for a ~15-page manuscript)
 - No `^!` errors in logs
 
-### Step 8 — Clean Up
+### Step 9 — Clean Up
 
 ```powershell
 Remove-Item _v6_base.tex -ErrorAction SilentlyContinue

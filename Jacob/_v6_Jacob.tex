@@ -1,7 +1,4 @@
-﻿\documentclass{ieeeaccess}
-%DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL Jacob/_v6_Jacob.tex   Mon Apr 27 17:04:02 2026
-%DIF ADD _v6.tex               Mon Apr 27 16:52:35 2026
+\documentclass{ieeeaccess}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -38,95 +35,6 @@
 ]{hyperref}
 
 %Your document starts from here ___________________________________________________
-%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
-%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
-\RequirePackage[normalem]{ulem} %DIF PREAMBLE
-\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}} %DIF PREAMBLE
-%DIF SAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
-\providecommand{\DIFaddend}{} %DIF PREAMBLE
-\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
-\providecommand{\DIFdelend}{} %DIF PREAMBLE
-\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
-\providecommand{\DIFmodend}{} %DIF PREAMBLE
-%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
-\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
-\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
-%DIF HYPERREF PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
-\newcommand{\DIFscaledelfig}{0.5}
-%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
-\RequirePackage{settobox} %DIF PREAMBLE
-\RequirePackage{letltxmacro} %DIF PREAMBLE
-\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
-\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
-\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
-% store original definition of \includegraphics %DIF PREAMBLE
-\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
-\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
-\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
-\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
-\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
-\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
-\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
-\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
-\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
-\begin{picture}(1,1)% %DIF PREAMBLE
-\thicklines\linethickness{2pt} %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
-\end{picture}% %DIF PREAMBLE
-}\hspace*{3pt}}} %DIF PREAMBLE
-} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-%DIF AMSMATHULEM PREAMBLE %DIF PREAMBLE
-\makeatletter %DIF PREAMBLE
-\let\sout@orig\sout %DIF PREAMBLE
-\renewcommand{\sout}[1]{\ifmmode\text{\sout@orig{\ensuremath{#1}}}\else\sout@orig{#1}\fi} %DIF PREAMBLE
-\makeatother %DIF PREAMBLE
-%DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
-\RequirePackage{listings} %DIF PREAMBLE
-\RequirePackage{color} %DIF PREAMBLE
-\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
-%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
-  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
-  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
-} %DIF PREAMBLE
-\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
-	language=DIFcode, %DIF PREAMBLE
-	basicstyle=\ttfamily, %DIF PREAMBLE
-	columns=fullflexible, %DIF PREAMBLE
-	keepspaces=true %DIF PREAMBLE
-} %DIF PREAMBLE
-\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
-\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
-\lstset{extendedchars=\true,inputencoding=utf8}
-
-%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
-
 \begin{document}
 \history{Date of publication 2025 12, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.2024.0429000}
@@ -146,7 +54,7 @@ Federal University of Rio Grande do Sul, Porto Alegre, RS, Brasil, 91501-970 (e-
 
 
 \begin{abstract}
-Advanced remote sensing and seismic image analysis and interpretation methods based on training robust machine learning models, which rely on large annotated datasets. However, obtaining such large annotated datasets is challenging in applications like offshore oil exploration, where expert annotation is costly and time-consuming. This work proposes a context-oriented data augmentation scheme for generating synthetic seismic images of salt dome structures with pixel-level mask labels. The proposed approach uses Variational Autoencoders (VAE) to learn and generate realistic salt body geometries, that are combined with a context-aware non-parametric texture synthesis method, to create seismic textures across three distinct zones: salt bodies, conventional rocks, and their boundaries. Using the TGS Salt Identification Challenge dataset as training data,  several generated synthetic samples were evaluated by three geoscientists and compared with a state-of-the-art seismic image synthesis method. The qualitative evaluation shows that the synthetic images are virtually indistinguishable from the real ones, with the experts F1-scores differing by less than 2\%. Furthermore, quantitative comparisons demonstrate substantial improvements over the baseline, achieving significantly lower pixel-wise error, higher structural similarity, and better texture fidelity. These results suggest the effectiveness of the proposed context-oriented approach for generating high-quality synthetic seismic training data, which is crucial for seismic image analysis and interpretation.
+Advanced remote sensing and seismic image analysis and interpretation methods based on  training robust machine learning models, which rely on large annotated datasets. However, obtaining such large annotated datasets is challenging in applications like offshore oil exploration, where expert annotation is costly and time-consuming. This work proposes a context-oriented data augmentation scheme for generating synthetic seismic images of salt dome structures with pixel-level mask labels. The proposed approach uses Variational Autoencoders (VAE) to learn and generate realistic salt body geometries, that are combined with a context-aware non-parametric texture synthesis method, to create seismic textures across three distinct zones: salt bodies, conventional rocks, and their boundaries. Using the TGS Salt Identification Challenge dataset as training data,  several generated synthetic samples were evaluated by three geoscientists and compared with a state-of-the-art seismic image synthesis method. The qualitative evaluation shows that the synthetic images are virtually indistinguishable from the real ones, with the experts F1-scores differing by less than 2\%. Furthermore, quantitative comparisons demonstrate substantial improvements over the baseline, achieving significantly lower pixel-wise error, higher structural similarity, and better texture fidelity. These results suggest the effectiveness of the proposed context-oriented approach for generating high-quality synthetic seismic training data, which is crucial for seismic image analysis and interpretation.
 \end{abstract}
 
 \begin{keywords}
@@ -441,32 +349,17 @@ The complete synthesis pipeline integrates the VAE-based context generation and 
 
 \begin{enumerate}
     \item \textbf{Qualitative Evaluation by Experts}: Experts try to identify the portions of salt dome structures inside the seismic samples, and each expert produces a mask label that will be compared with the mask generated by our proposed method. Quantitative measures, such as the F1 score, are used to evaluate the difference between the experts predictions and the proposed method synthesized masks. 
-
+    
     \item \textbf{Quantitative Comparison with the State-of-the-Art}:
-    The quantitative comparison is performed with the method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} since it is the representative of the state of the art that addresses the problem being tackled in our work. \DIFaddbegin \DIFadd{To enable a direct comparison, we repeated the synthesis experiment using the F3 seismic dataset employed in their original work. }\DIFaddend This comparison is based on three measures: mean squared error (MSE), structural similarity index (SSIM), and the Euclidean distance, using Local Binary Patterns (LBP) for texture attribute assessment. These measures quantify the similarity between the original seismic images and the \DIFdelbegin \DIFdel{sketch-guided }\DIFdelend synthetic samples generated by \DIFdelbegin \DIFdel{their GAN-based network~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-. We will }\DIFdelend \DIFaddbegin \DIFadd{each method. We }\DIFaddend evaluate our proposed method using the same measures \DIFaddbegin \DIFadd{and dataset }\DIFaddend to facilitate a direct \DIFaddbegin \DIFadd{and fair }\DIFaddend comparison with this \DIFaddbegin \DIFadd{state-of-the-art }\DIFaddend representative~\cite{Ferreira2020}\DIFdelbegin \DIFdel{of the state-of-the-art}\DIFdelend .
+    The quantitative comparison is performed with the method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} since it is the representative of the state of the art that addresses the problem being tackled in our work. This comparison  is based on three measures: mean squared error (MSE), structural similarity index (SSIM), and the Euclidean distance, using Local Binary Patterns (LBP) for texture attribute assessment. These measures quantify the similarity between the original seismic images and the sketch-guided synthetic samples generated by their GAN-based network~\cite{Ferreira2020}. We will evaluate our proposed method using the same measures to facilitate a direct comparison with this representative~\cite{Ferreira2020} of the state-of-the-art.   
 \end{enumerate}
 
 
 \subsection{Dataset}
 
-\DIFaddbegin \DIFadd{Two seismic datasets were used in this work for different evaluation purposes:
-}
+The salt body dataset from the TGS Salt Identification Challenge is used in these experiments. It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface. The photos are 101 x 101 pixels and each pixel is classified as either salt or sediment \cite{TGS2023}.
 
-\paragraph{\DIFadd{TGS Salt Identification Challenge Dataset}}
-\DIFaddend The salt body dataset from the TGS Salt Identification Challenge is \DIFdelbegin \DIFdel{used in these experiments}\DIFdelend \DIFaddbegin \DIFadd{employed for qualitative expert evaluation}\DIFaddend . It comprises 2D image slices representing a 3D view of the Earth's interior obtained through reflection seismology. The data is a set of images chosen randomly in the subsurface\DIFdelbegin \DIFdel{. The photos are }\DIFdelend \DIFaddbegin \DIFadd{, with dimensions of }\DIFaddend 101 x 101 pixels\DIFdelbegin \DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{, where }\DIFaddend each pixel is classified as either salt or sediment \cite{TGS2023}. \DIFaddbegin \DIFadd{This dataset enables assessment by geoscience domain experts to evaluate the visual quality and geological realism of synthetic seismic images.
-}\DIFaddend 
-
-\DIFaddbegin \paragraph{\DIFadd{F3 Seismic Dataset}}
-\DIFadd{The F3 dataset, containing 3D post-stack seismic data from the Dutch North Sea, is used for quantitative comparison with the state-of-the-art method proposed by Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-. This dataset is widely recognized as a benchmark in seismic interpretation and image synthesis research~\mbox{%DIFAUXCMD
-\cite{Baroni2018}}\hskip0pt%DIFAUXCMD
-. Using the same dataset and evaluation protocol as the baseline method ensures a direct and fair comparison based on quantitative metrics (MSE, DSSIM, and LBP Distance).
-}
-
-\DIFaddend \begin{figure}[htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/terre7.png}
     \caption{Comparison between a real seismic image sample, and the geoscience specialist selection in terms of saline area and ground truth (saline mask).}
@@ -497,29 +390,21 @@ The F1 score is a widely used measure for evaluating binary classification model
     \begin{equation}
     \text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
     \end{equation}
-
+    
 The F1 score is particularly valuable in classification situations, where the positive class tends to be rare. It helps to understand the trade-off between false positives and false negatives. Usually, the F1 score provides a balanced measure that is less susceptible to class distribution bias.
 
 We use the precision, recall, and F1-score measures to evaluate the salt bodies masks generated by the experts, and we can compute them using the confusion matrix derived from these expert-generated masks. To evaluate the quality of the synthesized samples, we evaluate the overlap between the experts selections of pixels corresponding to the salt bodies in synthetic images and synthetic images masks, as illustrated in Fig.~\ref{fig:expert1}. Fig.~\ref{fig:expert2} illustrates the ground truth image and the specialist evaluation of the salt bodies locations, and the computed precision, recall, and F1-score measures for this particular case.
 
-Regarding quantitative comparison, following the methodology proposed by Ferreira \emph{et al.}~\cite{Ferreira2020}, \DIFdelbegin \DIFdel{is used to assess the quality of the synthesized seismic image samples by comparing }\DIFdelend each synthetic image \DIFdelbegin \DIFdel{with }\DIFdelend \DIFaddbegin \DIFadd{is compared against }\DIFaddend the original seismic image that \DIFdelbegin \DIFdel{serves as a template. The template is the basis for producing the sketches, as shown in Fig.~\ref{fig:sketches}, which guide the seismic samples syntheses. }\DIFdelend \DIFaddbegin \DIFadd{served as its template. }\DIFaddend To this end, we use the measures mean squared error (MSE), Structural Similarity Index (SSIM), and Euclidean distance between the original template image and the synthetic images based on the Local Binary Pattern (LBP) texture attribute.
+Regarding quantitative comparison, following the methodology proposed by Ferreira \emph{et al.}~\cite{Ferreira2020}, is used to assess the quality of the synthesized seismic image samples by comparing each synthetic image with the original seismic image that serves as a template. The template is the basis for producing the sketches, as shown in Fig.~\ref{fig:sketches}, which guide the seismic samples syntheses. To this end, we use the measures mean squared error (MSE), Structural Similarity Index (SSIM), and Euclidean distance between the original template image and the synthetic images based on the Local Binary Pattern (LBP) texture attribute.
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{images/terre8}
+	\caption{Image sketches based on the original seismic templates.}
+	\label{fig:sketches}
+\end{figure}
 
-
-\DIFdelbegin %DIFDELCMD < \begin{figure}[htbp]
-%DIFDELCMD < 	\centering
-%DIFDELCMD < 	\includegraphics[width=1\linewidth]{images/terre8}
-%DIFDELCMD < 	%%%
-%DIFDELCMD < \caption{%
-{%DIFAUXCMD
-\DIFdelFL{Image sketches based on the original seismic templates.}}
-	%DIFAUXCMD
-%DIFDELCMD < \label{fig:sketches}
-%DIFDELCMD < \end{figure}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdelend The MSE defines a pixel-to-pixel distance between two images. We calculate it as follows:  subtract each synthetic pixel value from the real one, square each error (this eliminates negative signs and penalizes larger errors), and finally take the average of these squares:
+The MSE defines a pixel-to-pixel distance between two images. We calculate it as follows:  subtract each synthetic pixel value from the real one, square each error (this eliminates negative signs and penalizes larger errors), and finally take the average of these squares:
 
 \begin{equation}
 \label{eq:mse}
@@ -605,192 +490,117 @@ Table~\ref{tab:synthetic_images_evaluation} shows the evaluation  results for 30
 
 Comparing the results of the geoscience specialist evaluation of real and synthetic seismic images, a small difference of less than 2\% can be observed in favor of the real images. Therefore, from the perspective of the specialists evaluations, the synthetic seismic images are virtually indistinguishable from the real seismic images. In that sense, we can conclude that, from the point of view of the geoscience specialists consulted, the synthetic images are comparable to the real seismic images.
 
-\subsection{Quantitative Evaluation}
+\subsection{Quantitative Evaluation} 
 
-\DIFdelbegin \DIFdel{Ferreira et al.~\mbox{%DIFAUXCMD
-\cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-propose to design the synthesis experiments according to specific sketches types, or configurations of seismic regional types (see Fig.~\ref{fig:sketches}). Therefore, in order to make }\DIFdelend \DIFaddbegin \DIFadd{To enable }\DIFaddend a direct and \DIFdelbegin \DIFdel{meaningful comparison between the proposed approach and the comparable state-of-the-art approach proposed by Ferreira et al.~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-(since both methods approach basically the same problem), we organized our experimental analysis into four groups of samples, each corresponding to a specific sketch type or configuration, as shown in Fig.~\ref{fig:sketches}, since these sketches are analogous to sketches evaluated in Ferreira et al.~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-. As proposed in Ferreira et al., different sketch types (A--E) should be used to guide the generation of synthetic seismic images, with each type representing a distinct level of structural and textural detail. Similarly, the four groups of samples used in our work reflect variations in input conditions or synthesis parameters that parallel the diversity of sketches in the baseline study~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-. This design of experiments in groups allows to systematically assess the robustness and adaptability of our proposed method under scenarios comparable to those available in the literature, and to provide a fair, group-wise performance comparison across key quantitative measures. The comparison results for each group are presented in detail in Fig.~\ref{fig:placeholder} and in Table~\ref{tab:metricsSummary}. }%DIFDELCMD < 
+Ferreira et al.~\cite{Ferreira2020} propose to design the synthesis experiments according to specific sketches types, or configurations of seismic regional types (see Fig.~\ref{fig:sketches}). Therefore, in order to make a direct and meaningful comparison between the proposed approach and the comparable state-of-the-art approach proposed by Ferreira et al.~\cite{Ferreira2020} (since both methods approach basically the same problem), we organized our experimental analysis into four groups of samples, each corresponding to a specific sketch type or configuration, as shown in Fig.~\ref{fig:sketches}, since these sketches are analogous to sketches evaluated in Ferreira et al.~\cite{Ferreira2020}. As proposed in Ferreira et al., different sketch types (A--E) should be used to guide the generation of synthetic seismic images, with each type representing a distinct level of structural and textural detail. Similarly, the four groups of samples used in our work reflect variations in input conditions or synthesis parameters that parallel the diversity of sketches in the baseline study~\cite{Ferreira2020}. This design of experiments in groups allows to systematically assess the robustness and adaptability of our proposed method under scenarios comparable to those available in the literature, and to provide a fair, group-wise performance comparison across key quantitative measures. The comparison results for each group are presented in detail in Fig.~\ref{fig:placeholder} and in Table~\ref{tab:metricsSummary}.
 
-%DIFDELCMD < %%%
-\DIFdel{Considering the summary statistics presented in Table~\ref{tab:metricsSummary} for MSE, DSSIM, and LBP-DISTANCE across the four groups of seismic image regions and the totals, some conclusions may be obtained about the distribution of these measures. For the sake of clarity, Table~\ref{tab:metricsSummary} summarizes the values of these measures showing the minimum value ($min$), the largest value ($max$), the $1^{st.}$ }\DIFdelend \DIFaddbegin \DIFadd{fair comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\mbox{%DIFAUXCMD
-\cite{Ferreira2020}}\hskip0pt%DIFAUXCMD
-, we repeated the synthesis experiment using the F3 seismic dataset employed in their original work. The F3 dataset contains 3D post-stack seismic data from the Dutch North Sea, widely used as a benchmark in seismic interpretation and image synthesis~\mbox{%DIFAUXCMD
-\cite{Baroni2018}}\hskip0pt%DIFAUXCMD
-. Following the same evaluation protocol, each synthetic image is compared against the original seismic image that served as its template, using MSE, DSSIM, }\DIFaddend and \DIFdelbegin \DIFdel{$3^{rd.}$ quantiles values ($Q1$ and $Q3$), as well as the median values ($median$), as welll as the totals considering all groups. The difference between $Q1$ and $Q3$ are named  Interquartile Range (IQR), and the difference between $max$ and $min$ are named simply as overall range.  
-}%DIFDELCMD < 
+Considering the summary statistics presented in Table~\ref{tab:metricsSummary} for MSE, DSSIM, and LBP-DISTANCE across the four groups of seismic image regions and the totals, some conclusions may be obtained about the distribution of these measures. For the sake of clarity, Table~\ref{tab:metricsSummary} summarizes the values of these measures showing the minimum value ($min$), the largest value ($max$), the $1^{st.}$ and $3^{rd.}$ quantiles values ($Q1$ and $Q3$), as well as the median values ($median$), as welll as the totals considering all groups. The difference between $Q1$ and $Q3$ are named  Interquartile Range (IQR), and the difference between $max$ and $min$ are named simply as overall range.  
 
-%DIFDELCMD < %%%
-\DIFdel{By analyzing the Mean Squared Error, group 3 achieved the best performance, consistently showing the lowest MSE, with a median of 542.87, indicating that this group 3 generally had the smallest errors. Group 4 has the highest median MSE at 1093.89, suggesting that it had the most significant typical errors and the worst performance observed. Group 3 is the most consistent, having the smallest Interquartile Range (IQR = 20.96) and the smallest overall range (109.04), meaning its errors are tightly clustered. Group 1 is the least consistent with a large overall range of 380.69. The total distribution shows larges IQR (362.28) and overall range (690.63), respectively, which is expected when combining the wide range of measures values from the individual groups.
-}%DIFDELCMD < 
+By analyzing the Mean Squared Error, group 3 achieved the best performance, consistently showing the lowest MSE, with a median of 542.87, indicating that this group 3 generally had the smallest errors. Group 4 has the highest median MSE at 1093.89, suggesting that it had the most significant typical errors and the worst performance observed. Group 3 is the most consistent, having the smallest Interquartile Range (IQR = 20.96) and the smallest overall range (109.04), meaning its errors are tightly clustered. Group 1 is the least consistent with a large overall range of 380.69. The total distribution shows larges IQR (362.28) and overall range (690.63), respectively, which is expected when combining the wide range of measures values from the individual groups.
 
-%DIFDELCMD < %%%
-\DIFdel{Regarding DSSIM, which is a measure where lower values indicate greater similarity, Group 2 achieves the lowest median DSSIM of 0.2424, indicating the highest structural quality (least distortion/most similarity) compared to the other groups. Group 2 also is the most consistent, since it has the smallest IQR (0.0080) and overall range (0.0293). It is worth observing that all groups show relatively low variability in terms of DSSIM as compared to MSE.
-}%DIFDELCMD < 
+Regarding DSSIM, which is a measure where lower values indicate greater similarity, Group 2 achieves the lowest median DSSIM of 0.2424, indicating the highest structural quality (least distortion/most similarity) compared to the other groups. Group 2 also is the most consistent, since it has the smallest IQR (0.0080) and overall range (0.0293). It is worth observing that all groups show relatively low variability in terms of DSSIM as compared to MSE.
 
-%DIFDELCMD < %%%
-\DIFdel{Regarding LBP (Local Binary Pattern) Distance , a measure often used for texture analysis where a lower distance indicates higher similarity in texture features, Group 3 has the lowest median LBP Distance of 0.0800, indicating the highest fidelity in texture features. Group 3 is also the most consistent with the smallest IQR (0.0200), in a tie with Group 4. However, Group 3 has the smallest overall range (0.0700), making it the overall most stable in terms of texture-feature quality.
-}%DIFDELCMD < 
+Regarding LBP (Local Binary Pattern) Distance, a measure often used for texture analysis where a lower distance indicates higher similarity in texture features, Group 3 has the lowest median LBP Distance of 0.0800, indicating the highest fidelity in texture features. Group 3 is also the most consistent with the smallest IQR (0.0200), in a tie with Group 4. However, Group 3 has the smallest overall range (0.0700), making it the overall most stable in terms of texture-feature quality.
 
-%DIFDELCMD < %%%
-\DIFdel{Based on the three measures, Group 3 consistently shows the best overall performance with the lowest median and lowest variability (IQR and overall range) for both MSE (error magnitude) and LBP-DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in terms of DSSIM, which indicates higher structural similarity. The box plot in Fig.~\ref{fig:boxplots} confirms the groups performances in the DSSIM measure}\DIFdelend \DIFaddbegin \DIFadd{LBP Distance as described in Section~\ref{eval:meas:sect}. The quantitative results obtained by the proposed method on the F3 dataset are presented in Table~\ref{tab:metricsSummary} and discussed in the comparison below}\DIFaddend .
+Based on the three measures, Group 3 consistently shows the best overall performance with the lowest median and lowest variability (IQR and overall range) for both MSE (error magnitude) and LBP-DISTANCE (texture quality). Group 2 is highly competitive, showing the best performance in terms of DSSIM, which indicates higher structural similarity. The box plot in Fig.~\ref{fig:boxplots} confirms the groups performances in the DSSIM measure.
 
-%DIF <  LUCIANO: precisas mostrar o que estes grupos representam e como são formados  - Ferreira propos 5 grupos e nós 4 precisas explicar porque da diferença
-\DIFdelbegin %DIFDELCMD < 
+% LUCIANO: precisas mostrar o que estes grupos representam e como são formados  - Ferreira propos 5 grupos e nós 4 precisas explicar porque da diferença
 
-%DIFDELCMD < %%%
-\DIFdelend \subsection{Comparison with the State-of-the-Art}
+\subsection{Comparison with the State-of-the-Art}
 
-To provide a quantitative comparison \DIFaddbegin \DIFadd{on the F3 dataset}\DIFaddend , we evaluated our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}\DIFdelbegin \DIFdel{, our }\DIFdelend \DIFaddbegin \DIFadd{. Our }\DIFaddend results are shown in Table~\ref{tab:metricsSummary} \DIFdelbegin \DIFdel{and the results obtained }\DIFdelend \DIFaddbegin \DIFadd{alongside the results reported }\DIFaddend by Ferreira \emph{et al.}~\cite{Ferreira2020} \DIFdelbegin \DIFdel{are shown in Table I (obtained from }\DIFdelend \DIFaddbegin \DIFadd{in }\DIFaddend their original work\DIFdelbegin \DIFdel{)}\DIFdelend . Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance.
+To provide a quantitative comparison, we evaluated our proposed method against the sketch-based approach of Ferreira \emph{et al.}~\cite{Ferreira2020}, our results are shown in Table~\ref{tab:metricsSummary} and the results obtained by Ferreira \emph{et al.}~\cite{Ferreira2020} are shown in Table I (obtained from their original work). Both methodologies measure the similarity between synthetic and original seismic images using three key measures: Mean Squared Error (MSE), Structural Similarity Dissimilarity (DSSIM), and Euclidean Distance based on Local Binary Patterns (LBP Distance). For these measures, lower values signify better performance.
 
-The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a \DIFaddbegin \DIFadd{conditional }\DIFaddend Generative Adversarial Network (\DIFdelbegin \DIFdel{GAN) architecture }\DIFdelend \DIFaddbegin \DIFadd{cGAN) architecture based on the pix2pix framework }\DIFaddend to synthesize seismic images from \DIFdelbegin \DIFdel{user-provided sketches. Their approach consists of two main stages:
-}%DIFDELCMD < 
+The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a Generative Adversarial Network (GAN) architecture to synthesize seismic images from user-provided sketches. Their approach consists of two main stages:
 
-%DIFDELCMD < %%%
-\paragraph{\DIFdel{Sketch Generation:}} %DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-\DIFdel{The method begins with hand-drawn, or computer-generated, sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
-}%DIFDELCMD < 
+\paragraph{Sketch Generation:} The method begins with hand-drawn, or computer-generated, sketches that represent the desired geological structures in the target seismic image. These sketches serve as conditional inputs that guide the image generation process. The authors evaluated five different sketch types (A through E), varying in complexity and level of detail:
 
-%DIFDELCMD < \begin{itemize}
-\begin{itemize}%DIFAUXCMD
-%DIFDELCMD <     \item %%%
-\item%DIFAUXCMD
-\textbf{Type A}
-\DIFdel{: Basic contour sketches showing only the main boundaries;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\textbf{Type B}
-\DIFdel{: Enhanced contours with additional structural details;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\textbf{Type C}
-\DIFdel{: Sketches incorporating intensity gradients;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\textbf{Type D}
-\DIFdel{: Detailed sketcheswith textural hints;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\textbf{Type E}
-\DIFdel{: Comprehensive sketches combining structural and textural information. }
-\end{itemize}%DIFAUXCMD
-%DIFDELCMD < \end{itemize}
-%DIFDELCMD < 
+\begin{itemize}
+    \item \textbf{Type A}: Basic contour sketches showing only the main boundaries;
+    \item \textbf{Type B}: Enhanced contours with additional structural details;
+    \item \textbf{Type C}: Sketches incorporating intensity gradients;
+    \item \textbf{Type D}: Detailed sketches with textural hints;
+    \item \textbf{Type E}: Comprehensive sketches combining structural and textural information.
+\end{itemize}
 
-%DIFDELCMD < %%%
-\paragraph{\DIFdel{GAN-Based Image Synthesis:}} %DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-\DIFdel{The core of the method proposed by Ferreira }\emph{\DIFdel{et al.}}%DIFAUXCMD
-\DIFdel{~\mbox{%DIFAUXCMD
-\cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The }\DIFdelend \DIFaddbegin \DIFadd{original seismic images with user-provided sketches. The }\DIFaddend generator network takes \DIFdelbegin \DIFdel{the }\DIFdelend \DIFaddbegin \DIFadd{a }\DIFaddend sketch as input \DIFdelbegin \DIFdel{, }\DIFdelend and learns to produce realistic seismic images \DIFdelbegin \DIFdel{that match the sketches structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
-}%DIFDELCMD < \begin{enumerate}
-\begin{enumerate}%DIFAUXCMD
-%DIFDELCMD <     \item %%%
-\item%DIFAUXCMD
-\DIFdel{Training the generator to map sketches to realistic seismic images;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\DIFdel{Training the discriminator to distinguish between real and synthetic seismic images;
-    }%DIFDELCMD < \item %%%
-\item%DIFAUXCMD
-\DIFdel{Optimizing both networks through adversarial training until convergence. }
-\end{enumerate}%DIFAUXCMD
-%DIFDELCMD < \end{enumerate}
-%DIFDELCMD < 
+\paragraph{GAN-Based Image Synthesis:} The core of the method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} employs a conditional GAN (cGAN) architecture based on the pix2pix framework. The generator network takes the sketch as input, and learns to produce realistic seismic images that match the sketches structural layout. The discriminator network evaluates whether the generated images are realistic and properly aligned with the input sketches. The training process involves:
+\begin{enumerate}
+    \item Training the generator to map sketches to realistic seismic images;
+    \item Training the discriminator to distinguish between real and synthetic seismic images;
+    \item Optimizing both networks through adversarial training until convergence.
+\end{enumerate}
 
-%DIFDELCMD < %%%
-\DIFdel{Their proposed GAN-based approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, our proposed VAE-based }\DIFdelend \DIFaddbegin \DIFadd{matching its structural layout, while the discriminator evaluates the realism and alignment of the generated images. Their approach requires manual sketch creation as a conditional input, whereas our proposed }\DIFaddend method with context-oriented texture synthesis operates autonomously, generating \DIFdelbegin \DIFdel{both the structural masks and the }\DIFdelend \DIFaddbegin \DIFadd{the }\DIFaddend corresponding seismic textures without requiring manual \DIFdelbegin \DIFdel{sketch creation}\DIFdelend \DIFaddbegin \DIFadd{intervention}\DIFaddend .
+Their proposed GAN-based approach offers flexibility in controlling the output through user-defined sketches, but requires manual intervention to create appropriate sketch inputs. In contrast, our proposed VAE-based method with context-oriented texture synthesis operates autonomously, generating both the structural masks and the corresponding seismic textures without requiring manual sketch creation.
 
 
 \subsubsection{Comparative Analysis}
 
-\DIFdelbegin \DIFdel{In Ferreira }\emph{\DIFdel{et al.}}%DIFAUXCMD
-\DIFdel{~\mbox{%DIFAUXCMD
-\cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-five sketch types (A--E) were analysed, and the sketches types D and E were found to produce the best results. In our work, we analyzed four distinct groups, with Group 3 achieving the better, most consistent, performance. The subsequent }\DIFdelend \DIFaddbegin \DIFadd{The following }\DIFaddend subsections present a detailed comparison based on the median values of the measurements \DIFaddbegin \DIFadd{on the F3 dataset}\DIFaddend , which offer a robust measure of each method\DIFaddbegin \DIFadd{'s }\DIFaddend typical performance. \DIFaddbegin \DIFadd{The formal definitions of MSE, DSSIM, and LBP Distance are provided in Section~\ref{eval:meas:sect}.
-}\DIFaddend 
+In Ferreira \emph{et al.}~\cite{Ferreira2020} five sketch types (A--E) were analysed, and the sketches types D and E were found to produce the best results. In our work, we analyzed four distinct groups, with Group 3 achieving the better, most consistent, performance. The subsequent subsections present a detailed comparison based on the median values of the measurements, which offer a robust measure of each method typical performance.
 
-\DIFdelbegin \paragraph{\DIFdel{Mean Squared Error (MSE)}}
-%DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-%DIFDELCMD < 
+\paragraph{Mean Squared Error (MSE)}
 
-%DIFDELCMD < %%%
-\DIFdel{The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity.
-While the }\DIFdelend \DIFaddbegin \DIFadd{The }\DIFaddend sketch-based \DIFdelbegin \DIFdel{method }\DIFdelend \DIFaddbegin \DIFadd{baseline method~\mbox{%DIFAUXCMD
-\cite{Ferreira2020} }\hskip0pt%DIFAUXCMD
-}\DIFaddend achieved a median MSE of 4712.1 with their best-performing \DIFdelbegin \DIFdel{sketch type, our }\DIFdelend \DIFaddbegin \DIFadd{configuration. Our }\DIFaddend context-oriented approach \DIFdelbegin \DIFdel{yielded }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median MSE of \DIFdelbegin \DIFdel{542.87. This result is approximately 8.7 times lower}\DIFdelend \DIFaddbegin \DIFadd{2037.88}\DIFaddend , demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
+The Mean Squared Error (MSE) measures the pixel-wise distance between two images, with lower values indicating a closer match in intensity. While the sketch-based method achieved a median MSE of 4712.1 with their best-performing sketch type, our context-oriented approach yielded a median MSE of 542.87. This result is approximately 8.7 times lower, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
 
-\DIFdelbegin \paragraph{\DIFdel{Structural Similarity Distance (DSSIM)}}
-%DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-%DIFDELCMD < 
+\paragraph{Structural Similarity Distance (DSSIM)}
 
-%DIFDELCMD < %%%
-\DIFdel{The DSSIM measure, derived from SSIM as shown in Eq.~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity measure. In this context, DSSIM values closer to 0 indicate higher structural similarity between the images.
-}%DIFDELCMD < 
+The DSSIM measure, derived from SSIM as shown in Eq.~\ref{eq:mse2}, transforms a structural similarity measure into a dissimilarity measure. In this context, DSSIM values closer to 0 indicate higher structural similarity between the images.
 
-%DIFDELCMD < %%%
-\DIFdelend In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39\DIFdelbegin \DIFdel{(with Sketch Type D)}\DIFdelend . Our method \DIFdelbegin \DIFdel{surpassed this benchmark, with Group 2 achieving }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a median DSSIM of \DIFdelbegin \DIFdel{0.2424. This result is significantly better, as }\DIFdelend \DIFaddbegin \DIFadd{0.1537. Recall that }\DIFaddend a DSSIM value above 0.25 can be interpreted as \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend low perceptual similarity.\DIFdelbegin \DIFdel{" While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
-}\DIFdelend \DIFaddbegin \DIFadd{''
-}\DIFaddend 
+In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39 (with Sketch Type D). Our method surpassed this benchmark, with Group 2 achieving a median DSSIM of 0.2424. This result is significantly better, as a DSSIM value above 0.25 can be interpreted as "low perceptual similarity." While the baseline result falls into this range, our Group 2 median is just below this threshold. Furthermore, Group 2 was not only the top performer in structural quality but also the most consistent, showing the smallest Interquartile Range (IQR) of 0.0080.
 
-\DIFdelbegin \paragraph{\DIFdel{LBP Distance}}
-%DIFAUXCMD
-\addtocounter{paragraph}{-1}%DIFAUXCMD
-%DIFDELCMD < 
+\paragraph{LBP Distance}
 
-%DIFDELCMD < %%%
-\DIFdel{LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
-}%DIFDELCMD < 
+LBP Distance measures texture similarity by calculating the Euclidean distance between Local Binary Pattern (LBP) feature vectors. Lower values signify a closer match in textural features.
 
-%DIFDELCMD < %%%
-\DIFdelend The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17\DIFdelbegin \DIFdel{(Sketch Type D)}\DIFdelend . In contrast, our proposed method \DIFdelbegin \DIFdel{best result was }\DIFdelend \DIFaddbegin \DIFadd{achieved }\DIFaddend a LBP Distance median of \DIFdelbegin \DIFdel{0.0800 (Group 3). This value is less than half of the baseline}\DIFdelend \DIFaddbegin \DIFadd{0.0283}\DIFaddend , indicating that our method generated textures with substantially higher fidelity to the original images.
-\DIFdelbegin \DIFdel{Group 3 also demonstrated the most consistent texture feature quality.
-}\DIFdelend 
-
-% (Deleted paragraph heading: Discussion)
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdelend Overall, our proposed context-oriented synthesis approach tends to obtain a better quantitative performance across all three measures when compared to the sketch-based method proposed in Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in terms of the MSE and LBP distance measures, \DIFdelbegin \DIFdel{where our proposed method achieves significantly lower median values, }\DIFdelend suggesting notable gains in terms of pixel-level accuracy and texture fidelity.
-
-It is important to note that quantitative measures may not always align with qualitative human assessment. \DIFdelbegin \DIFdel{For instance, the baseline study observed that while their Sketch Type D had the best quantitative scores for DSSIM and LBP Distance, their Sketch Type E produced more visually realistic images. }\DIFdelend In our work, we supplemented our quantitative findings with a detailed qualitative analysis by domain experts. The experts evaluations concluded that the synthetic images were virtually indistinguishable from the real ones, a finding supported by an F1-score difference of less than 2\%.
+The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17 (Sketch Type D). In contrast, our proposed method best result was a LBP Distance median of 0.0800 (Group 3). This value is less than half of the baseline, indicating that our method generated textures with substantially higher fidelity to the original images. Group 3 also demonstrated the most consistent texture feature quality.
 
 
-\DIFdelbegin %DIFDELCMD < \begin{figure}[htbp]
-%DIFDELCMD < 	\centering
-%DIFDELCMD < 	\includegraphics[width=1\linewidth]{images/terre11}
-%DIFDELCMD < 	%%%
-%DIFDELCMD < \caption{%
-{%DIFAUXCMD
-\DIFdelFL{Box plot of DSSIM values for sketches groups.}}
-	%DIFAUXCMD
-%DIFDELCMD < \label{fig:boxplots}
-%DIFDELCMD < \end{figure}
-%DIFDELCMD < 
+\paragraph{Discussion}
 
-%DIFDELCMD < %%%
-\DIFdelend \begin{table}[htbp]
+Overall, our proposed context-oriented synthesis approach tends to obtain a better quantitative performance across all three measures when compared to the sketch-based method proposed in Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in terms of the MSE and LBP distance measures, where our proposed method achieves significantly lower median values, suggesting notable gains in terms of pixel-level accuracy and texture fidelity.
+
+It is important to note that quantitative measures may not always align with qualitative human assessment. For instance, the baseline study observed that while their Sketch Type D had the best quantitative scores for DSSIM and LBP Distance, their Sketch Type E produced more visually realistic images. In our work, we supplemented our quantitative findings with a detailed qualitative analysis by domain experts. The experts evaluations concluded that the synthetic images were virtually indistinguishable from the real ones, a finding supported by an F1-score difference of less than 2\%.
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{images/terre11}
+	\caption{Box plot of DSSIM values for sketches groups.}
+	\label{fig:boxplots}
+\end{figure}
+
+
+\begin{table}[htbp]
     \centering
-    \caption{\DIFaddbeginFL \DIFaddFL{Quantitative comparison on the F3 dataset (median values; lower is better)}\DIFaddendFL .}
+    \caption{Summary statistics for MSE, DSSIM, and LBP Distance across four groups and total.}
     \label{tab:metricsSummary}
-    \begin{tabular}{lccc}
-        \toprule
-        \textbf{\DIFaddbeginFL \DIFaddFL{Method}\DIFaddendFL } & \textbf{\DIFaddbeginFL \DIFaddFL{MSE}\DIFaddendFL } & \textbf{\DIFaddbeginFL \DIFaddFL{DSSIM}\DIFaddendFL } & \textbf{\DIFaddbeginFL \DIFaddFL{LBP Distance}\DIFaddendFL } \\
-        \midrule
-        % (Deleted: old 6-column table body replaced by new 3-column table)
-        Ferreira \emph{et al.}~\cite{Ferreira2020} & 4712.1 & 0.39 & 0.17 \\
-        Proposed method & 2037.88 & 0.1537 & 0.0283 \\
-        \bottomrule
-    \end{tabular}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc}
+        \textbf{Metrics}
+        & \textbf{Group 1} & \textbf{Group 2} & \textbf{Group 3} & \textbf{Group 4} & \textbf{Total} \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{MSE}} \\
+		\midrule
+		Min    & 718.12  & 651.21 & 511.83 & 987.74  & 511.83 \\
+		Q1     & 855.92  & 686.99 & 535.13 & 1056.76 & 643.62 \\
+		Median & 916.33  & 718.47 & 542.87 & 1093.89 & 779.19 \\
+		Q3     & 963.64  & 740.92 & 556.09 & 1127.13 & 1005.90 \\
+		Max    & 1098.81 & 794.37 & 620.87 & 1202.46 & 1202.46 \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{DSSIM}} \\
+		\midrule
+		Min    & 0.2544 & 0.2279 & 0.2608 & 0.2683 & 0.2279 \\
+		Q1     & 0.2741 & 0.2395 & 0.2701 & 0.2842 & 0.2567 \\
+		Median & 0.2814 & 0.2424 & 0.2746 & 0.2900 & 0.2766 \\
+		Q3     & 0.2876 & 0.2475 & 0.2798 & 0.2947 & 0.2870 \\
+		Max    & 0.3057 & 0.2572 & 0.2963 & 0.3098 & 0.3098 \\
+		\midrule
+		\multicolumn{6}{c}{\textbf{LBP - DISTANCE}} \\
+		\midrule
+		Min    & 0.0800 & 0.1200 & 0.0400 & 0.1900 & 0.0400 \\
+		Q1     & 0.1500 & 0.1300 & 0.0700 & 0.2200 & 0.1043 \\
+		Median & 0.2000 & 0.1500 & 0.0800 & 0.2300 & 0.1640 \\
+		Q3     & 0.2500 & 0.1700 & 0.0900 & 0.2400 & 0.2215 \\
+		Max    & 0.3900 & 0.2000 & 0.1100 & 0.2700 & 0.3900 \\
+		\bottomrule
+	\end{tabular*}
 \end{table}
 \section{Ablation Study}
 \label{sec:ablation}
@@ -799,103 +609,46 @@ It is important to note that quantitative measures may not always align with qua
 
 \subsection{Impact of Context-Oriented Synthesis}
 
-A key innovation of our method is the division of the synthesis process into three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this separation, we \DIFdelbegin \DIFdel{conducted an experiment where this context-oriented approach is removed.
-}%DIFDELCMD < 
+A key innovation of our method is the division of the synthesis process into three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this separation, we conducted an experiment where this context-oriented approach is removed.
 
-%DIFDELCMD < \begin{itemize}
-%DIFDELCMD <     \item %%%
-\textbf{Experiment}
-\DIFdel{: A single , non-parametric }\DIFdelend \DIFaddbegin \DIFadd{replace the zone-specific approach with a single nonparametric }\DIFaddend texture synthesis model \DIFdelbegin \DIFdel{would be used to generate }\DIFdelend \DIFaddbegin \DIFadd{that generates }\DIFaddend the entire image \DIFdelbegin \DIFdel{, }\DIFdelend guided only by the binary salt/non-salt mask\DIFdelbegin \DIFdel{produced by the VAE. This model would not differentiate between the interior of the salt dome , the }\DIFdelend \DIFaddbegin \DIFadd{, without differentiating between salt dome interior, }\DIFaddend surrounding rock, and \DIFdelbegin \DIFdel{the crucial boundary region. }%DIFDELCMD < \item %%%
-\textbf{Hypothesis}
-\DIFdel{: We expect a significant degradation in image quality. The model would likely struggle to reproduce the sharp, geologically complex interfaces between salt and sediment, resulting in blurred or unrealistic boundaries. }%DIFDELCMD < \item %%%
-\textbf{Evaluation}
-\DIFdel{: The results would be compared against our }\DIFdelend \DIFaddbegin \DIFadd{boundary regions. Removing this context-oriented step eliminates zone-specific textural fidelity, preventing accurate correspondence with annotated masks and degrading geological interface reproduction. Results are compared against the }\DIFaddend full method using \DIFdelbegin \DIFdel{the same quantitative measures (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our }\DIFdelend \DIFaddbegin \DIFadd{MSE, DSSIM, and LBP Distance.
-}
-
-\textbf{Results and Analysis}\DIFadd{: We conducted the ablation experiment by synthesizing 110 images using a single unified texture synthesis model without zone-specific processing. Critically, 44 images (40\%) had to be discarded due to lack of geological coherence, demonstrating the fundamental limitation of non-contextualized synthesis. For the remaining valid samples, the quantitative evaluation revealed median values of MSE = 837.38, DSSIM = 0.313, and LBP Distance = 0.094. In comparison, our }\DIFaddend context-oriented \DIFaddbegin \DIFadd{method consistently achieves superior performance with typical median values of MSE $<$ 800 (best group: 542.87), DSSIM $<$ 0.30 (best group: 0.2424), and LBP Distance $<$ 0.09 (best group: 0.0800). These results confirm that even after filtering out geologically incoherent samples, the ablation approach exhibits poorer performance across all metrics. The higher MSE indicates reduced pixel-level fidelity to the original images, the increased DSSIM reflects lower structural similarity, and the elevated LBP Distance demonstrates inferior texture preservation. The necessity to discard 40\% of the ablation samples, combined with the quantitatively inferior quality of the remaining images, conclusively validates that the context-oriented }\DIFaddend approach \DIFdelbegin \DIFdel{.
-}%DIFDELCMD < \end{itemize}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{is essential for generating high-fidelity seismic images that maintain accurate correspondence with annotated geological zones.
-}\DIFaddend 
+\begin{itemize}
+    \item \textbf{Experiment}: A single, non-parametric texture synthesis model would be used to generate the entire image, guided only by the binary salt/non-salt mask produced by the VAE. This model would not differentiate between the interior of the salt dome, the surrounding rock, and the crucial boundary region.
+    \item \textbf{Hypothesis}: We expect a significant degradation in image quality. The model would likely struggle to reproduce the sharp, geologically complex interfaces between salt and sediment, resulting in blurred or unrealistic boundaries.
+    \item \textbf{Evaluation}: The results would be compared against our full method using the same quantitative measures (MSE, DSSIM, LBP Distance) and qualitative expert analysis. A poorer performance would validate the necessity of our context-oriented approach.
+\end{itemize}
 
 \subsection{Contribution of the VAE for Mask Generation}
 
-Our method relies on a VAE to generate realistic and diverse salt body geometries. \DIFdelbegin \DIFdel{The ablation study quantifies the benefitof this component as compared to simpler alternatives.
-}%DIFDELCMD < 
+Our method relies on a VAE to generate realistic and diverse salt body geometries. The ablation study quantifies the benefit of this component as compared to simpler alternatives.
 
-%DIFDELCMD < \begin{itemize}
-%DIFDELCMD <     \item %%%
-\textbf{Experiment}
-\DIFdel{: Replace the VAE with a more basic mask generation technique. For instance, new masks could be created by applying simple }\DIFdelend \DIFaddbegin \DIFadd{To quantify its benefit, we generate two sets of 200 masks: (1) VAE samples drawn from the latent space, and (2) }\DIFaddend geometric transformations (\DIFdelbegin \emph{e.g.}
-\DIFdel{, }\DIFdelend rotation, scaling, \DIFaddbegin \DIFadd{horizontal/vertical flipping, }\DIFaddend elastic deformation) \DIFdelbegin \DIFdel{to the }\DIFdelend \DIFaddbegin \DIFadd{applied to }\DIFaddend existing ground-truth masks\DIFdelbegin \DIFdel{from the training set. }%DIFDELCMD < \item %%%
-\textbf{Hypothesis}
-\DIFdel{: While simpler, this approach would likely yield a less diverse and geologically plausible set of masks. We hypothesize that the VAE ability to learn a rich latent distribution }\DIFdelend \DIFaddbegin \DIFadd{. Because the VAE learns a continuous latent representation }\DIFaddend of salt geometries\DIFdelbegin \DIFdel{is crucial for generating high-quality and varied synthetic samples.
-    }%DIFDELCMD < \item %%%
-\textbf{Evaluation}
-\DIFdel{: The quality of the final synthetic images generated using these simpler masks would be assessed. A lower score in expert evaluations and quantitative measures would underscore the VAE contribution to the realismand diversity of the augmented dataset.
-}%DIFDELCMD < \end{itemize}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{, it should produce masks with greater diversity and more realistic geometric characteristics than simple transformations, which are constrained to variations of existing shapes. We compare both sets using pairwise IoU for shape diversity, two-sample Kolmogorov-Smirnov (KS) tests on six shape descriptors (area, perimeter, compactness, eccentricity, solidity, and extent) for geometric realism, and expert geological plausibility ratings on a 5-point scale.
-}\DIFaddend 
+\begin{itemize}
+    \item \textbf{Experiment}: Replace the VAE with a more basic mask generation technique. For instance, new masks could be created by applying simple geometric transformations (\emph{e.g.}, rotation, scaling, elastic deformation) to the existing ground-truth masks from the training set.
+    \item \textbf{Hypothesis}: While simpler, this approach would likely yield a less diverse and geologically plausible set of masks. We hypothesize that the VAE ability to learn a rich latent distribution of salt geometries is crucial for generating high-quality and varied synthetic samples.
+    \item \textbf{Evaluation}: The quality of the final synthetic images generated using these simpler masks would be assessed. A lower score in expert evaluations and quantitative measures would underscore the VAE contribution to the realism and diversity of the augmented dataset.
+\end{itemize}
 
-% (Deleted subsection: Relevance of Boundary-Specific Synthesis)
-\DIFaddbegin \textbf{Results and Analysis}\DIFadd{: Table~\ref{tab:ablation_masks} summarises results for both sets against the ground truth (GT, 1,617 masks). The VAE achieves higher shape diversity (score = 0.765, mean IoU = 0.235) than geometric transforms (0.755, IoU = 0.245) and GT (0.713), confirming that latent-space sampling explores a broader range of salt geometries. In KS tests ($\alpha = 0.05$), VAE masks are statistically indistinguishable from GT in 4 of 6 descriptors (area, perimeter, compactness, solidity), while geometric transforms pass only 2 (compactness, extent). VAE mean coverage (39.2\%) is also closer to GT (45.6\%) than transforms (33.6\%). Expert reviewers rated VAE masks higher (3.85/5 vs.\ 3.48/5); geometric-transform samples frequently received the lowest score (1/5) due to geologically implausible shapes produced by unconstrained operations such as extreme scaling or flipping---artifacts that the VAE latent space implicitly avoids. These results confirm that the VAE outperforms geometric augmentation across all evaluation dimensions, validating its role as the preferred mask generation component.
-}\DIFaddend 
+\subsection{Relevance of Boundary-Specific Synthesis}
 
-\DIFdelbegin \DIFdel{The proposed method gives special treatment to the boundary zone, using patch selection oriented along local angles to construct the interface. The importance of this specific step can be evaluated as follows:
-}%DIFDELCMD < 
+The proposed method gives special treatment to the boundary zone, using patch selection oriented along local angles to construct the interface. The importance of this specific step can be evaluated as follows:
 
-%DIFDELCMD < \begin{itemize}
-%DIFDELCMD <     \item %%%
-\textbf{Experiment}
-\DIFdel{: We disable the angle-aware patch selection for the boundary zone, and synthesize the boundary using the same standard non-parametric texture synthesis applied to the salt and rock interiors, without considering the local orientation of the interface. }%DIFDELCMD < \item %%%
-\textbf{Hypothesis}
-\DIFdel{: We predict that this change would lead to less coherent and realistic boundaries. We would lose the fine-grained textural details that align with the curve of the salt dome, resulting in visible artifacts and a less convincing transition between the geological layers.
-}%DIFDELCMD < \item %%%
-\DIFdelend \DIFaddbegin \begin{table}[!t]
-\caption{Ablation of Mask Generation: VAE vs. Geometric Transforms (200 masks each; GT = 1,617 masks).}
-\label{tab:ablation_masks}
-\centering
-\begin{tabular}{lccc}
-\toprule
-\textbf{Metric} & \textbf{Ground Truth} & \textbf{VAE Gen.} & \textbf{Geom. Trans.} \\
-\midrule
-No.\ of masks & 1,617 & 200 & 200 \\
-Diversity score & 0.713 & \textbf{0.765} & 0.755 \\
-Mean pairwise IoU & 0.287 & \textbf{0.235} & 0.245 \\
-Coverage (\%) & 45.6 & \textbf{39.2} & 33.6 \\
-\midrule
-Area (mean px$^2$) & 4,455 & 3,820 & 3,054 \\
-Perimeter (mean px) & 303.4 & 289.5 & 249.2 \\
-Compactness (mean) & 0.565 & 0.519 & 0.524 \\
-Eccentricity (mean) & 0.827 & 0.850 & 0.808 \\
-Solidity (mean) & 0.909 & 0.882 & 0.889 \\
-Extent (mean) & 0.703 & 0.625 & 0.673 \\
-\midrule
-KS similar to GT (of 6) & --- & \textbf{4} & 2 \\
-Expert rating (/5) & --- & \textbf{3.85} & 3.48 \\
-\bottomrule
-\end{tabular}
-\end{table}
-\DIFaddend 
+\begin{itemize}
+    \item \textbf{Experiment}: We disable the angle-aware patch selection for the boundary zone, and synthesize the boundary using the same standard non-parametric texture synthesis applied to the salt and rock interiors, without considering the local orientation of the interface.
+    \item \textbf{Hypothesis}: We predict that this change would lead to less coherent and realistic boundaries. We would lose the fine-grained textural details that align with the curve of the salt dome, resulting in visible artifacts and a less convincing transition between the geological layers.
+    \item \textbf{Evaluation}: A direct comparison of the boundary regions between this ablated version and the full model, both qualitatively by experts and quantitatively (if a suitable measure for boundary coherence is defined), would highlight the value of this specialized synthesis step.
+\end{itemize}
 
 These ablation studies systematically validate our design choices and provide a deeper understanding of why the proposed context-oriented approach is effective for synthesizing high-fidelity seismic images.
 
-%DIF <  LUCIANO: ok propostos os ablation studies MAS TENS QUE MOSTRAR OS RESULTADOS !!!!
-\DIFdelbegin %DIFDELCMD < 
+% LUCIANO: ok propostos os ablation studies MAS TENS QUE MOSTRAR OS RESULTADOS !!!!
 
-%DIFDELCMD < %%%
-\DIFdel{AQUIQ
-}%DIFDELCMD < 
+AQUIQ
 
-%DIFDELCMD < %%%
-\DIFdelend \section{Concluding Remarks and Future Directions}
+\section{Concluding Remarks and Future Directions}
 \label{sec:conclusion}
 
 \PARstart{T}{his} work introduced a novel context-oriented data augmentation methodology for synthesizing labeled seismic images containing salt dome structures, addressing a critical challenge in offshore petroleum exploration where annotated training data is scarce and expensive to obtain. By integrating Variational Autoencoders for geometric mask generation with context-aware non-parametric texture synthesis, the proposed approach successfully generates synthetic seismic images that preserve both structural integrity and textural fidelity across three distinct geological zones: salt bodies, conventional rocks, and their boundaries.
 
-The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. Three geoscience experts evaluated the synthetic samples, achieving F1-scores that differed by less than 2\% from their evaluations of real images (0.86901 vs. 0.88159), demonstrating that the synthetic images are virtually indistinguishable from authentic seismic data. Quantitatively, our method substantially outperforms the state-of-the-art sketch-based GAN approach \DIFdelbegin \DIFdel{, achieving approximately 8.7 times lower MSE (542.87 vs. 4712.1), superior structural similarity with DSSIMof 0.2424 compared to 0.39, and more than 50\% improvement in texture fidelity with LBP Distanceof 0.0800 versus 0.17. }\DIFdelend \DIFaddbegin \DIFadd{on the F3 dataset across all three measures (MSE, DSSIM, and LBP Distance). %DIF > TODO: update with final F3 experiment results
-}\DIFaddend 
+The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. Three geoscience experts evaluated the synthetic samples, achieving F1-scores that differed by less than 2\% from their evaluations of real images (0.86901 vs. 0.88159), demonstrating that the synthetic images are virtually indistinguishable from authentic seismic data. Quantitatively, our method substantially outperforms the state-of-the-art sketch-based GAN approach, achieving approximately 8.7 times lower MSE (542.87 vs. 4712.1), superior structural similarity with DSSIM of 0.2424 compared to 0.39, and more than 50\% improvement in texture fidelity with LBP Distance of 0.0800 versus 0.17.
 
 The significance of this work extends beyond technical measures. In the petroleum industry, where seismic interpretation requires extensive expertise and labeled datasets are prohibitively expensive, our automated synthesis method offers a practical solution for generating high-quality training data at scale. The context-oriented approach ensures geological plausibility by respecting the distinct characteristics of different rock types and their interfaces, a crucial requirement for real-world applications in subsurface exploration and reservoir characterization.
 
@@ -967,11 +720,6 @@ Y.~Zhou, R.~Xiao, D.~Lischinski, D.~Cohen-Or, and H.~Huang, ``Generating non-sta
 
 \bibitem{TGS2023}
 TGS Kaggle, ``TGS Salt Identification Challenge | Kaggle,'' 2023. [Online]. Available: https://www.kaggle.com/competitions/tgs-salt-identification-challenge/data
-\DIFaddbegin 
-
-\bibitem{Baroni2018}
-\DIFadd{L.~Baroni, R.~M.~Silva, R.~S.~Ferreira, D.~Chevitarese, D.~Szwarcman, and E.~Vital Brazil, ``Netherlands F3 Interpretation Dataset,'' Zenodo, Sep. 20, 2018, doi: 10.5281/zenodo.1422787.
-}\DIFaddend 
 
 \bibitem{Ferreira2020}
 R.~S.~Ferreira, J.~Noce, D.~A.~B.~Oliveira, and E.~V.~Brazil, ``Generating sketch-based synthetic seismic images with generative adversarial networks,'' \emph{IEEE Geoscience and Remote Sensing Letters}, vol. 17, no. 8, pp. 1460--1464, Aug. 2020, doi: 10.1109/LGRS.2019.2945680.
