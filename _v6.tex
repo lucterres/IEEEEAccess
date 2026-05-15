@@ -515,14 +515,26 @@ It is important to note that quantitative measures may not always align with qua
 
 \begin{table}[htbp]
     \centering
-    \caption{Quantitative comparison on the F3 dataset (median values; lower is better).}
+    \caption{Quantitative comparison on the F3 dataset (lower is better).}
     \label{tab:metricsSummary}
-    \begin{tabular}{lccc}
+    \begin{tabular}{lcc}
         \toprule
-        \textbf{Method} & \textbf{MSE} & \textbf{DSSIM} & \textbf{LBP Distance} \\
+        \textbf{Metric} & \textbf{Ferreira et al.} & \textbf{Proposed} \\
         \midrule
-        Ferreira \emph{et al.}~\cite{Ferreira2020} & 4712.1 & 0.39 & 0.17 \\
-        Proposed method & 2037.88 & 0.1537 & 0.0283 \\
+        \multicolumn{3}{c}{\textbf{MSE}} \\
+        Min & 3720.4 & 1255.53 \\
+        Median & 4712.1 & 3926.23 \\
+        Max & 5931.6 & 6686.15 \\
+        \midrule
+        \multicolumn{3}{c}{\textbf{DSSIM}} \\
+        Min & 0.3381 & 0.3482 \\
+        Median & 0.3978 & 0.3891 \\
+        Max & 0.4528 & 0.4240 \\
+        \midrule
+        \multicolumn{3}{c}{\textbf{LBP Distance}} \\
+        Min & 0.1222 & 0.1187 \\
+        Median & 0.1714 & 0.1500 \\
+        Max & 0.2428 & 0.2050 \\
         \bottomrule
     \end{tabular}
 \end{table}
