@@ -502,11 +502,11 @@ The baseline method proposed by Ferreira \emph{et al.}~\cite{Ferreira2020} emplo
 
 The following subsections present a detailed comparison based on the median values of the measurements on the F3 dataset, which offer a robust measure of each method's typical performance. The formal definitions of MSE, DSSIM, and LBP Distance are provided in Section~\ref{eval:meas:sect}.
 
-The sketch-based baseline method~\cite{Ferreira2020} achieved a median MSE of 4712.1 with their best-performing configuration. Our context-oriented approach achieved a median MSE of 2037.88, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
+The sketch-based baseline method~\cite{Ferreira2020} achieved a median MSE of 4712.1 with their best-performing configuration. Our context-oriented approach achieved a median MSE of 3926.2325, demonstrating a substantial improvement in the pixel-wise correspondence between the synthetic and original images.
 
-In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39. Our method achieved a median DSSIM of 0.1537. Recall that a DSSIM value above 0.25 can be interpreted as ``low perceptual similarity.''
+In Ferreira \emph{et al.}~\cite{Ferreira2020}, the best median DSSIM achieved was 0.39. Our method achieved a median DSSIM of 0.389125. While the improvement in DSSIM is modest, it still indicates a better structural similarity between the synthetic and original images. The relatively small difference in DSSIM suggests that both methods are capable of capturing the overall structure of the seismic images, but our method may have an edge in preserving finer details.
 
-The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17. In contrast, our proposed method achieved a LBP Distance median of 0.0283, indicating that our method generated textures with substantially higher fidelity to the original images.
+The baseline work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported a lowest median LBP Distance of 0.17. In contrast, our proposed method achieved a LBP Distance median of 0.150075, indicating that our method generated textures with higher fidelity to the original images.
 
 Overall, our proposed context-oriented synthesis approach tends to obtain a better quantitative performance across all three measures when compared to the sketch-based method proposed in Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in terms of the MSE and LBP distance measures, suggesting notable gains in terms of pixel-level accuracy and texture fidelity.
 
