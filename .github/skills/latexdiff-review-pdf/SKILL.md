@@ -90,12 +90,27 @@ See [fix-errors.md](./references/fix-errors.md) for the full catalogue of known 
    Consolidate into a single `\DIFdel{full paragraph text}` on one line, or remove if too complex.
 
 4. **`\textbf{\DIFdel{...}}` / `\textbf{\DIFadd{...}}` in rewritten list/table sections**:
-   Replace with plain `\textbf{...}` in that problematic block.
+   Use a global PowerShell regex — there are often many instances spread across the document:
+   ```powershell
+   $c = [System.IO.File]::ReadAllText("$PWD\review.tex", [System.Text.Encoding]::UTF8)
+   $c = $c -replace '\\textbf\{\\DIFdel\{([^}]+)\}\}(%DIFAUXCMD)', '\textbf{$1}$2'
+   $c = $c -replace '\\textbf\{\\DIFadd(?:FL)?\{([^}]+)\}\}', '\textbf{$1}'
+   $c = $c -replace '\\subsection\{\\DIFdel\{([^}]+)\}\}', '\subsection{$1}'
+   $c = $c -replace '\\paragraph\{\\DIFdel\{([^}]+)\}\}', '\paragraph{$1}'
+   [System.IO.File]::WriteAllText("$PWD\review.tex", $c, [System.Text.Encoding]::UTF8)
+   ```
+   > Do NOT use `replace_string_in_file` for this — there are multiple instances and the tool will fail on duplicates.
 
 5. **Broken mixed FL markers in table rows** (e.g., `\DIFaddFL{3}\DIFaddendFL ,\DIFdelbeginFL ...`):
    Replace the entire affected table with a clean, markup-free table containing the final intended content.
 
-6. **Comment line accidentally swallowing `\DIFaddbegin`**:
+6. **`\DIFaddendFL` / `\DIFdelendFL` inside `\multicolumn{N}{c}{...}` argument** — causes `! Misplaced \omit.`:
+   This happens when table column count changes (e.g., 6→3 cols). Replace the **entire table** with the clean version from `_v6.tex`. Cannot be fixed cell-by-cell.
+
+7. **Entirely new table wrapped in `\DIFaddbegin...\DIFaddend`** with `\DIFaddFL{...}` on every cell:
+   Remove the `\DIFaddbegin`/`\DIFaddend` wrappers and all `\DIFaddFL{}`/`\DIFdelFL{}` markup by replacing the whole table block with the clean content from `_v6.tex`.
+
+8. **Comment line accidentally swallowing `\DIFaddbegin`**:
    Ensure `% comment` and `\DIFaddbegin` are on separate lines.
 
 ### Step 7 — Compile (Two Passes)

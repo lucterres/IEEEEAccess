@@ -180,6 +180,116 @@ Replace the full table environment with a clean final table (no `\DIFaddFL`/`\DI
 
 ---
 
+## Error 7: `\textbf{\DIFdel{...}}` or `\textbf{\DIFadd{...}}` — Multiple Occurrences
+
+### Symptoms
+```
+! Argument of \DIFdel has an extra }.
+! Paragraph ended before \DIFdel was complete.
+```
+Repeated many times (same line number), e.g. `l.662`, `l.666`, `l.670`… each pointing to a `\textbf{\DIFdel{Type A}}`, `\textbf{\DIFdel{Type B}}`, etc.
+
+### Cause
+When a deleted list had `\textbf{...}` inside each `\item`, latexdiff wraps the bold text with `\DIFdel{}` inside `\textbf{}`. LaTeX cannot handle `\DIFdel` (which uses `\sout`) inside `\textbf{}`:
+
+```latex
+\textbf{\DIFdel{Type A}}%DIFAUXCMD
+\textbf{\DIFdel{Type B}}%DIFAUXCMD
+```
+
+Similarly, added content can produce `\textbf{\DIFadd{Results and Analysis}}`, `\textbf{\DIFaddFL{Metric}}`, etc.
+
+### Fix
+Use a global PowerShell regex to strip the `\DIFdel`/`\DIFadd`/`\DIFaddFL` wrappers from all `\textbf{}` arguments at once. Also covers `\subsection` and `\paragraph` sectioning commands:
+
+```powershell
+$content = [System.IO.File]::ReadAllText("$PWD\review.tex", [System.Text.Encoding]::UTF8)
+# Remove \DIFdel inside \textbf (DIFAUXCMD context)
+$content = $content -replace '\\textbf\{\\DIFdel\{([^}]+)\}\}(%DIFAUXCMD)', '\textbf{$1}$2'
+# Remove \DIFadd / \DIFaddFL inside \textbf (any context)
+$content = $content -replace '\\textbf\{\\DIFadd(?:FL)?\{([^}]+)\}\}', '\textbf{$1}'
+# Remove \DIFdel inside \subsection and \paragraph headings
+$content = $content -replace '\\subsection\{\\DIFdel\{([^}]+)\}\}', '\subsection{$1}'
+$content = $content -replace '\\paragraph\{\\DIFdel\{([^}]+)\}\}', '\paragraph{$1}'
+[System.IO.File]::WriteAllText("$PWD\review.tex", $content, [System.Text.Encoding]::UTF8)
+```
+
+> **Note:** Run this BEFORE compiling, as the first pass will reveal if there are still remaining instances.
+
+---
+
+## Error 8: `Misplaced \omit` — DIFaddendFL / DIFdelendFL Inside `\multicolumn`
+
+### Symptoms
+```
+! Misplaced \omit.
+! Argument of \DIFaddFL has an extra }.
+```
+
+Typically at a `\multicolumn{N}{c}{...}` line that contains a `\DIFaddendFL` or `\DIFdelendFL` inside the third argument:
+
+```
+l.798 ...ticolumn{3}{c}{\DIFaddendFL \textbf{MSE}}
+```
+
+### Cause
+`\DIFaddendFL` and `\DIFdelendFL` internally call `\omit`, which is only valid at the start of a table cell — not inside `\multicolumn{}{}{...}` arguments. When a table's column count changed (e.g., 6 → 3 columns), latexdiff generates:
+
+```latex
+\DIFdelbeginFL %DIFDELCMD < \multicolumn{6}{c}{%%%
+\DIFdelendFL \DIFaddbeginFL \multicolumn{3}{c}{\DIFaddendFL \textbf{MSE}} \\
+```
+
+The `\DIFaddendFL` lands inside the `{...}` argument of `\multicolumn`, which is forbidden.
+
+### Fix
+Replace the **entire table** (from `\begin{table}` to `\end{table}`) with the clean final version from `_v6.tex`. This is always safer than trying to patch individual `\multicolumn` rows. See [Error 2](#error-2-difdelfl-in-multi-column-tables) for the PowerShell replacement pattern.
+
+---
+
+## Error 9: Entirely New Table Wrapped in `\DIFaddbegin...\DIFaddend`
+
+### Symptoms
+```
+! Argument of \DIFaddFL has an extra }.
+! Paragraph ended before \DIFaddFL was complete.
+! Misplaced \omit.
+```
+
+The log points to table cell lines like:
+```
+l.869 \textbf{\DIFaddFL{Metric}}
+```
+
+### Cause
+When a table exists only in the new version (entirely added), latexdiff wraps the whole `\begin{table}...\end{table}` inside `\DIFaddbegin...\DIFaddend` and marks every cell with `\DIFaddFL{...}`:
+
+```latex
+\DIFaddbegin \begin{table}[!t]
+\caption{\DIFaddFL{Caption text.}}
+...
+\textbf{\DIFaddFL{Metric}} & \textbf{\DIFaddFL{VAE}} & \DIFaddendFL ...
+```
+
+The `\DIFaddFL`/`\DIFaddendFL` inside tabular cells again trigger the `\omit` restriction.
+
+### Fix
+Replace the entire `\DIFaddbegin \begin{table}...\end{table}\n\DIFaddend` block with the clean table from `_v6.tex`, removing the `\DIFaddbegin`/`\DIFaddend` wrappers entirely:
+
+```powershell
+# Manual edit: locate the block and paste the clean table directly.
+# The result should be:
+\begin{table}[!t]
+\caption{Clean caption.}
+\label{tab:example}
+...clean tabular content...
+\end{table}
+```
+
+Use `replace_string_in_file` with a unique anchor (e.g., `\label{tab:ablation_masks}`) to identify and replace the block.
+
+---
+
 ## Decision Table: Error → Fix
 
 | Error Pattern | Root Cause | Fix |
@@ -191,5 +301,8 @@ Replace the full table environment with a clean final table (no `\DIFaddFL`/`\DI
 | `Unicode character U+251C` | latexdiff inserted box chars | Strip non-ASCII or ignore in nonstopmode |
 | `Argument of \DIFaddFL has an extra }` after `% ... \DIFaddbegin` | `\DIFaddbegin` commented out | Move `\DIFaddbegin` to next line |
 | `Missing } inserted` + `Extra }, or forgotten \endgroup` in table | Mixed FL markers in one row/cell | Replace full table with clean version |
+| `Argument of \DIFdel has an extra }` at `\textbf{\DIFdel{...}}` (many lines) | DIFdel/DIFadd inside `\textbf{}` | Global PowerShell regex (Error 7) |
+| `Misplaced \omit` at `\multicolumn{N}{c}{\DIFaddendFL ...}` | DIFaddendFL inside multicolumn arg | Replace whole table with clean version (Error 8) |
+| `Argument of \DIFaddFL has an extra }` in entirely new table | Whole table wrapped in DIFaddbegin | Remove DIFaddbegin/DIFaddend + DIFaddFL from table (Error 9) |
 | Missing `review.pdf` after build | Fatal error in nonstopmode | Find `^!` in log and fix |
 | `??` citations in PDF | Single-pass compilation | Run pdflatex a second time |
