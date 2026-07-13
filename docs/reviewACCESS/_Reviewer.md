@@ -15,8 +15,7 @@
 ### ⚠️ Major Required Revisions
 
 #### 1. 🔍 Comparison with Henriques et al.
-The related work mentions their approach but does not clearly articulate the technical novelty of your method.
-Please explicitly state the key differences in architecture and why your texture‑synthesis strategy is advantageous over their generative model.
+The related work mentions their approach but does not clearly articulate the technical novelty of your method.Please explicitly state the key differences in architecture and why your texture‑synthesis strategy is advantageous over their generative model.
 
 #### 2. 🧠 VAE implementation details
 The architecture is described only as stacked dense layers. Please specify the number of neurons per layer, latent dimension d, training hyperparameters, and whether convolutional layers were used (and why).

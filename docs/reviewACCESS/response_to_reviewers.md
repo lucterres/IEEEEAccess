@@ -28,7 +28,7 @@ Therefore, real and synthetic images were **not mixed** during the evaluation �
 
 We acknowledge that this design does **not constitute a formal blind discrimination test**, and we recognize this as a **limitation** of the current evaluation. The task measured the specialists' ability to correctly identify salt body structures (via F1-score), rather than their ability to distinguish real from synthetic images. A proper blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order without prior knowledge of origin — would provide stronger evidence for the "virtually indistinguishable" claim.
 
-**In response to this limitation, we commit to redesigning and rerunning the expert evaluation as a proper blind discrimination experiment**, where real and synthetic images are presented in a mixed, randomized fashion, and experts are asked to classify each image as real or synthetic. The results of this new experiment will be reported in the revised manuscript, replacing or supplementing the current sequential evaluation. We will also add an explicit acknowledgment of the original design's limitation in the paper.
+**In response to this limitation, we commit to redesigning and rerunning the expert evaluation as a proper blind discrimination experiment**, where real and synthetic images are presented in a mixed, randomized fashion, and experts are asked to classify each image as real or synthetic. The results of this new experiment will be reported in the revised manuscript, replacing or supplementing the current sequential evaluation. 
 
 ---
 
