@@ -1,9 +1,14 @@
-"""
+r"""
 latexdiff_cleanup.py  (rewritten 2026-07-13 v2 — PRESERVE diff markers)
 ------------------------------------------------------------------------
 Cleans a latexdiff-generated .tex for pdflatex compilation,
 KEEPING the visual diff markers (\DIFdel, \DIFadd, etc.) so the
-output PDF shows red strikethrough (deletions) and blue underline (additions).
+output PDF shows:
+  - YELLOW HIGHLIGHT for insertions (\DIFadd)
+  - STRIKETHROUGH (no color) for deletions (\DIFdel)
+
+This matches the IEEE Access "Highlighted PDF" requirement:
+  "updated manuscript with yellow highlighting indicating changes"
 
 What this script PRESERVES (necessary for colored PDF):
   \DIFdelbegin ... \DIFdelend   — wraps deleted content
@@ -129,6 +134,70 @@ def cleanup(text: str) -> str:
                     line_end = len(text)
                 text = text[:line_start+1] + text[line_end+1:]
 
+    # 8. Inject yellow-highlight style for \DIFadd and strikethrough for \DIFdel.
+    #    - \hl (soul) supports line-breaking, unlike \colorbox which overflows margins.
+    #    - \soulregister registers commands that appear inside \DIFadd{} so soul
+    #      can process them without crashing (textbf, textit, textcolor, cite, ref...).
+    #    - Math mode fallback: soul/ulem don't work in math → use \textcolor instead.
+    yellow_highlight_block = r"""
+% ---- IEEE Access Highlighted PDF: yellow=added, strikethrough=deleted ----
+% soul+xcolor: load xcolor BEFORE soul so \hl can use xcolor's color model.
+% PassOptionsToPackage ensures xcolor replaces the 'color' pkg already loaded by ieeeaccess.cls.
+\PassOptionsToPackage{dvipsnames,table}{xcolor}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage[normalem]{ulem}
+\sethlcolor{yellow}
+% Register commands that may appear inside \DIFadd{} blocks:
+\soulregister\textbf{1}
+\soulregister\textit{1}
+\soulregister\emph{1}
+\soulregister\texttt{1}
+\soulregister\cite{1}
+\soulregister\ref{1}
+\soulregister\label{1}
+% \DIFadd: yellow highlight in text mode, blue in math (soul fails in math)
+\providecommand{\DIFadd}[1]{\ifmmode\textcolor{blue}{#1}\else\hl{#1}\fi}
+\providecommand{\DIFdel}[1]{\ifmmode\textcolor{red}{#1}\else\sout{#1}\fi}
+\renewcommand{\DIFadd}[1]{\ifmmode\textcolor{blue}{#1}\else\hl{#1}\fi}
+\renewcommand{\DIFdel}[1]{\ifmmode\textcolor{red}{#1}\else\sout{#1}\fi}
+% -------------------------------------------------------------------------
+"""
+    # Remove latexdiff's own \DIFadd / \DIFdel definitions so ours take precedence.
+    for pat in [
+        r'\\providecommand\{\\DIFadd\}\[1\]\{[^\n]+\}\n?',
+        r'\\providecommand\{\\DIFdel\}\[1\]\{[^\n]+\}\n?',
+        r'\\DeclareRobustCommand\{\\DIFadd\}\[1\]\{[^\n]+\}\n?',
+        r'\\DeclareRobustCommand\{\\DIFdel\}\[1\]\{[^\n]+\}\n?',
+    ]:
+        text = re.sub(pat, '', text)
+
+    # Insert our block just before \begin{document}
+    begin_doc = r'\begin{document}'
+    if begin_doc in text and yellow_highlight_block.strip() not in text:
+        text = text.replace(begin_doc, yellow_highlight_block + begin_doc, 1)
+
+    return text
+
+
+def strip_textcolor_in_difadd(text: str) -> str:
+    """Remove \\textcolor{color}{content} -> content inside \\DIFadd{} blocks.
+    soul's \\hl cannot process \\textcolor inside its argument."""
+    def fix_block(m: re.Match) -> str:
+        inner = m.group(1)
+        inner = re.sub(
+            r'\\textcolor\{[^}]*\}\{((?:[^{}]|\{[^{}]*\})*)\}',
+            r'\1', inner
+        )
+        return r'\DIFadd{' + inner + '}'
+    for _ in range(5):
+        prev = text
+        text = re.sub(
+            r'\\DIFadd\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}',
+            fix_block, text
+        )
+        if text == prev:
+            break
     return text
 
 
@@ -141,7 +210,7 @@ def main():
     with open(infile, encoding='utf-8-sig') as f:   # utf-8-sig strips BOM
         text = f.read()
 
-    result = cleanup(text)
+    result = strip_textcolor_in_difadd(cleanup(text))
 
     # Diagnostics
     difadd  = len(re.findall(r'\\DIFadd\{', result))

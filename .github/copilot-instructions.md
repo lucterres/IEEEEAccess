@@ -77,10 +77,10 @@ This workflow is fully documented and has a dedicated VS Code skill.
 ```powershell
 # 1. Generate diff
 latexdiff --allow-spaces --math-markup=0 `
-  "docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex" `
+  "docs/reviewPacote-submetido-jun/_v6.tex" `
   _v7.tex > latex_build/review_raw.tex
 
-# 2. Clean markup
+# 2. Clean markup (injects yellow highlight style automatically)
 python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 
 # 3. Compile (2 passes)
@@ -88,7 +88,8 @@ pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/revi
 pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
 ```
 
-Output: `latex_build/review_clean.pdf` (≥ 2 MB, no `^!` errors)
+Output: `latex_build/review_clean.pdf` (≥ 2 MB, no `^!` errors)  
+Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 
 ### Skill & Full Documentation
 

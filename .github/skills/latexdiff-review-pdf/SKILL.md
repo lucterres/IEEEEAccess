@@ -1,8 +1,8 @@
 ---
 name: latexdiff-review-pdf
 description: >
-  Generate a color-coded review PDF showing differences between two LaTeX manuscript versions.
-  Red strikethrough = deletions, blue underline = additions.
+  Generate a review PDF showing differences between two LaTeX manuscript versions.
+  Yellow highlight = additions, strikethrough = deletions.
   Use when: generating review_clean.pdf, creating latexdiff output, comparing .tex versions,
   showing manuscript changes, producing color diff of LaTeX files, gerar PDF de revisão,
   gerar highlighted PDF para IEEE Access, comparar versões do manuscrito, diff entre _v6 e _v7,
@@ -17,14 +17,14 @@ mode: agent
 - User asks to generate or update the "Highlighted PDF" (required by IEEE Access for resubmission)
 - Comparing two versions of a `.tex` manuscript
 - Showing what changed between the submitted version and the revised version
-- Red = removed text, Blue = added text
+- **Yellow highlight** = added text, **strikethrough** = removed text
 - Qualquer menção a: "gerar diff", "highlighted PDF", "review_clean.pdf", "comparar versões"
 
 ## Files in This Repository
 
 | Role | File |
 |------|------|
-| OLD version (submitted) | `docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex` |
+| OLD version (submitted) | `docs/reviewPacote-submetido-jun/_v6.tex` |
 | NEW version (revised)   | `_v7.tex` |
 | Cleanup script          | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
 | Output PDF              | `latex_build/review_clean.pdf` |
@@ -38,7 +38,7 @@ mode: agent
 ```powershell
 cd "D:\0Code\_phdSeismic\IEEE_Access"
 latexdiff --allow-spaces --math-markup=0 `
-  "docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex" `
+  "docs/reviewPacote-submetido-jun/_v6.tex" `
   _v7.tex > latex_build/review_raw.tex
 ```
 
@@ -54,9 +54,10 @@ python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex
 
 The script should report:
 ```
-DIFdelbegin left (start-of-line): 0
-textbf{} empty left:  0
-providecommand{} empty: 0
+\DIFadd{} markers preserved: <N>
+\DIFdel{} markers preserved: <N>
+FL markers left (should be 0): 0
+providecommand{} empty left:  0
 ```
 
 If residuals remain, see [fix-errors.md](./references/fix-errors.md).
@@ -78,7 +79,7 @@ If errors appear, see [fix-errors.md](./references/fix-errors.md).
 ### Step 4 — Validate Output
 
 ```powershell
-Get-Item latex_build/review_clean.pdf | Select-Object Name, Length, LastWriteTime
+Get-Item latex_build/review_clean.pdf | Select-Object Name, @{N='Size_MB';E={[math]::Round($_.Length/1MB,2)}}, LastWriteTime
 ```
 
 Expected: file exists, size ≥ 2 MB, no `^!` errors in log.
@@ -86,11 +87,35 @@ Expected: file exists, size ≥ 2 MB, no `^!` errors in log.
 ## Success Criteria
 
 - `latex_build/review_clean.pdf` generated with no LaTeX errors
-- Red strikethrough visible for removed text
-- Blue underline visible for added text
+- **Yellow highlight** visible for added text (IEEE Access requirement: "yellow highlighting indicating changes")
+- **Strikethrough** (no color) visible for removed text
 - All cross-references resolved (no `??` in PDF)
 
-> ⚠️ The `ieeeaccess` class redefines colors internally — if colors don't appear, the diff structure is still correct. Use the PDF as "Highlighted PDF" for submission.
+> ⚠️ The cleanup script injects `soul` + `xcolor` into the preamble to produce yellow highlights.
+> It also strips `\textcolor{}{}` wrappers **inside** `\DIFadd{}` blocks (e.g. TODO markers),
+> because `soul`'s `\hl` cannot process `\textcolor` in its argument.
+
+## How the Yellow Highlight Works (Technical)
+
+The cleanup script (Step 8) injects into the preamble:
+
+```latex
+\PassOptionsToPackage{dvipsnames,table}{xcolor}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage[normalem]{ulem}
+\sethlcolor{yellow}
+\soulregister\textbf{1}  % register commands that appear inside \DIFadd{}
+\soulregister\cite{1}
+% ...
+\renewcommand{\DIFadd}[1]{\ifmmode\textcolor{blue}{#1}\else\hl{#1}\fi}
+\renewcommand{\DIFdel}[1]{\ifmmode\textcolor{red}{#1}\else\sout{#1}\fi}
+```
+
+Key decisions:
+- `\colorbox` was rejected — it does not break lines (text overflows margins)
+- `soul` requires `xcolor` loaded **before** it to work with `ieeeaccess.cls` (which uses the older `color` package)
+- `\textcolor{}{}` inside `\DIFadd{}` is stripped by the Python script before compile
 
 ## Robustness Tips (Advanced)
 
@@ -101,7 +126,6 @@ Expected: file exists, size ≥ 2 MB, no `^!` errors in log.
 | CRLF encoding issues (`^M` chars) | Run `dos2unix` on both `.tex` files before diff |
 | Complex custom commands breaking | Use `--config` to tell latexdiff to skip those blocks |
 | Full file won't compile | Diff individual sections separately, then merge |
-| Many packages / custom commands | Consider `git-latexdiff` (more stable for complex projects) |
 
 > If `review_clean.tex` still fails to compile after cleanup, open it in VS Code, find the error line in the log, use **Split Right** to compare with `_v7.tex`, and look up the pattern in `fix-errors.md`.
 
