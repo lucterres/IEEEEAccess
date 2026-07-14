@@ -1,4 +1,5 @@
 latex_build/
+docs/reviewACCESS/rev1/
 *.log
 *.aux
 *.dvi
@@ -19,3 +20,4 @@ latex_build/
 *.run.xml
 *.gz
 *.synctex.gz
+
