@@ -26,9 +26,9 @@ mode: agent
 |------|------|
 | OLD version (submitted) | `docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex` |
 | NEW version (revised)   | `_v7.tex` |
-| Cleanup script          | `docs/latexdiff_cleanup.py` |
+| Cleanup script          | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
 | Output PDF              | `latex_build/review_clean.pdf` |
-| Full instructions       | `docs/InstrucoesLatexdiff.md` |
+| Full instructions       | `.github/instructions/InstrucoesLatexdiff.md` |
 | Error catalogue         | `.github/skills/latexdiff-review-pdf/references/fix-errors.md` |
 
 ## Procedure
@@ -49,7 +49,7 @@ Required flags:
 ### Step 2 — Clean the Generated File
 
 ```powershell
-python docs/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 ```
 
 The script should report:
@@ -108,4 +108,4 @@ Expected: file exists, size ≥ 2 MB, no `^!` errors in log.
 ## References
 
 - [Known Errors and Fixes](./references/fix-errors.md)
-- [Full Workflow Guide](../../docs/InstrucoesLatexdiff.md)
+- [Full Workflow Guide](../../instructions/InstrucoesLatexdiff.md)

@@ -81,7 +81,7 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 2. Clean markup
-python docs/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 
 # 3. Compile (2 passes)
 pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
@@ -95,9 +95,9 @@ Output: `latex_build/review_clean.pdf` (≥ 2 MB, no `^!` errors)
 | Resource | Location |
 |----------|----------|
 | VS Code skill (auto-invoked) | `.github/skills/latexdiff-review-pdf/SKILL.md` |
-| Full workflow guide | `docs/InstrucoesLatexdiff.md` |
+| Full workflow guide | `.github/instructions/InstrucoesLatexdiff.md` |
 | Error catalogue (9 known errors) | `.github/skills/latexdiff-review-pdf/references/fix-errors.md` |
-| Cleanup script | `docs/latexdiff_cleanup.py` |
+| Cleanup script | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
 
 > When the user asks to generate the review PDF, run the diff, or compare manuscript versions,
 > use the skill at `.github/skills/latexdiff-review-pdf/SKILL.md` and follow its procedure.

@@ -15,8 +15,8 @@ Este processo está documentado de forma integrada em dois locais:
 |-------|----------|
 | **`.github/skills/latexdiff-review-pdf/SKILL.md`** | Skill para VS Code — invoca este workflow automaticamente |
 | **`.github/skills/latexdiff-review-pdf/references/fix-errors.md`** | Catálogo completo: 9 erros comuns + fixes de latexdiff |
-| **`docs/InstrucoesLatexdiff.md`** (este arquivo) | Workflow completo com passo-a-passo e detalhes técnicos |
-| **`docs/latexdiff_cleanup.py`** | Implementação Python (9 passos de limpeza) |
+| **`.github/instructions/InstrucoesLatexdiff.md`** (este arquivo) | Workflow completo com passo-a-passo e detalhes técnicos |
+| **`.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py`** | Implementação Python (9 passos de limpeza) |
 
 > **Para resolver erros latexdiff não-óbvios**, consulte `.github/skills/latexdiff-review-pdf/references/fix-errors.md`
 
@@ -28,7 +28,7 @@ Este processo está documentado de forma integrada em dois locais:
 |-------|---------|
 | Versão OLD (submetida) | `docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex` |
 | Versão NEW (revisada)  | `_v7.tex` |
-| Script de limpeza      | `docs/latexdiff_cleanup.py` |
+| Script de limpeza      | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
 | PDF diff (saída final) | `latex_build/review_clean.pdf` |
 
 ---
@@ -48,7 +48,7 @@ latexdiff --allow-spaces --math-markup=0 `
 ### 2. Limpar o arquivo gerado
 
 ```powershell
-python docs/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 ```
 
 O script deve reportar:
@@ -191,7 +191,7 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 4. Limpeza do markup
-python docs/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 
 # 5. Compilar (2 passes)
 pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
