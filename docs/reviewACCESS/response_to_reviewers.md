@@ -1,6 +1,13 @@
 # Response to Reviewers
 
-**Manuscript:** Context-oriented Synthesis of Salt Domes in Labeled Seismic Images  
+**Original Manuscript ID:** Access-2026-27912  
+**Original Article Title:** Context-oriented Synthesis of Salt Domes in Labeled Seismic Images  
+
+To: IEEE Access Editor
+
+Re: Response to reviewers
+
+
 **Authors:** Luciano D. Terres and Jacob Scharcanski  
 **Journal:** IEEE Access  
 **Revision submitted:** July 2026
