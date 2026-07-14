@@ -65,13 +65,13 @@ If residuals remain, see [fix-errors.md](./references/fix-errors.md).
 ### Step 3 — Compile to PDF (Two Passes)
 
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
 ```
 
 Check for fatal errors:
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex 2>&1 | Select-String "^!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^!"
 ```
 
 If errors appear, see [fix-errors.md](./references/fix-errors.md).
@@ -79,7 +79,7 @@ If errors appear, see [fix-errors.md](./references/fix-errors.md).
 ### Step 4 — Validate Output
 
 ```powershell
-Get-Item latex_build/review_clean.pdf | Select-Object Name, @{N='Size_MB';E={[math]::Round($_.Length/1MB,2)}}, LastWriteTime
+Get-Item latex_build/Highlighted_PDF.pdf | Select-Object Name, @{N='Size_MB';E={[math]::Round($_.Length/1MB,2)}}, LastWriteTime
 ```
 
 Expected: file exists, size ≥ 2 MB, no `^!` errors in log.

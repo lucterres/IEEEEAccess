@@ -83,12 +83,12 @@ latexdiff --allow-spaces --math-markup=0 `
 # 2. Clean markup (injects yellow highlight style automatically)
 python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 
-# 3. Compile (2 passes)
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
+# 3. Compile (2 passes) — output: Highlighted_PDF.pdf
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
 ```
 
-Output: `latex_build/review_clean.pdf` (≥ 2 MB, no `^!` errors)  
+Output: `latex_build/Highlighted_PDF.pdf` (≥ 2 MB, no `^!` errors)  
 Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 
 ### Skill & Full Documentation

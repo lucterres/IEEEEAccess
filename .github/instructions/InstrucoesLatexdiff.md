@@ -62,13 +62,13 @@ providecommand{} empty left:  0
 ### 3. Compilar para PDF (duas passagens)
 
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
 ```
 
 Verificar ausência de erros fatais:
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex 2>&1 | Select-String "^!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^!"
 ```
 
 ---
@@ -179,11 +179,11 @@ latexdiff --allow-spaces --math-markup=0 `
 python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
 
 # 5. Compilar (2 passes)
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
 
 # 6. Verificar erros fatais
-pdflatex -interaction=nonstopmode -output-directory=latex_build latex_build/review_clean.tex 2>&1 | Select-String "^\!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^\!"
 ```
 
 > **Projetos complexos (muitos pacotes ou comandos próprios):** `git-latexdiff` costuma ser mais estável que o `latexdiff` puro, pois gerencia melhor caminhos de arquivos e dependências temporárias.
