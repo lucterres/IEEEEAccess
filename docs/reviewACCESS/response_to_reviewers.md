@@ -18,17 +18,24 @@ We thank the reviewers for their careful reading of the manuscript and for their
 
 **Response:**
 
-We appreciate this important observation. We clarify the evaluation protocol as follows:
+We thank the reviewer for this important methodological observation. We fully agree that the original evaluation design — where real and synthetic images were presented in separate, sequential phases — does not constitute a formal blind discrimination test, and that this represents a significant limitation of the original submission.
 
-The expert evaluation was conducted in two **sequential, separate phases**:
-1. Experts first annotated **20 real seismic images** (to establish a performance baseline);
-2. Experts then annotated **30 synthetic seismic images** in a second, distinct phase.
+**What the original evaluation did:**  
+The prior evaluation was conducted in two sequential, separate phases: experts first annotated 20 real seismic images (to establish a performance baseline), and then annotated 30 synthetic seismic images in a second, distinct phase. The experts were aware they were evaluating synthetic images in the second phase. This design measured the specialists' ability to correctly identify salt body structures (via F1-score), but did **not** test their ability to distinguish real from synthetic images.
 
-Therefore, real and synthetic images were **not mixed** during the evaluation — they were presented in separate sequential blocks. The experts were aware they were evaluating synthetic images in the second phase, and were additionally informed that some control images without any saline body were included.
+**Action taken in the revised manuscript:**  
+In response to this limitation, we have **redesigned the expert evaluation as a formal blind discrimination experiment**. The revised protocol, now described in Section IV-C of the manuscript, is as follows:
 
-We acknowledge that this design does **not constitute a formal blind discrimination test**, and we recognize this as a **limitation** of the current evaluation. The task measured the specialists' ability to correctly identify salt body structures (via F1-score), rather than their ability to distinguish real from synthetic images. A proper blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order without prior knowledge of origin — would provide stronger evidence for the "virtually indistinguishable" claim.
+- Real and synthetic seismic images from the TGS Salt Identification Challenge dataset are presented to expert geoscientists in a **single, randomized, interleaved sequence**;
+- Experts are **not informed** of the origin of each image prior to evaluation;
+- For each image, experts are asked to: (1) **classify** the image as *real* or *synthetic*, and (2) **segment** the salt body regions;
+- Control images without any saline body are included in the stimulus set;
+- Image identity and sequence are **fully randomized** across participants to avoid order effects.
 
-**In response to this limitation, we commit to redesigning and rerunning the expert evaluation as a proper blind discrimination experiment**, where real and synthetic images are presented in a mixed, randomized fashion, and experts are asked to classify each image as real or synthetic. The results of this new experiment will be reported in the revised manuscript, replacing or supplementing the current sequential evaluation. 
+This design provides direct evidence for the "virtually indistinguishable" hypothesis and fully addresses the reviewer's concern.
+
+**Current status:**  
+The blind experiment is currently being conducted. The prior sequential evaluation results (Tables previously reporting F1-scores of 0.88159 for real and 0.86901 for synthetic images) have been **removed from the manuscript PDF** and are preserved only as a commented-out reference in the source file. A prominent placeholder (`TODO` marker) has been inserted in the manuscript in all relevant locations — Abstract, Section IV-C (Qualitative Evaluation), and Section V (Concluding Remarks) — to clearly indicate where the new results will be incorporated once available.
 
 ---
 
