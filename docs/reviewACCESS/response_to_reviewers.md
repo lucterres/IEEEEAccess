@@ -15,8 +15,7 @@ Re: Response to reviewers
 
 Dear Editor,
 
-We thank the reviewers for their careful reading of the manuscript and for their constructive comments. We have addressed each point below. All changes to the manuscript are highlighted in the accompanying Highlighted PDF (`latex_build/review_clean.pdf`), where additions appear in blue and deletions appear in red strikethrough.
-
+We thank the reviewers for their careful reading of the manuscript and for their constructive comments. We have addressed each point below. All changes to the manuscript are highlighted in the accompanying Highlighted PDF (`latex_build/review_clean.pdf`), where additions appear in yellow and deletions appear strikethrough.
 ---
 
 ## Response to Reviewer 1
@@ -80,7 +79,3 @@ The table below lists every change made to the manuscript in response to reviewe
 | 6 | Section IV-C, TODO placeholder      | 503–507            | **Added**            | Yellow-highlighted `TODO` box (lines 504–506) stating that the blind experiment is in progress and that results (classification accuracy, segmentation F1-scores) will replace the placeholder.                                                                                                                                     |
 | 7 | Section IV-C, old evaluation tables | 451–485            | **Removed from PDF** | The two tables reporting sequential evaluation results (F1 = 0.88159 for real, F1 = 0.86901 for synthetic) were wrapped in `\begin{comment}` (line 451) / `\end{comment}` (line 485) and are thus absent from the compiled PDF. Preserved in source as historical reference.                                                          |
 | 8 | Section V (Concluding Remarks)      | 614                  | **Replaced**         | The paragraph summarizing expert evaluation results was updated to state that the formal blind experiment is currently being conducted. Added `[TODO: Update this paragraph with the results of the blind expert evaluation experiment, replacing the preliminary sequential evaluation results.]` marker.                            |
-
-
-
- 
