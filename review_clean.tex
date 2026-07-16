@@ -722,9 +722,12 @@ In our work, we supplemented our quantitative findings with a detailed qualitati
 
 \PARstart{T}{o} assess the contribution of each component of our proposed methodology, we conducted an ablation study, discussed below. We design these experiments to isolate the impact of the VAE-based context generation and the context-oriented texture synthesis in the final quality of the synthetic seismic images.
 
-\DIFaddbegin \noindent\textbf{Experimental setting.} \DIFadd{All ablation experiments in this section are conducted on the }\textbf{TGS Salt Identification Challenge dataset} \DIFadd{($101 \times 101$ pixels, 8-bit grayscale), which is distinct from the F3 dataset used for the quantitative comparison in Table~\protect\ref{tab:metricsSummary}. As noted in Section~\protect\ref{sec:results}, the smaller image dimensions of the TGS dataset result in MSE values approximately one order of magnitude lower than those in Table~\protect\ref{tab:metricsSummary} (F3, $400 \times 400$ pixels), because MSE is the mean of squared pixel differences over the entire image area. Consequently, the ablation metrics should be interpreted within this context and are not directly comparable to the F3-based results.}
+\DIFaddbegin \noindent\colorbox{yellow}{\parbox{0.97\linewidth}{%
+\textbf{Experimental setting.} All ablation experiments in this section are conducted on the \textbf{TGS Salt Identification Challenge dataset} ($101 \times 101$ pixels, 8-bit grayscale), which is distinct from the F3 dataset used for the quantitative comparison in Table~\protect\ref{tab:metricsSummary}. As noted in Section~\protect\ref{sec:results}, the smaller image dimensions of the TGS dataset result in MSE values approximately one order of magnitude lower than those in Table~\protect\ref{tab:metricsSummary} (F3, $400 \times 400$ pixels), because MSE is the mean of squared pixel differences over the entire image area. Consequently, the ablation metrics should be interpreted within this context and are not directly comparable to the F3-based results.%
+}}
+\DIFaddend
 
-\DIFaddend \subsection{Impact of Context-Oriented Synthesis}
+\subsection{Impact of Context-Oriented Synthesis}
 
 A key innovation of our method is the specialization of the synthesis process in three distinct zones: salt, conventional rock, and their boundary. To evaluate the importance of this specialization, we replace the zone-specific approach with a single nonparametric texture synthesis model that generates the entire image guided only by the binary salt/non-salt mask, without discriminating between salt dome interior, surrounding rock, and boundary regions. Removing this context-oriented step tends to reduce the zone-specific textural fidelity, preventing an accurate correspondence with annotated masks, causing a worse geological interface reproduction. The experimengal results are compared with the full context-oriented synthesis method using MSE, DSSIM, and LBP Distance.
 
