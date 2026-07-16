@@ -126,7 +126,7 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 - R1.1 Comparison with Henriques et al. — **DONE** (Section II rewritten)
 - R1.2 VAE implementation details — **DONE** (Section III, arch + hyperparams added)
 - R1.3 Expert evaluation design (blinding) — **PARTIALLY DONE** (blind experiment protocol added; results pending)
-- R1.4 Statistical significance for DSSIM (~2.2%) — **PENDING**
+- R1.4 Statistical significance for DSSIM (~2.2%) — **DONE** (candid discussion added; Wilcoxon infeasibility explained; MSE −16.7% and LBP −12.4% highlighted)
 
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
 - R2.1 Downstream segmentation experiment — **PENDING**
