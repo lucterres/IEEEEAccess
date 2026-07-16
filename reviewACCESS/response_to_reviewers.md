@@ -83,7 +83,34 @@ The blind experiment is currently being conducted. All `[TODO]` markers in the m
 
 ---
 
-*[Additional responses to Reviewer 1 — Comments R1.2, R1.4 — to be added]*
+### Comment R1.2 — VAE Implementation Details
+
+> *"The architecture is described only as stacked dense layers. Please specify the number of neurons per layer, latent dimension d, training hyperparameters, and whether convolutional layers were used (and why)."*
+
+**Response:**
+
+We thank the reviewer for this precise and constructive request. The original manuscript described the VAE architecture only generically as *"a simple feedforward network"* with *"four stacked dense layers"* for the encoder and *"five stacked dense layers"* for the decoder, providing no quantitative detail. We have now fully specified the architecture, training configuration, and design rationale.
+
+**Action taken in the revised manuscript (`_v7.tex`):**
+
+The paragraph beginning *"We use the generated masks as contexts..."* in **Section III-A** (*Context Generation Using a Variational Autoencoder*) was replaced with a detailed implementation description covering:
+
+1. **Input dimension:** grayscale masks, $1 \times 64 \times 64$
+2. **Encoder architecture:** three `Conv2d` layers with channel progression $1 \to 128 \to 256 \to 512$ (kernel 3, stride 2, padding 1), followed by flattening and two linear projections for $\mu$ and $\log\sigma^2$
+3. **Latent dimension:** $d = 100$
+4. **Reparameterization:** $z = \mu + \sigma \odot \epsilon$, $\epsilon \sim \mathcal{N}(0, I)$
+5. **Decoder architecture:** MLP with layers $100 \to 256 \to 512 \to 1024 \to 4096$, reshaped to $1 \times 64 \times 64$ + sigmoid
+6. **Loss function:** standard VAE loss $\mathcal{L} = \mathcal{L}_{\mathrm{rec}} + \mathcal{L}_{\mathrm{KL}}$ (BCE + KL), KL weighted by $N/B$
+7. **Training hyperparameters:** 20 epochs, batch size 32, Adam optimizer (default learning rate), gradient clipping by norm at 1.0
+8. **Justification for convolutional encoder:** preserves local spatial structure of masks (salt-body contours and region patterns), reduces parameter count versus a fully dense encoder, yields latent representations better suited to image data
+
+**Revised text (Section III-A, `_v7.tex`):**
+
+> *"The VAE model used in this work operates on grayscale seismic masks with input dimension $1 \times 64 \times 64$. The encoder is convolutional, consisting of three* `Conv2d` *layers with channel progression $1 \rightarrow 128 \rightarrow 256 \rightarrow 512$ (kernel size 3, stride 2, padding 1), followed by a flattening operation and two independent linear projections that output the parameters of the latent distribution, $\mu$ and $\log \sigma^2$, both with dimensionality $d = 100$. Latent codes are drawn via the reparameterization trick, $z = \mu + \sigma \odot \epsilon$, with $\epsilon \sim \mathcal{N}(0, I)$. The decoder is a multilayer perceptron (MLP) with fully connected layers $100 \rightarrow 256 \rightarrow 512 \rightarrow 1024 \rightarrow 4096$, whose output is reshaped to $1 \times 64 \times 64$ and passed through a sigmoid activation. The model is trained with the standard VAE loss $\mathcal{L} = \mathcal{L}_{\mathrm{rec}} + \mathcal{L}_{\mathrm{KL}}$, where $\mathcal{L}_{\mathrm{rec}}$ is the binary cross-entropy reconstruction term and $\mathcal{L}_{\mathrm{KL}}$ is the KL-divergence regularizer towards $\mathcal{N}(0, I)$, weighted by a factor proportional to $N/B$ (dataset size over batch size). Training used 20 epochs, batch size 32, the Adam optimizer with its default learning rate, and gradient clipping by norm at 1.0. Convolutional layers were chosen for the encoder because they preserve and exploit the local spatial structure of the masks — capturing salt-body contours and region patterns — while substantially reducing the number of parameters compared to a fully dense encoder, and yielding latent representations better suited to image data."*
+
+---
+
+*[Additional responses to Reviewer 1 — Comments R1.4 — to be added]*
 
 ---
 
@@ -92,21 +119,3 @@ The blind experiment is currently being conducted. All `[TODO]` markers in the m
 
 ---
 
----
-
-## Summary of Changes in the Revised Manuscript (_v7)
-
-The table below lists every change made to the manuscript in response to reviewer comments. Each item references the affected section and the exact line numbers in `_v7.tex`.
-
-
-| # | Section                             | Line(s) in `_v7.tex` | Change Type          | Description                                                                                                                                                                                                                                                                                                                           |
-|---|-------------------------------------|----------------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 0 | Section II — Related Work           | 94–103               | **Replaced**         | Paragraph on Henriques et al. substantially rewritten. Now explicitly contrasts: (a) CNF vs. non-parametric texture synthesis; (b) data requirements (24,872 annotated pairs vs. training-free); (c) zone-decomposition advantage for non-stationary textures; (d) evaluation strategy. Addresses Reviewer 1, Comment 1. |
-| 1 | Abstract                            | 59                   | **Replaced**         | Removed reference to sequential evaluation results. Added sentence describing the blind discrimination experiment as currently being conducted. Added `[TODO: Update abstract with blind experiment results when available.]` marker.                                                                                                 |
-| 2 | Section IV, Criterion 1             | 351–363            | **Replaced**         | The first evaluation criterion was rewritten from sequential expert evaluation to *"Qualitative Evaluation by Experts — Blind Discrimination Experiment"*. Description now reflects randomized, interleaved presentation. Added `[TODO: Replace this description with the results of the blind experiment when available.]` marker. |
-| 3 | Section IV-C, subsection heading    | 488                  | **Kept**             | `\subsection{Qualitative Evaluation}` retained; introductory sentence updated (line 490).                                                                                                                                                                                                                                             |
-| 4 | Section IV-C, new subsubsection     | 492                  | **Added**            | New `\subsubsection{Blind Discrimination Experiment Protocol}` inserted at line 492.                                                                                                                                                                                                                                                  |
-| 5 | Section IV-C, protocol description  | 493–501            | **Added**            | Full description of the blind experiment: randomized interleaved presentation, experts unaware of image origin, two tasks per image (classify as real/synthetic + segment salt body), inclusion of control images without salt, full randomization across participants.                                                               |
-| 6 | Section IV-C, TODO placeholder      | 503–507            | **Added**            | Yellow-highlighted `TODO` box (lines 504–506) stating that the blind experiment is in progress and that results (classification accuracy, segmentation F1-scores) will replace the placeholder.                                                                                                                                     |
-| 7 | Section IV-C, old evaluation tables | 451–485            | **Removed from PDF** | The two tables reporting sequential evaluation results (F1 = 0.88159 for real, F1 = 0.86901 for synthetic) were wrapped in `\begin{comment}` (line 451) / `\end{comment}` (line 485) and are thus absent from the compiled PDF. Preserved in source as historical reference.                                                          |
-| 8 | Section V (Concluding Remarks)      | 614                  | **Replaced**         | The paragraph summarizing expert evaluation results was updated to state that the formal blind experiment is currently being conducted. Added `[TODO: Update this paragraph with the results of the blind expert evaluation experiment, replacing the preliminary sequential evaluation results.]` marker.                            |
