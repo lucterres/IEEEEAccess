@@ -125,15 +125,15 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 **Reviewer 1** (`## 🔵 Reviewer 1` in `_Reviewer.md`) — 4 major points:
 - R1.1 Comparison with Henriques et al. — **DONE** (Section II rewritten)
 - R1.2 VAE implementation details — **DONE** (Section III, arch + hyperparams added)
-- R1.3 Expert evaluation design (blinding) — **DONE** (blind experiment protocol added)
+- R1.3 Expert evaluation design (blinding) — **PARTIALLY DONE** (blind experiment protocol added; results pending)
 - R1.4 Statistical significance for DSSIM (~2.2%) — **PENDING**
 
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
 - R2.1 Downstream segmentation experiment — **PENDING**
-- R2.2 Blind discrimination experiment — **DONE** (protocol added; results pending)
+- R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
 - R2.3 Expanded baseline comparison (GAN/diffusion) — **PENDING**
 - R2.4 Clearer experimental setting — **PENDING**
-- R2.5 Reproducibility (implementation details) — **PARTIALLY DONE** (VAE details added)
+- R2.5 Reproducibility (implementation details) — **DONE** (VAE details and texture synthesis details added)
 
 ### Workflow for Each Reviewer Comment
 
@@ -169,7 +169,7 @@ Per `docs/reviewInstructions/Instructions_to_resubmmit.md`:
 
 | # | File | Upload as |
 |---|------|-----------|
-| 1 | `reviewACCESS/response_to_reviewers.md` (exported as PDF/DOCX) | "Author's Response Files" |
+| 1 | `reviewACCESS/response_to_reviewers.md` (exported as DOCX using `markbin`) | "Author's Response Files" |
 | 2 | `latex_build/Highlighted_PDF.pdf` | "Highlighted PDF" |
 | 3 | `latex_build/_v7.pdf` (clean, no highlights) | "Main Manuscript" |
 
@@ -177,6 +177,7 @@ Per `docs/reviewInstructions/Instructions_to_resubmmit.md`:
 
 ```powershell
 # 1. Generate diff
+use latexdiff-review-pdf skill to run:
 latexdiff --allow-spaces --math-markup=0 `
   "docs/reviewPacote-submetido-jun/_v6.tex" `
   _v7.tex > latex_build/review_raw.tex
