@@ -143,7 +143,6 @@ When asked to address a reviewer comment:
 3. **Update** `reviewACCESS/response_to_reviewers.md`:
    - Under the correct `### Comment R#.#` heading
    - Fill: reviewer quote → author response → action taken → lines changed
-   - Update the **Summary of Changes** table at the end
 4. **Regenerate** `latex_build/Highlighted_PDF.pdf` using the latexdiff skill
 
 ### Updating `response_to_reviewers.md`
