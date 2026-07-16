@@ -144,6 +144,12 @@ When asked to address a reviewer comment:
    - Under the correct `### Comment R#.#` heading
    - Fill: reviewer quote → author response → action taken → lines changed
 4. **Regenerate** `latex_build/Highlighted_PDF.pdf` using the latexdiff skill
+5. **Update** the resubmission package with the 3 required files:
+   - new folder in `docs/Responses`
+   - `response_to_reviewers.md` (exported as DOCX)
+   - `Highlighted_PDF.pdf`
+   - `_v7.pdf` (clean manuscript)
+6. **Update**  Reviewers Summary Status
 
 ### Updating `response_to_reviewers.md`
 
