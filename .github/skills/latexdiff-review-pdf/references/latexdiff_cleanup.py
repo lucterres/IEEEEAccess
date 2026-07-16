@@ -1,5 +1,5 @@
 r"""
-latexdiff_cleanup.py  (rewritten 2026-07-13 v2 — PRESERVE diff markers)
+latexdiff_cleanup.py  (rewritten 2026-07-16 v3 — add step 8g: stray } after \cite)
 ------------------------------------------------------------------------
 Cleans a latexdiff-generated .tex for pdflatex compilation,
 KEEPING the visual diff markers (\DIFdel, \DIFadd, etc.) so the
@@ -139,6 +139,86 @@ def cleanup(text: str) -> str:
     #     They are pure latexdiff artefacts — safe to remove entirely.
     text = re.sub(r'\\hskip0pt\b', '', text)
     text = re.sub(r'\\hskip\\z@skip\b', '', text)
+
+    # 8c. Unwrap \mbox{\cite{KEY}} and \mbox{\cite{KEY} } (with optional space).
+    #     Latexdiff wraps citations in \mbox{} to protect them inside diff arguments,
+    #     but soul's \hl{} cannot process \mbox{\cite{}} — causes "Reconstruction failed".
+    #     Safe to remove the \mbox{} wrapper; \cite{KEY} remains intact.
+    #     (Error 10 in fix-errors.md)
+    for _ in range(10):
+        prev = text
+        text = re.sub(r'\\mbox\{(\\cite\{[^}]+\})\s*\}', r'\1', text)
+        if text == prev:
+            break
+
+    # 8d. Collapse stranded \cite{KEY} between \DIFaddend and \DIFaddbegin.
+    #     After \mbox{} removal, patterns like \DIFadd{~}\cite{KEY}\DIFaddend\DIFaddbegin\DIFadd{
+    #     may appear. Collapse them back into a continuous \DIFadd span.
+    #     (Error 11 in fix-errors.md)
+    for _ in range(10):
+        prev = text
+        text = re.sub(
+            r'\\}\s*\\cite\{([^}]+)\}\\DIFaddend\s*\\DIFaddbegin\s*\\DIFadd\{',
+            r'\\cite{\1} ',
+            text
+        )
+        if text == prev:
+            break
+
+    # 8e. Add \protect before bare \ref{} inside \DIFadd{} blocks.
+    #     soul's \hl{} tokeniser requires \ref to be \protect-ed.
+    #     (Error 12 in fix-errors.md)
+    # Process only inside \DIFadd{...} content
+    def protect_ref_in_difadd(t: str) -> str:
+        def fix_inner(m: re.Match) -> str:
+            inner = m.group(1)
+            # Replace \ref{ but not already-protected \protect\ref{
+            inner = re.sub(r'(?<!\\protect)\\ref\{', r'\\protect\\ref{', inner)
+            return r'\DIFadd{' + inner + '}'
+        for _ in range(5):
+            prev = t
+            t = re.sub(
+                r'\\DIFadd\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}',
+                fix_inner, t
+            )
+            if t == prev:
+                break
+        return t
+
+    text = protect_ref_in_difadd(text)
+
+    # 8f. Report multi-paragraph \DIFadd{} blocks (cannot auto-fix — manual split needed).
+    #     Warn if any \DIFadd{...} block spans a blank line (paragraph break).
+    #     (Error 13 in fix-errors.md — must be fixed manually)
+    multi_para = re.findall(r'\\DIFadd\{[^}]*\n\s*\n[^}]*\}', text)
+    if multi_para:
+        print(f"WARNING: {len(multi_para)} multi-paragraph \\DIFadd{{}} block(s) found — "
+              "must be split manually (see Error 13 in fix-errors.md).")
+
+    # 8g. Remove stray } immediately after \cite{KEY} that latexdiff injects when
+    #     splitting a \DIFadd{} block at a citation boundary.
+    #     Pattern: \cite{KEY} }<whitespace><lowercase-letter>  → \cite{KEY} <letter>
+    #     (Error 15 in fix-errors.md)
+    #     Also handles the variant: \cite{KEY} }\hskip0pt<text>
+    #     (the \hskip0pt itself was already removed in step 8b, so the residual
+    #     looks like  \cite{KEY} }<text>  where text starts with a lowercase letter
+    #     or a space followed by lowercase — i.e. continuation of the sentence.)
+    for _ in range(10):
+        prev = text
+        # Case A: } immediately after \cite{KEY} followed by continuation word
+        text = re.sub(
+            r'(\\cite\{[^}]+\})\s*\}(\s+[a-z])',
+            r'\1\2',
+            text
+        )
+        # Case B: } immediately after \cite{KEY} at end of line (no space before word)
+        text = re.sub(
+            r'(\\cite\{[^}]+\})\s*\}\n(\s*[a-z])',
+            r'\1\n\2',
+            text
+        )
+        if text == prev:
+            break
 
     # 8. Inject yellow-highlight style for \DIFadd and strikethrough for \DIFdel.
     #    - \hl (soul) supports line-breaking, unlike \colorbox which overflows margins.

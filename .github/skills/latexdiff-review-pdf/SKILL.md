@@ -60,7 +60,11 @@ FL markers left (should be 0): 0
 providecommand{} empty left:  0
 ```
 
-If residuals remain, see [fix-errors.md](./references/fix-errors.md).
+If **`FL markers left`** is non-zero → run cleanup again or manually remove remaining `\DIFaddFL{}`/`\DIFdelFL{}`.
+
+If script prints **`WARNING: multi-paragraph \DIFadd{} block(s) found`** → those blocks must be split manually before compiling (see **Error 13** in `fix-errors.md`).
+
+If other residuals remain, see [fix-errors.md](./references/fix-errors.md).
 
 ### Step 3 — Compile to PDF (Two Passes)
 
@@ -75,6 +79,16 @@ pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlig
 ```
 
 If errors appear, see [fix-errors.md](./references/fix-errors.md).
+
+> **Quick triage guide for `^!` errors:**
+> | Error message | Likely cause | See |
+> |---|---|---|
+> | `soul Error: Reconstruction failed` + `Missing number` | `\mbox{\cite{}}` inside `\DIFadd` | Error 10 |
+> | `TeX capacity exceeded` + `}\cite{KEY}\DIFaddend\DIFaddbegin` | Stranded cite between markers | Error 11 |
+> | `TeX capacity exceeded` + line ends in `\ref{...}.}` | `\ref{}` or `\subsubsection` inside `\DIFaddbegin` | Error 12 |
+> | `Paragraph ended before \DIFadd was complete` | Multi-paragraph `\DIFadd{}` block | Error 13 |
+> | `Paragraph ended before \textbf was complete` + `Extra \else` | `\textbf{\DIFadd{...}}` nesting | Error 14 |
+> | `Argument of \DIFdel has an extra }` (many lines) | `\DIFdel` crossing list/heading | Errors 1, 3, 7 |
 
 ### Step 4 — Validate Output
 
