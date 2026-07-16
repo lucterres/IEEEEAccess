@@ -195,6 +195,38 @@ This is a known limitation acknowledged candidly in the revised manuscript, and 
 **Also added:** the pix2pix reference (Isola et al., CVPR 2017) was added to the bibliography, since both Ferreira et al. and Choi et al. build on this framework and it was not previously cited.
 
 ---
+### Comment R2.4 — Clearer Experimental Setting
+
+> *"The experimental setting needs clearer explanation. In particular, the quantitative results in Table 3 and the ablation study appear to use different numerical ranges and possibly different datasets or protocols. The authors should clarify the datasets, sample sizes, preprocessing, normalization, and evaluation procedures used in each experiment."*
+
+**Response:**
+
+We thank the reviewer for this important observation. The reviewer correctly identified that the quantitative results in Table~3 and those in the ablation study operate at different numerical scales. This discrepancy arises because the two experimental contexts use **different datasets and image dimensions**, which was not sufficiently explained in the original manuscript. We have now added explicit clarifications in two places.
+
+**Root cause of the numerical range discrepancy:**
+| Experiment | Dataset | Image size | Sample size | Typical MSE range |
+|---|---|---|---|---|
+| Table 3 — Quantitative comparison | F3 (Dutch North Sea) | $400 \times 400$ px | 600 synthetic images | ~3,700–6,700 |
+| Ablation (texture synthesis) | TGS Salt Challenge | $101 \times 101$ px | 110 synthetic images (66 valid) | ~542–837 |
+| Ablation (mask generation) | TGS Salt Challenge | $101 \times 101$ px | 200 masks + 1,617 GT masks | N/A (shape metrics) |
+
+MSE is defined as the mean of squared pixel differences over all pixels of an image. With $400^2 = 160{,}000$ pixels (F3) vs.\ $101^2 = 10{,}201$ pixels (TGS), the image area differs by a factor of approximately 15.7×, which directly explains the order-of-magnitude difference in absolute MSE values. DSSIM and LBP Distance are less sensitive to image size but are also affected by the distinct image content characteristics of the two datasets.
+
+**Action taken in the revised manuscript (`_v7.tex`):**
+
+1. **Section IV — Dataset subsection** *(after the F3 paragraph)*: A new explanatory note was added that explicitly states:
+   - The quantitative comparison (Table 3) uses the **F3 dataset**, $400 \times 400$ px patches, normalized to $[0, 255]$, 600 synthetic images.
+   - The ablation study uses the **TGS dataset**, $101 \times 101$ px images, 8-bit grayscale, 110 images (texture ablation) or 200 masks (VAE ablation).
+   - The difference in image area accounts for the order-of-magnitude difference in absolute MSE values.
+   - The two experimental contexts are **not directly numerically comparable** and should be interpreted independently.
+
+2. **Section V — Ablation Study** *(opening paragraph)*: A new "Experimental setting" note was prepended, reminding readers that all ablation experiments use the TGS dataset ($101 \times 101$ px) and cross-referencing the explanatory note in the Dataset section.
+
+**Revised note added to Dataset section (`_v7.tex`):**
+
+> *"The two experimental contexts in this work — the quantitative comparison with the state-of-the-art (Section IV) and the ablation study (Section V) — use different datasets, image dimensions, and sample sizes, and are therefore not directly numerically comparable. The quantitative comparison with Ferreira et al. is conducted on the F3 dataset using $400 \times 400$ pixel images ($N = 600$ synthetic images), producing MSE values in the range of approximately 3,700–6,700. The ablation study is conducted on the TGS dataset using $101 \times 101$ pixel images ($N = 110$ images for the texture ablation; $N = 200$ masks for the VAE ablation), producing MSE values in the range of approximately 500–850. The substantially smaller image area ($101^2 = 10{,}201$ pixels vs.\ $400^2 = 160{,}000$ pixels) accounts for the order-of-magnitude difference in absolute MSE values between the two experimental contexts, since MSE is computed as the mean of squared pixel differences over all pixels of each image pair."*
+
+---
 ### Comment R2.5 — Reproducibility
 
 > *"The paper should improve reproducibility. Important implementation details are missing, including VAE latent dimension, training epochs, optimizer, learning rate, loss settings, patch size, boundary dilation width, texture database construction, and sampling parameters. These details are essential for readers who wish to reproduce or extend the work."*

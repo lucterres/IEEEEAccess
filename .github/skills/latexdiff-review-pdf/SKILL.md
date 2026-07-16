@@ -27,7 +27,7 @@ mode: agent
 | OLD version (submitted) | `docs/reviewPacote-submetido-jun/_v6.tex` |
 | NEW version (revised)   | `_v7.tex` |
 | Cleanup script          | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
-| Output PDF              | `latex_build/review_clean.pdf` |
+| Output PDF              | `latex_build/Highlighted_PDF.pdf` |
 | Full instructions       | `.github/instructions/InstrucoesLatexdiff.md` |
 | Error catalogue         | `.github/skills/latexdiff-review-pdf/references/fix-errors.md` |
 
@@ -49,7 +49,7 @@ Required flags:
 ### Step 2 — Clean the Generated File
 
 ```powershell
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
 ```
 
 The script should report:
@@ -69,13 +69,13 @@ If other residuals remain, see [fix-errors.md](./references/fix-errors.md).
 ### Step 3 — Compile to PDF (Two Passes)
 
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
 ```
 
 Check for fatal errors:
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex 2>&1 | Select-String "^!"
 ```
 
 If errors appear, see [fix-errors.md](./references/fix-errors.md).

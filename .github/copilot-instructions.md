@@ -7,7 +7,7 @@ This repository contains a LaTeX manuscript for IEEE Access publication on "Cont
 - **Main manuscript**: `_v7.tex` - Current revision file using `ieeeaccess` document class
 - **Submitted version**: `docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex` — original submission (OLD for diff)
 - **Bibliography**: Manual `\thebibliography{}` environment, NOT BibTeX. `references.bib` exists but is unused
-- **Version tracking**: `diffV2.tex`, `latex_build/review_clean.tex` for tracking manuscript changes
+- **Version tracking**: `diffV2.tex`, `review_clean.tex` (raiz) for tracking manuscript changes
 - **Images**: `images/` folder contains figures (PNG/JPG format) referenced in manuscript
 - **Build artifacts**: `latex_build/` contains compiled PDFs and auxiliary LaTeX files
 - **Documentation**: `docs/` contains IEEE Access figure quality guidelines and checklists
@@ -81,15 +81,19 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 2. Clean markup (injects yellow highlight style automatically)
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
 
 # 3. Compile (2 passes) — output: Highlighted_PDF.pdf
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
 ```
 
 Output: `latex_build/Highlighted_PDF.pdf` (≥ 2 MB, no `^!` errors)  
 Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
+
+> **Nota:** `review_clean.tex` fica na **raiz** do workspace (não em `latex_build/`).  
+> Isso é necessário para que o pdflatex encontre `ieeeaccess.cls`, `images/`, etc.  
+> Pela extensão LaTeX Workshop, use a recipe **`Highlighted PDF (review_clean)`** com o arquivo aberto na raiz.
 
 ### Skill & Full Documentation
 
@@ -132,7 +136,7 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 - R2.1 Downstream segmentation experiment — **PENDING**
 - R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
 - R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
-- R2.4 Clearer experimental setting — **PENDING**
+- R2.4 Clearer experimental setting — **DONE** (added explicit note in Dataset section explaining the two experimental contexts: F3 400×400px N=600 vs TGS 101×101px; added Experimental setting note in Ablation Study section; clarified why MSE ranges differ by ~16×)
 - R2.5 Reproducibility — **DONE** (VAE details and texture synthesis details added)
 
 ### Workflow for Each Reviewer Comment
@@ -150,6 +154,8 @@ When asked to address a reviewer comment:
    - `Highlighted_PDF.pdf`
    - `_v7.pdf` (clean manuscript)
 6. **Update**  Reviewers Summary Status
+7. **Expand** errors and solutions in `fix-errors.md` if any new issues arise during diff generation or compilation
+
 
 ### Updating `response_to_reviewers.md`
 
@@ -189,11 +195,11 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 2. Clean markup
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
 
 # 3. Compile (2 passes)
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
 ```
 
 > Use the skill at `.github/skills/latexdiff-review-pdf/SKILL.md` for full error handling.

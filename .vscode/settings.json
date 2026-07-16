@@ -1,6 +1,6 @@
 {
   "latex-workshop.latex.autoBuild.enabled": true,
-  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
   "latex-workshop.latex.outDir": "latex_build",
 
   "latex-workshop.latex.tools": [
@@ -13,6 +13,18 @@
       "name": "pdflatex",
       "command": "pdflatex",
       "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-output-directory=latex_build", "%DOC%"]
+    },
+    {
+      "name": "pdflatex-review",
+      "command": "pdflatex",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=latex_build",
+        "-jobname=Highlighted_PDF",
+        "%DOC%"
+      ]
     },
     {
       "name": "bibtex",
@@ -38,6 +50,10 @@
     {
       "name": "pdflatex -> biber -> pdflatex*2",
       "tools": ["pdflatex", "biber", "pdflatex", "pdflatex"]
+    },
+    {
+      "name": "Highlighted PDF (review_clean)",
+      "tools": ["pdflatex-review", "pdflatex-review"]
     }
   ],
 
