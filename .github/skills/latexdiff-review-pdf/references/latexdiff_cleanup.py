@@ -134,6 +134,12 @@ def cleanup(text: str) -> str:
                     line_end = len(text)
                 text = text[:line_start+1] + text[line_end+1:]
 
+    # 8b. Remove \hskip0pt and \hskip\z@skip injected by latexdiff after \mbox{\cite{}}
+    #     These cause "Missing number, treated as zero" when inside soul's \hl{} argument.
+    #     They are pure latexdiff artefacts — safe to remove entirely.
+    text = re.sub(r'\\hskip0pt\b', '', text)
+    text = re.sub(r'\\hskip\\z@skip\b', '', text)
+
     # 8. Inject yellow-highlight style for \DIFadd and strikethrough for \DIFdel.
     #    - \hl (soul) supports line-breaking, unlike \colorbox which overflows margins.
     #    - \soulregister registers commands that appear inside \DIFadd{} so soul
