@@ -110,6 +110,47 @@ The paragraph beginning *"We use the generated masks as contexts..."* in **Secti
 
 ---
 
+### Comment R2.5 — Reproducibility
+
+> *"The paper should improve reproducibility. Important implementation details are missing, including VAE latent dimension, training epochs, optimizer, learning rate, loss settings, patch size, boundary dilation width, texture database construction, and sampling parameters. These details are essential for readers who wish to reproduce or extend the work."*
+
+**Response:**
+
+We thank the reviewer for this detailed and constructive list of missing implementation details. We have addressed every item enumerated in the comment, distributing the information across two sections of the revised manuscript: VAE-related parameters in Section III-A, and texture synthesis parameters in Section III-B.
+
+**Action taken in the revised manuscript (`_v7.tex`):**
+
+**Section III-A** (*Context Generation Using a Variational Autoencoder*) — VAE parameters:
+
+| Parameter requested | Value added to manuscript |
+|---|---|
+| VAE latent dimension | $d = 100$ |
+| Training epochs | 20 |
+| Optimizer | Adam (default learning rate) |
+| Loss settings | BCE reconstruction + KL divergence, KL weighted by $N/B$ |
+| Architecture (neurons/layers) | Encoder: Conv2d $1\to128\to256\to512$; Decoder MLP $100\to256\to512\to1024\to4096$ |
+
+**Section III-B** (*Non-parametric Seismic Texture Synthesis Algorithm* and *Context-based Seismic Image Synthesis*) — texture synthesis parameters:
+
+| Parameter requested | Value added to manuscript |
+|---|---|
+| Patch size / neighborhood | $11 \times 11$ pixels (Item 1 — Neighborhood) |
+| Sampling parameter $\sigma$ | $\sigma = \text{kernel\_size}/6.4 \approx 1.72$ (Item 3 — Random Sampling) |
+| Boundary dilation width | $5 \times 5$ kernel, 1 iteration → boundary strip of 5 pixels total width |
+| Texture database construction | Up to 1,000 image/mask pairs (TGS, $101\times101$ px); patches extracted via Probabilistic Hough Transform (`cv2.HoughLinesP`, threshold = 15, minimum points = 15, maximum gap = 15 px); segments filtered by area $> 100$ px; indexed by line angle; cached to `patches_db_cache.npz` |
+
+**Revised passages:**
+*Section III-B, Item 1 (Neighborhood):*
+> *"In our implementation, the neighborhood window is $11 \times 11$ pixels, following the default configuration of the non-parametric synthesis algorithm of Efros and Leung [Efros1999]."*
+*Section III-B, Item 3 (Random Sampling):*
+> *"In our implementation, $\sigma$ is computed dynamically as $\sigma = \text{kernel\_size} / 6.4 \approx 1.72$, following the reference implementation of Efros and Leung [Efros1999]."*
+*Section III-B, Context-based paragraph:*
+> *"...make it thicker, creating an edge strip using a $5 \times 5$ dilation kernel applied once (one iteration), which expands the Canny edge map by 2 pixels on each side, yielding a boundary strip of 5 pixels total width. [...] The texture patch database is constructed from up to 1,000 image/mask pairs drawn from the TGS Salt Identification Challenge dataset ($101 \times 101$ pixels each). Boundary patches are extracted by detecting line segments via Probabilistic Hough Transform (`cv2.HoughLinesP`, threshold = 15, minimum points = 15, maximum gap = 15 pixels), retaining only segments whose bounding region exceeds 100 pixels in area; patches are indexed by the detected line angle to enable angle-guided selection during synthesis. The database is cached to disk (`patches_db_cache.npz`) to avoid recomputation."*
+
+**Note on cross-reference with Reviewer 1 (R1.2):** The VAE implementation details above were also requested by Reviewer 1, Comment 2. Both responses refer to the same manuscript changes in Section III-A.
+
+---
+
 *[Additional responses to Reviewer 1 — Comments R1.4 — to be added]*
 
 ---
