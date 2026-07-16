@@ -145,9 +145,56 @@ The paragraph discussing DSSIM in **Section IV-D** (*Comparative Analysis*) was 
 
 ---
 
-
-
 ## Response to Reviewer 2
+### Comment R2.3 — Expanded Baseline Comparison
+
+> *"The comparison with existing methods should be expanded. The manuscript mainly compares with Ferreira et al., but stronger or more recent generative baselines, such as GAN-based, conditional GAN-based, diffusion-based, or conditional diffusion-based seismic image synthesis methods, should be considered."*
+
+**Response:**
+
+We thank the reviewer for this important suggestion. We agree that the comparison section of the original manuscript was narrow, relying exclusively on Ferreira et al.~[Ferreira2020] as the baseline. We have expanded the related work and comparison sections to address this concern, while being transparent about the constraints that limit direct numerical comparison with other methods.
+
+**Why a direct numerical comparison with GAN/diffusion baselines is not feasible:**
+We thoroughly reviewed the available methods in GAN-based and diffusion-based seismic image synthesis, specifically:
+
+| Method | Model | Evaluation | Dataset |
+|--------|-------|-----------|---------|
+| Henriques et al.~[Henriques2021] | VAE + Conditional Normalizing Flow | Downstream segmentation (IoU/F1) on proprietary synthetic dataset | Not public |
+| Choi et al.~[Choi2025] | Conditional pix2pix GAN / Conditional diffusion | Downstream fault detection (F1, IoU) | Private |
+| Wang et al.~[Wang2021] | GAN | Waveform-level metrics | Seismic waveforms (incompatible) |
+| **Ferreira et al.~[Ferreira2020]** | cGAN (pix2pix) | **MSE, DSSIM, LBP Distance on F3 dataset** | **F3 (public)** |
+
+None of the GAN-based or diffusion-based methods in the salt dome synthesis literature report MSE, DSSIM, or LBP Distance on the public F3 benchmark. Their evaluations use either downstream segmentation metrics (IoU, F1-score for fault detection or salt segmentation) on private or non-public datasets, or waveform-level measures incompatible with image-level similarity evaluation. **Ferreira et al.~[Ferreira2020] remains the only baseline for which a direct, fair numerical comparison on a common public benchmark using the same metrics is possible.**
+
+This is a known limitation acknowledged candidly in the revised manuscript, and it reflects the broader challenge of the absence of a universally adopted benchmark for seismic image synthesis.
+
+**Actions taken in the revised manuscript (`_v7.tex`):**
+
+1. **Section II (Related Work):**
+   - The paragraph on **Ferreira et al.** was expanded to explicitly describe their cGAN/pix2pix architecture (conditional generator + discriminator, sketch-based conditioning), contextualizing them as the closest directly comparable baseline (same task, same dataset, same metrics).
+   - The paragraph on **Choi et al.** was expanded to cover both their conditional pix2pix GAN and conditional diffusion model variants, noting that their evaluation targets fault detection on a private dataset.
+   - A new **synthesis paragraph** was added at the end of Section II that explicitly organizes the four methods (Ferreira, Henriques, Choi, Wang) into a comparative landscape, contrasting them along architectural choices, data requirements, and evaluation methodology, and explaining why only Ferreira et al. enables direct numerical comparison.
+
+2. **Section IV (Results), new subsubsection — *Contextual Comparison with GAN-based and Diffusion-based Methods*:**
+   A new subsubsection was added after the Comparative Analysis, providing:
+   - A structured discussion of Henriques et al.~[Henriques2021] (VAE + CNF): architecturally the closest alternative, but evaluated only indirectly on downstream segmentation using a non-public dataset; the proposed method's training-free texture stage is explicitly contrasted with the CNF's requirement for 24,872 annotated training pairs.
+   - A discussion of Choi et al.~[Choi2025] (pix2pix GAN and conditional diffusion): evaluated on fault detection with private datasets and downstream metrics; the proposed method's single-pass generation and training-free texture synthesis are contrasted with the hundreds of denoising steps and large training datasets required by diffusion models.
+   - A discussion of Wang et al.~[Wang2021] (SeismoGen GAN): operates on waveform-level evaluation, incompatible with image-level structural metrics.
+   - A new **Table~\ref{tab:comparison_overview}** summarizing the key characteristics of all five methods (model type, target task, dataset, and whether direct numerical comparison is possible).
+
+**New Table (Table~\ref{tab:comparison_overview} in revised `_v7.tex`):**
+
+| Method | Generative model | Target task | Direct comparison |
+|--------|-----------------|-------------|-------------------|
+| Ferreira et al. | cGAN (pix2pix) | Salt domes, faults | **Yes** (F3, same metrics) |
+| Henriques et al. | VAE + CNF | Salt domes | No (different dataset & metrics) |
+| Choi et al. | Cond. pix2pix GAN / Diffusion | Fault detection | No (private dataset, downstream metrics) |
+| Wang et al. | GAN | Waveforms | No (waveform-level evaluation) |
+| **Proposed** | VAE + Non-param. texture | Salt domes | — |
+
+**Also added:** the pix2pix reference (Isola et al., CVPR 2017) was added to the bibliography, since both Ferreira et al. and Choi et al. build on this framework and it was not previously cited.
+
+---
 ### Comment R2.5 — Reproducibility
 
 > *"The paper should improve reproducibility. Important implementation details are missing, including VAE latent dimension, training epochs, optimizer, learning rate, loss settings, patch size, boundary dilation width, texture database construction, and sampling parameters. These details are essential for readers who wish to reproduce or extend the work."*

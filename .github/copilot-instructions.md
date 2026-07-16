@@ -131,9 +131,9 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
 - R2.1 Downstream segmentation experiment — **PENDING**
 - R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
-- R2.3 Expanded baseline comparison (GAN/diffusion) — **PENDING**
+- R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
 - R2.4 Clearer experimental setting — **PENDING**
-- R2.5 Reproducibility (implementation details) — **DONE** (VAE details and texture synthesis details added)
+- R2.5 Reproducibility — **DONE** (VAE details and texture synthesis details added)
 
 ### Workflow for Each Reviewer Comment
 
