@@ -102,3 +102,92 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 
 > When the user asks to generate the review PDF, run the diff, or compare manuscript versions,
 > use the skill at `.github/skills/latexdiff-review-pdf/SKILL.md` and follow its procedure.
+
+---
+
+## Resubmission Review Workflow
+
+**Goal:** Address all reviewer comments, update the manuscript, maintain the response document, and produce the Highlighted PDF for IEEE Access resubmission.
+
+### Key Files
+
+| Role | File |
+|------|------|
+| Reviewer comments (source of truth) | `reviewACCESS/_Reviewer.md` |
+| Response to reviewers document | `reviewACCESS/response_to_reviewers.md` |
+| Resubmission instructions (IEEE) | `docs/reviewInstructions/Instructions_to_resubmmit.md` |
+| Current manuscript | `_v7.tex` |
+| Original submitted version (diff base) | `docs/reviewPacote-submetido-jun/_v6.tex` |
+| Highlighted PDF output | `latex_build/Highlighted_PDF.pdf` |
+
+### Reviewers Summary
+
+**Reviewer 1** (`## 🔵 Reviewer 1` in `_Reviewer.md`) — 4 major points:
+- R1.1 Comparison with Henriques et al. — **DONE** (Section II rewritten)
+- R1.2 VAE implementation details — **DONE** (Section III, arch + hyperparams added)
+- R1.3 Expert evaluation design (blinding) — **DONE** (blind experiment protocol added)
+- R1.4 Statistical significance for DSSIM (~2.2%) — **PENDING**
+
+**Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
+- R2.1 Downstream segmentation experiment — **PENDING**
+- R2.2 Blind discrimination experiment — **DONE** (protocol added; results pending)
+- R2.3 Expanded baseline comparison (GAN/diffusion) — **PENDING**
+- R2.4 Clearer experimental setting — **PENDING**
+- R2.5 Reproducibility (implementation details) — **PARTIALLY DONE** (VAE details added)
+
+### Workflow for Each Reviewer Comment
+
+When asked to address a reviewer comment:
+1. **Read** `reviewACCESS/_Reviewer.md` to confirm the exact concern
+2. **Edit** `_v7.tex` — make the change in the appropriate section
+3. **Update** `reviewACCESS/response_to_reviewers.md`:
+   - Under the correct `### Comment R#.#` heading
+   - Fill: reviewer quote → author response → action taken → lines changed
+   - Update the **Summary of Changes** table at the end
+4. **Regenerate** `latex_build/Highlighted_PDF.pdf` using the latexdiff skill
+
+### Updating `response_to_reviewers.md`
+
+Each comment entry must follow this structure:
+```markdown
+### Comment R#.# — <Short Title>
+
+> *"Exact reviewer quote"*
+
+**Response:**
+<Author's explanation and justification>
+
+**Action taken in the revised manuscript:**
+<What was changed, where (section + line numbers in _v7.tex)>
+
+**Revised text (lines X–Y in `_v7.tex`):**
+> *"New or modified passage"*
+```
+
+### IEEE Access Resubmission — 3 Required Files
+
+Per `docs/reviewInstructions/Instructions_to_resubmmit.md`:
+
+| # | File | Upload as |
+|---|------|-----------|
+| 1 | `reviewACCESS/response_to_reviewers.md` (exported as PDF/DOCX) | "Author's Response Files" |
+| 2 | `latex_build/Highlighted_PDF.pdf` | "Highlighted PDF" |
+| 3 | `latex_build/_v7.pdf` (clean, no highlights) | "Main Manuscript" |
+
+### Generating the Highlighted PDF (after manuscript edits)
+
+```powershell
+# 1. Generate diff
+latexdiff --allow-spaces --math-markup=0 `
+  "docs/reviewPacote-submetido-jun/_v6.tex" `
+  _v7.tex > latex_build/review_raw.tex
+
+# 2. Clean markup
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+
+# 3. Compile (2 passes)
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+```
+
+> Use the skill at `.github/skills/latexdiff-review-pdf/SKILL.md` for full error handling.
