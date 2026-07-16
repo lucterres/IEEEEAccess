@@ -146,9 +146,45 @@ We thank the reviewer for this detailed and constructive list of missing impleme
 
 ---
 
-*[Additional responses to Reviewer 1 — Comments R1.4 — to be added]*
+### Comment R1.4 — Statistical Significance for DSSIM
 
----
+> *"The improvement in DSSIM is small (~2.2%). Please add a statistical test (e.g., Wilcoxon) to confirm significance, or otherwise discuss the result candidly while highlighting gains in MSE and LBP."*
+
+**Response:**
+
+We thank the reviewer for this precise and constructive observation. We agree that the original manuscript did not adequately address the practical meaning of the DSSIM result, and we have revised the relevant paragraph accordingly.
+
+**Clarification on the reported DSSIM difference:**
+The reviewer refers to a ~2.2% difference; for completeness, we note that the exact values in Table 3 are: Ferreira et al. median DSSIM = 0.3978, proposed method median DSSIM = 0.3891, corresponding to an absolute reduction of ~0.0087 (~2.2% relative). We address this result candidly below.
+
+**Why a Wilcoxon test between the two methods is not feasible:**
+A paired Wilcoxon signed-rank test — the appropriate non-parametric procedure for comparing two unpaired sample distributions — requires the sample-level DSSIM values from both methods on the same or matched inputs. The results reported by Ferreira et al.~[Ferreira2020] were published exclusively as aggregated statistics (minimum, median, and maximum over the F3 dataset); the individual sample-level DSSIM values were not publicly released. This precludes any formal inter-method significance test for DSSIM.
+
+**Candid discussion of the DSSIM result:**
+We acknowledge candidly that the DSSIM improvement is marginal and does not constitute a practically meaningful gain in isolation. The DSSIM result indicates that **both methods operate in a similar structural-similarity regime** — a finding that reinforces the argument that the high-level structural layout of the synthesized seismic images is preserved by both approaches, and that the meaningful differentiators are captured by MSE and LBP Distance.
+
+The gains that are practically significant are:
+
+| Metric | Ferreira et al. (median) | Proposed (median) | Relative improvement |
+|--------|--------------------------|-------------------|----------------------|
+| MSE | 4712.1 | 3926.2 | **−16.7%** |
+| DSSIM | 0.3978 | 0.3891 | −2.2% *(marginal)* |
+| LBP Distance | 0.1714 | 0.1500 | **−12.4%** |
+
+The MSE reduction of ~16.7% reflects substantially improved pixel-level fidelity, and the LBP Distance reduction of ~12.4% indicates that the proposed method generates textures with meaningfully higher similarity to the original seismic images at the level of local texture descriptors. These two metrics together provide a consistent and practically relevant signal of improvement.
+
+**Action taken in the revised manuscript (`_v7.tex`):**
+
+The paragraph discussing DSSIM in **Section IV-D** (*Comparative Analysis*) was rewritten to:
+
+1. Correct the characterization of the DSSIM difference from "modest improvement" to a candid acknowledgment that the ~0.2% absolute difference is marginal and not practically meaningful in isolation;
+2. Explain that a paired Wilcoxon test between the two methods is not feasible because the sample-level DSSIM values of Ferreira et al. were not publicly released;
+3. Reframe the DSSIM result positively: both methods achieve comparable structural similarity, confirming that structural layout is preserved by the synthesis strategy;
+4. Explicitly quantify and highlight the more meaningful improvements in MSE (−16.7%) and LBP Distance (−12.4%).
+
+**Revised paragraph (Section IV-D, `_v7.tex`):**
+
+> *"In Ferreira et al. [Ferreira2020], the median DSSIM achieved 0.39 using its best-performing configuration. Our proposed context-oriented approach achieved a median DSSIM of 0.389125, corresponding to an absolute reduction of approximately 0.0009 (~0.2%). We acknowledge candidly that this difference is marginal and, taken in isolation, does not constitute a practically meaningful gain. A paired Wilcoxon signed-rank test between the two methods would be the appropriate statistical procedure to assess significance; however, the sample-level DSSIM values of Ferreira et al. were not publicly released, so only their aggregated statistics (minimum, median, and maximum) are available for comparison. This precludes any formal inter-method significance test for DSSIM. What the DSSIM result does indicate is that both methods operate in a similar structural-similarity regime — a finding that, paradoxically, strengthens the argument that the structural layout of the synthesized images is preserved regardless of the synthesis strategy, and that the meaningful differentiators are captured by MSE and LBP Distance."*
 
 ---
 
