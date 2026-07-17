@@ -65,7 +65,10 @@ When adding/modifying figures, consult `docs/IEEE_Access_Figure_Guidelines.md` f
 1. **Adding citations**: Add to manual bibliography section, use `\cite{AuthorYear}` in text
 2. **Adding figures**: Place in `images/`, reference with `\includegraphics{images/filename}`
 3. **Version comparison**: Use existing diff files as templates for tracking changes
-4. **PDF compilation**: Build artifacts go to `latex_build/` directory
+4. **Update** `reviewACCESS/summary_of_changes.md` — changes table:
+   - Add or update the corresponding row in the table
+   - Set the correct section name and exact line numbers in `_v7.tex`
+   - If the comment is already listed (e.g. R1.2/R2.5 shared row), update in place
 
 ## Generating the Review/Highlighted PDF (latexdiff)
 
@@ -143,7 +146,7 @@ When asked to address a reviewer comment:
    - `response_to_reviewers.md` (exported as DOCX)
    - `Highlighted_PDF.pdf`
    - `_v7.pdf` (clean manuscript)
-7. **Update** Reviewers Summary Status
+7. **Update** `docs/_reviewACCESS/summary_of_changes.md` — **Reviewers Summary** status block at the top of that file (e.g. change **PENDING** → **DONE**)
 8. **Expand** errors and solutions in `fix-errors.md` if any new issues arise during diff generation or compilation
 
 
@@ -167,9 +170,10 @@ Each comment entry must follow this structure:
 
 ### Updating `summary_of_changes.md`
 
-`docs/_reviewACCESS/summary_of_changes.md` is the **single source of truth** for line-level tracking of all manuscript changes. It must be kept in sync with `_v7.tex` after every edit.
+`docs/_reviewACCESS/summary_of_changes.md` is the **single source of truth** for line-level tracking of all manuscript changes **and the overall reviewer status**. It must be kept in sync with `_v7.tex` after every edit.
 
 Rules:
+- **Reviewers Summary block** (top of the file, under `### Reviewers Summary`): update the status of each comment (e.g. `**PENDING**` → `**DONE**` or `**PARTIALLY DONE**`) whenever a comment is addressed.
 - **One row per logical change** (not per reviewer comment — two comments triggering the same edit share one row, e.g. R1.2/R2.5).
 - **Section column**: use the exact section heading as it appears in `_v7.tex` (e.g. `Sec. III-A — Context Generation Using a VAE`).
 - **Lines column**: always verify actual line numbers in `_v7.tex` after editing — lines shift as the file grows.
