@@ -27,7 +27,7 @@ What this script REMOVES (causes LaTeX compilation errors):
   \begin{enumerate} without \end{enumerate} mismatch (fix only)
 
 Usage:
-    python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+    python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 """
 
 import re

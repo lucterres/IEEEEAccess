@@ -3,7 +3,7 @@
 > Atualizado: 2026-07-14  
 > Contexto: diff entre `_v6.tex` (submetido) e `_v7.tex` (revisado)  
 > Requisito IEEE Access: submeter "Highlighted PDF" com mudanças marcadas em amarelo  
-> **Status: ✅ Processo testado e funcional — gera `latex_build/review_clean.pdf`**
+> **Status: ✅ Processo testado e funcional — gera `latex_build/Highlighted_PDF.pdf`**
 
 ---
 
@@ -29,7 +29,7 @@ Este processo está documentado de forma integrada em dois locais:
 | Versão OLD (submetida) | `docs/reviewPacote-submetido-jun/_v6.tex` |
 | Versão NEW (revisada)  | `_v7.tex` |
 | Script de limpeza      | `.github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py` |
-| PDF diff (saída final) | `latex_build/review_clean.pdf` |
+| PDF diff (saída final) | `latex_build/Highlighted_PDF.pdf` |
 
 ---
 
@@ -48,7 +48,7 @@ latexdiff --allow-spaces --math-markup=0 `
 ### 2. Limpar o arquivo gerado
 
 ```powershell
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 ```
 
 O script deve reportar:
@@ -62,13 +62,13 @@ providecommand{} empty left:  0
 ### 3. Compilar para PDF (duas passagens)
 
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
 ```
 
 Verificar ausência de erros fatais:
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex 2>&1 | Select-String "^!"
 ```
 
 ---
@@ -176,14 +176,14 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 4. Limpeza do markup
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex latex_build/review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 
 # 5. Compilar (2 passes)
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
 
 # 6. Verificar erros fatais
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF latex_build/review_clean.tex 2>&1 | Select-String "^\!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex 2>&1 | Select-String "^\!"
 ```
 
 > **Projetos complexos (muitos pacotes ou comandos próprios):** `git-latexdiff` costuma ser mais estável que o `latexdiff` puro, pois gerencia melhor caminhos de arquivos e dependências temporárias.
@@ -192,9 +192,9 @@ pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlig
 
 ### Diagnóstico Visual no VS Code
 
-Se o `review_clean.tex` não compilar após a limpeza:
+Se o `_review_clean.tex` não compilar após a limpeza:
 
-1. Abra `latex_build/review_clean.tex` no VS Code
+1. Abra `_review_clean.tex` no VS Code
 2. Localize a linha do erro no log (`^! LaTeX Error: ...`)
 3. Use **View → Editor Layout → Split Right** para comparar lado a lado com `_v7.tex`
 4. Identifique onde o `latexdiff` inseriu macros em local "proibido" (ex: dentro de argumento obrigatório de comando customizado)

@@ -1,6 +1,6 @@
 param(
     [string]$InputFile  = "latex_build\review_raw.tex",
-    [string]$OutputFile = "latex_build\review_clean.tex"
+    [string]$OutputFile = "_review_clean.tex"
 )
 
 $root = "D:\0Code\_phdSeismic\IEEE_Access"

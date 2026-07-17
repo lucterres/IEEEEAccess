@@ -49,7 +49,7 @@ Required flags:
 ### Step 2 — Clean the Generated File
 
 ```powershell
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 ```
 
 The script should report:
@@ -69,13 +69,13 @@ If other residuals remain, see [fix-errors.md](./references/fix-errors.md).
 ### Step 3 — Compile to PDF (Two Passes)
 
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
 ```
 
 Check for fatal errors:
 ```powershell
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex 2>&1 | Select-String "^!"
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex 2>&1 | Select-String "^!"
 ```
 
 If errors appear, see [fix-errors.md](./references/fix-errors.md).
@@ -141,7 +141,7 @@ Key decisions:
 | Complex custom commands breaking | Use `--config` to tell latexdiff to skip those blocks |
 | Full file won't compile | Diff individual sections separately, then merge |
 
-> If `review_clean.tex` still fails to compile after cleanup, open it in VS Code, find the error line in the log, use **Split Right** to compare with `_v7.tex`, and look up the pattern in `fix-errors.md`.
+> If `_review_clean.tex` still fails to compile after cleanup, open it in VS Code, find the error line in the log, use **Split Right** to compare with `_v7.tex`, and look up the pattern in `fix-errors.md`.
 
 ## References
 

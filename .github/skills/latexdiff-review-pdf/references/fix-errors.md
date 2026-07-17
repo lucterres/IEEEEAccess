@@ -125,8 +125,8 @@ These are non-fatal in `nonstopmode`. If they block compilation, strip them:
 ```powershell
 $content = Get-Content review.tex -Encoding UTF8
 $content | ForEach-Object { $_ -replace '[^\x00-\x7F\u00C0-\u024F]', '' } |
-    Set-Content review_clean.tex -Encoding UTF8
-Move-Item review_clean.tex review.tex -Force
+    Set-Content _review_clean.tex -Encoding UTF8
+Move-Item _review_clean.tex review.tex -Force
 ```
 
 ---
@@ -282,7 +282,7 @@ When new text containing `~\cite{KEY}` is added, latexdiff wraps the citation in
 
 The `soul` package (`\hl{}`) cannot process `\mbox{\cite{...}}` or `\hskip0pt` inside its argument — it requires fragile commands to be registered via `\soulregister`.
 
-### Fix (manual — surgical edit of `review_clean.tex`)
+### Fix (manual — surgical edit of `_review_clean.tex`)
 Move the `\cite{}` outside the `\DIFadd{}` argument:
 ```latex
 % Before (broken):
@@ -294,12 +294,12 @@ Move the `\cite{}` outside the `\DIFadd{}` argument:
 
 ### Fix (PowerShell — global, after cleanup script)
 ```powershell
-$c = Get-Content -Raw "latex_build/review_clean.tex"
+$c = Get-Content -Raw "_review_clean.tex"
 # Remove \mbox{} wrappers around \cite (with optional space inside)
 $c = $c -replace '\\mbox\{(\\cite\{[^}]+\})\s*\}', '$1'
 # Remove any remaining \hskip0pt artefacts
 $c = $c -replace '\\hskip0pt\b', ''
-$c | Set-Content "latex_build/review_clean.tex" -Encoding UTF8
+$c | Set-Content "_review_clean.tex" -Encoding UTF8
 ```
 
 > **Prevention (preferred):** The cleanup script already removes `\hskip0pt`. Add `\mbox{\cite{}}` unwrapping there too — see `latexdiff_cleanup.py` update below.
@@ -320,10 +320,10 @@ After removing `\mbox{\cite{KEY} }`, the pattern `\DIFadd{~}\cite{KEY}\DIFaddend
 
 ### Fix (PowerShell)
 ```powershell
-$c = Get-Content -Raw "latex_build/review_clean.tex"
+$c = Get-Content -Raw "_review_clean.tex"
 # Collapse: }\cite{KEY}\DIFaddend\DIFaddbegin\DIFadd{ → \cite{KEY}
 $c = $c -replace '\\}\s*\\cite\{([^}]+)\}\\DIFaddend\s*\\DIFaddbegin\s*\\DIFadd\{', '\cite{$1} '
-$c | Set-Content "latex_build/review_clean.tex" -Encoding UTF8
+$c | Set-Content "_review_clean.tex" -Encoding UTF8
 ```
 
 ---
@@ -356,8 +356,8 @@ Exemplo de código problemático gerado pelo latexdiff:
 
 ### Fix — Passo 1: remover `\protect` (PowerShell)
 ```powershell
-(Get-Content "review_clean.tex" -Raw) -replace '~\\protect\\ref\{', '~\ref{' |
-    Set-Content "review_clean.tex" -NoNewline
+(Get-Content "_review_clean.tex" -Raw) -replace '~\\protect\\ref\{', '~\ref{' |
+    Set-Content "_review_clean.tex" -NoNewline
 ```
 
 ### Fix — Passo 2: quebrar `\DIFadd{}` ao redor de cada `\ref{}` (manual)
@@ -376,7 +376,7 @@ Após remover `\protect`, ainda resta o conflito de chaves. Para cada `\ref{}` d
 
 > ⚠️ **Não introduzir `\DIFaddbegin \DIFadd{}\DIFaddend` vazio** após o `\ref`. Se não há texto adicionado após o `\ref`, basta fechar com `\DIFaddend` e deixar o resto (ponto, vírgula, texto normal) fora do bloco.
 
-Exemplos reais corrigidos em `review_clean.tex`:
+Exemplos reais corrigidos em `_review_clean.tex`:
 ```latex
 % Caso: \ref é o último elemento — apenas fecha e deixa o ponto fora
 ...described in Section~}\DIFaddend \ref{sec:ablation}.
@@ -391,4 +391,4 @@ Exemplos reais corrigidos em `review_clean.tex`:
 ```
 
 ### Prevention
-Adicionar `\soulregister\ref{1}` no preâmbulo do `review_clean.tex` **não resolve** este problema, pois o conflito é de chaves (`}` do `\ref{label}` fecha o `\DIFadd{}`), não de comandos não registrados. A única solução robusta é manter `\ref{}` fora do argumento de `\DIFadd{}`.
+Adicionar `\soulregister\ref{1}` no preâmbulo do `_review_clean.tex` **não resolve** este problema, pois o conflito é de chaves (`}` do `\ref{label}` fecha o `\DIFadd{}`), não de comandos não registrados. A única solução robusta é manter `\ref{}` fora do argumento de `\DIFadd{}`.

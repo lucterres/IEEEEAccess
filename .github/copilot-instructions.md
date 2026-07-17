@@ -7,7 +7,7 @@ This repository contains a LaTeX manuscript for IEEE Access publication on "Cont
 - **Main manuscript**: `_v7.tex` - Current revision file using `ieeeaccess` document class
 - **Submitted version**: `docs/reviewACCESS/submetido ao IEEE Access junho 2026/_v6.tex` — original submission (OLD for diff)
 - **Bibliography**: Manual `\thebibliography{}` environment, NOT BibTeX. `references.bib` exists but is unused
-- **Version tracking**: `diffV2.tex`, `review_clean.tex` (raiz) for tracking manuscript changes
+- **Version tracking**: `diffV2.tex`, `_review_clean.tex` (raiz) for tracking manuscript changes
 - **Images**: `images/` folder contains figures (PNG/JPG format) referenced in manuscript
 - **Build artifacts**: `latex_build/` contains compiled PDFs and auxiliary LaTeX files
 - **Documentation**: `docs/` contains IEEE Access figure quality guidelines and checklists
@@ -81,17 +81,17 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 2. Clean markup (injects yellow highlight style automatically)
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 
 # 3. Compile (2 passes) — output: Highlighted_PDF.pdf
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
 ```
 
 Output: `latex_build/Highlighted_PDF.pdf` (≥ 2 MB, no `^!` errors)  
 Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 
-> **Nota:** `review_clean.tex` fica na **raiz** do workspace (não em `latex_build/`).  
+> **Nota:** `_review_clean.tex` fica na **raiz** do workspace (não em `latex_build/`).  
 > Isso é necessário para que o pdflatex encontre `ieeeaccess.cls`, `images/`, etc.  
 > Pela extensão LaTeX Workshop, use a recipe **`Highlighted PDF (review_clean)`** com o arquivo aberto na raiz.
 
@@ -195,11 +195,11 @@ latexdiff --allow-spaces --math-markup=0 `
   _v7.tex > latex_build/review_raw.tex
 
 # 2. Clean markup
-python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex review_clean.tex
+python .github/skills/latexdiff-review-pdf/references/latexdiff_cleanup.py latex_build/review_raw.tex _review_clean.tex
 
 # 3. Compile (2 passes)
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
-pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
+pdflatex -interaction=nonstopmode -output-directory=latex_build -jobname=Highlighted_PDF _review_clean.tex
 ```
 
 > Use the skill at `.github/skills/latexdiff-review-pdf/SKILL.md` for full error handling.
