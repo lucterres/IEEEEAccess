@@ -268,3 +268,9 @@ We thank the reviewer for this detailed and constructive list of missing impleme
 
 ---
 
+## Summary of Changes
+
+A complete table of all manuscript changes — with affected sections and exact line numbers in `_v7.tex` — is maintained in the dedicated file:
+
+👉 [`summary_of_changes.md`](./summary_of_changes.md)
+

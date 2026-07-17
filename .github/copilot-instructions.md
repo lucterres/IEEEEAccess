@@ -119,6 +119,7 @@ Visual: **yellow highlight** = added text, ~~strikethrough~~ = removed text
 |------|------|
 | Reviewer comments (source of truth) | `reviewACCESS/_Reviewer.md` |
 | Response to reviewers document | `reviewACCESS/response_to_reviewers.md` |
+| **Summary of manuscript changes (line-level)** | **`reviewACCESS/summary_of_changes.md`** |
 | Resubmission instructions (IEEE) | `docs/reviewInstructions/Instructions_to_resubmmit.md` |
 | Current manuscript | `_v7.tex` |
 | Original submitted version (diff base) | `docs/reviewPacote-submetido-jun/_v6.tex` |
@@ -147,14 +148,18 @@ When asked to address a reviewer comment:
 3. **Update** `reviewACCESS/response_to_reviewers.md`:
    - Under the correct `### Comment R#.#` heading
    - Fill: reviewer quote → author response → action taken → lines changed
-4. **Regenerate** `latex_build/Highlighted_PDF.pdf` using the latexdiff skill
-5. **Update** the resubmission package with the 3 required files:
+4. **Update** `reviewACCESS/summary_of_changes.md`:
+   - Add or update the corresponding row in the table
+   - Set the correct section name and exact line numbers in `_v7.tex`
+   - If the comment is already listed (e.g. R1.2/R2.5 shared row), update in place
+5. **Regenerate** `latex_build/Highlighted_PDF.pdf` using the latexdiff skill
+6. **Update** the resubmission package with the 3 required files:
    - new folder in `docs/Responses`
    - `response_to_reviewers.md` (exported as DOCX)
    - `Highlighted_PDF.pdf`
    - `_v7.pdf` (clean manuscript)
-6. **Update**  Reviewers Summary Status
-7. **Expand** errors and solutions in `fix-errors.md` if any new issues arise during diff generation or compilation
+7. **Update** Reviewers Summary Status
+8. **Expand** errors and solutions in `fix-errors.md` if any new issues arise during diff generation or compilation
 
 
 ### Updating `response_to_reviewers.md`
@@ -174,6 +179,18 @@ Each comment entry must follow this structure:
 **Revised text (lines X–Y in `_v7.tex`):**
 > *"New or modified passage"*
 ```
+
+### Updating `summary_of_changes.md`
+
+`docs/_reviewACCESS/summary_of_changes.md` is the **single source of truth** for line-level tracking of all manuscript changes. It must be kept in sync with `_v7.tex` after every edit.
+
+Rules:
+- **One row per logical change** (not per reviewer comment — two comments triggering the same edit share one row, e.g. R1.2/R2.5).
+- **Section column**: use the exact section heading as it appears in `_v7.tex` (e.g. `Sec. III-A — Context Generation Using a VAE`).
+- **Lines column**: always verify actual line numbers in `_v7.tex` after editing — lines shift as the file grows.
+- **New change**: append a new numbered row at the bottom of the table.
+- **Existing change modified**: update the row in place (description + line numbers).
+- The file header cross-links to `response_to_reviewers.md`; do not remove that link.
 
 ### IEEE Access Resubmission — 3 Required Files
 
