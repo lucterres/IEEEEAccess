@@ -12,7 +12,13 @@
     {
       "name": "pdflatex",
       "command": "pdflatex",
-      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "-output-directory=latex_build", "%DOC%"]
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=latex_build",
+        "%DOC%"
+      ]
     },
     {
       "name": "pdflatex-review",
@@ -40,6 +46,10 @@
 
   "latex-workshop.latex.recipes": [
     {
+      "name": "pdflatex x2",
+      "tools": ["pdflatex", "pdflatex"]
+    },
+    {
       "name": "latexmk (pdf)",
       "tools": ["latexmk"]
     },
@@ -57,10 +67,11 @@
     }
   ],
 
+  "latex-workshop.latex.recipe.default": "pdflatex x2",
+
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.synctex.afterBuild.enabled": true,
-  "latex-workshop.latex.clean.enabled": true,
-  "latex-workshop.latex.clean.fileTypes": ["aux", "bbl", "blg", "log", "out", "synctex.gz", "fls", "fdb_latexmk"],
+  "latex-workshop.latex.clean.enabled": false,
 
   "latex-workshop.message.error.show": true,
   "latex-workshop.message.warning.show": false,

@@ -328,208 +328,67 @@ $c | Set-Content "latex_build/review_clean.tex" -Encoding UTF8
 
 ---
 
-## Error 12: `\subsubsection{}` or `\subsection{}` Inside `\DIFaddbegin...\DIFaddend`
+## Error 12: `\ref{}` (ou `\protect\ref{}`) dentro de `\DIFadd{}` — soul Quebra a Continuidade
 
 ### Symptoms
 ```
 ! Missing \endcsname inserted.
 ! TeX capacity exceeded, sorry [input stack size=10000].
 ```
-Log points to a line ending like `...reviewed in Section~\ref{sec:related}.}`.
+O log aponta para linhas como:
+```
+l.484 ... described in Section~\ref{sec:ablation}}
+l.660 }
+l.726 }}
+```
 
 ### Cause
-When an entirely new subsubsection is added, latexdiff wraps the heading inside `\DIFaddbegin...\DIFaddend`:
+O pacote `soul` (`\hl{}`) — usado por `\DIFadd{}` para o highlight amarelo — **não consegue processar `\ref{label}` dentro de seu argumento**. A chave `}` que fecha `\ref{label}` é interpretada como fechamento prematuro do `\hl{...}` (ou `\DIFadd{...}`), corrompendo o balanço de chaves e causando o loop de capacidade do TeX.
 
+O prefixo `\protect` agrava ainda mais o problema: `~\protect\ref{label}` dentro de `\DIFadd{}` gera `Missing \endcsname` antes mesmo do erro de capacidade.
+
+Exemplo de código problemático gerado pelo latexdiff:
 ```latex
-\DIFaddbegin \subsubsection{\DIFadd{New Section Title}}
-\DIFadd{First paragraph...}\DIFaddend
+\DIFadd{, and also for the ablation experiments described in Section~\protect\ref{sec:ablation}}
+\DIFadd{diffusion-based seismic image synthesis methods reviewed in Section~\protect\ref{sec:related}.}
+\DIFadd{...Table~\protect\ref{tab:metricsSummary}.}
 ```
 
-LaTeX section commands cannot appear inside `\DIFaddbegin...\DIFaddend` (soul cannot tokenize `\subsubsection`).
-
-Also, a `\ref{}` inside a `\DIFadd{}` block causes the same error unless protected:
-
-```latex
-\DIFadd{...methods reviewed in Section~\ref{sec:related}.}
-% → must be:
-\DIFadd{...methods reviewed in Section~\protect\ref{sec:related}.}
-```
-
-### Fix
-1. Move the `\subsubsection{}` command **outside** `\DIFaddbegin...\DIFaddend`:
-```latex
-% Before (broken):
-\DIFdelbegin \DIFdel{Old paragraph.}\DIFdelend \DIFaddbegin \subsubsection{\DIFadd{New Title}}
-\DIFadd{New content.}\DIFaddend
-
-% After (fixed):
-\DIFdelbegin \DIFdel{Old paragraph.}\DIFdelend
-
-\subsubsection{New Title}
-
-\DIFaddbegin \DIFadd{New content.}\DIFaddend
-```
-
-2. Replace `\ref{}` with `\protect\ref{}` inside `\DIFadd{}`:
-```latex
-\DIFadd{...see Section~\protect\ref{sec:related}.}
-```
-
----
-
-## Error 13: Paragraph Breaks Inside a Single `\DIFadd{}` Block
-
-### Symptoms
-```
-! Missing \endcsname inserted.
-! TeX capacity exceeded, sorry [input stack size=10000].
-```
-or
-```
-! Argument of \DIFadd has an extra }.
-! Paragraph ended before \DIFadd was complete.
-```
-Log points to the **last line** of a long `\DIFadd{}` that spans multiple paragraphs.
-
-### Cause
-When an entire section is rewritten, latexdiff may wrap multiple paragraphs in a single `\DIFaddbegin \DIFadd{...}\DIFaddend` block. The `soul` package (`\hl{}`) cannot span paragraph boundaries — a blank line inside `\DIFadd{}` terminates the argument prematurely.
-
-```latex
-\DIFaddbegin \DIFadd{Paragraph one text.
-
-Paragraph two text.
-
-Paragraph three text.}\DIFaddend
-```
-
-### Fix
-Split the single `\DIFadd{}` block into **one `\DIFaddbegin...\DIFaddend` per paragraph**:
-
-```latex
-\DIFaddbegin \DIFadd{Paragraph one text.}\DIFaddend
-
-\DIFaddbegin \DIFadd{Paragraph two text.}\DIFaddend
-
-\DIFaddbegin \DIFadd{Paragraph three text.}\DIFaddend
-```
-
----
-
-## Error 14: `\textbf{\DIFadd{...}}` or Nested Commands Inside `\DIFadd{}`
-
-### Symptoms
-```
-! Paragraph ended before \textbf was complete.
-! Missing } inserted.
-! Extra \else.
-```
-Log points to a line like `l.672 ... (MSE, DSSIM, LBP Distance) is possible}}`.
-
-### Cause
-When new text uses `\textbf{...}` containing `\DIFadd{...}` sub-blocks, the nesting creates unbalanced braces and causes `soul` to fail:
-
-```latex
-\DIFadd{In summary, }\textbf{\DIFadd{Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{X} is the only baseline...}}
-```
-
-The outer `\textbf{}` closes before the inner `\DIFadd{}` chains resolve.
-
-### Fix
-Remove the `\textbf{}` wrapper (and any `}}` residuals) and keep plain text inside `\DIFadd{}`:
-
-```latex
-% Before (broken):
-\DIFadd{In summary, }\textbf{\DIFadd{Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{X} is possible}}
-
-% After (fixed):
-\DIFadd{In summary, Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{X} is possible.}
-```
-
-Also clean up any double-close braces `}}` that become `}` residuals:
+### Fix — Passo 1: remover `\protect` (PowerShell)
 ```powershell
-# Remove leftover }} that was the textbf closer + DIFadd closer
-$c = Get-Content -Raw "latex_build/review_clean.tex"
-$c = $c.Replace('is possible}}\DIFadd{.', 'is possible.')
-$c | Set-Content "latex_build/review_clean.tex" -Encoding UTF8
+(Get-Content "review_clean.tex" -Raw) -replace '~\\protect\\ref\{', '~\ref{' |
+    Set-Content "review_clean.tex" -NoNewline
 ```
 
----
-
-## Error 15: `Too many }'s` — `\DIFadd{}` Block Split at a `\cite{}` or `\emph{}`
-
-### Symptoms
-```
-! Too many }'s.
-l.649 \cite{Ferreira2020} }
-                           \hskip0ptwere not publicly released...
-You've closed more groups than you opened.
-! Too many }'s.
-l.649 ... the DSSIM result does indicate is that }
-                                                  \emph{\DIFadd{both methods...
-```
-
-### Cause
-When a **long rewritten paragraph** containing `\cite{}` or `\emph{}` commands is added to `_v7.tex`, latexdiff sometimes splits the `\DIFadd{}` block incorrectly at the citation boundary. The resulting markup has unbalanced closing braces:
+### Fix — Passo 2: quebrar `\DIFadd{}` ao redor de cada `\ref{}` (manual)
+Após remover `\protect`, ainda resta o conflito de chaves. Para cada `\ref{}` dentro de um `\DIFadd{}`, quebre o bloco de forma que o `\ref{}` fique **fora** do argumento do `\DIFadd{}`:
 
 ```latex
-% Generated by latexdiff (broken — extra } before \hskip0pt):
-\DIFadd{...Wilcoxon test; however, the sample-level DSSIM values of Ferreira et al.~}
-\cite{Ferreira2020} }\hskip0ptwere not publicly released...
+% Antes (quebrado):
+\DIFadd{texto antes do ref~\ref{label}. Texto após.}
+
+% Depois (corrigido) — se o \ref for o ÚLTIMO elemento do bloco \DIFadd:
+...texto antes~}\DIFaddend \ref{label}. Texto fora do bloco adicionado.
+
+% Depois (corrigido) — se houver texto adicionado APÓS o \ref também:
+...texto antes~}\DIFaddend \ref{label}\DIFaddbegin \DIFadd{ texto após.}
 ```
 
-The stray `}` before `\hskip0pt` closes the `\DIFadd{}` group prematurely, leaving the continuation text and the next `}` without a matching opening group.
+> ⚠️ **Não introduzir `\DIFaddbegin \DIFadd{}\DIFaddend` vazio** após o `\ref`. Se não há texto adicionado após o `\ref`, basta fechar com `\DIFaddend` e deixar o resto (ponto, vírgula, texto normal) fora do bloco.
 
-This typically happens when the added text contains **`\cite{}` without a preceding `~`** inside a `\DIFadd{}` span, causing latexdiff to break the span at the citation.
-
-### Fix (manual — surgical edit of `review_clean.tex`)
-Reconstruct the `\DIFadd{}` block manually, removing the spurious `}` and `\hskip0pt`:
-
+Exemplos reais corrigidos em `review_clean.tex`:
 ```latex
-% Before (broken):
-\DIFadd{...values of Ferreira et al.~}\cite{Ferreira2020} }\hskip0ptwere not...indicates that }\emph{\DIFadd{both methods operate...}}
+% Caso: \ref é o último elemento — apenas fecha e deixa o ponto fora
+...described in Section~}\DIFaddend \ref{sec:ablation}.
 
-% After (fixed):
-\DIFadd{...values of Ferreira et al.~}\cite{Ferreira2020}\DIFadd{ were not...indicates that }\emph{\DIFadd{both methods operate...}}
+% Caso: há texto adicionado após o \ref
+...methods reviewed in Section~}\DIFaddend \ref{sec:related}\DIFaddbegin \DIFadd{.
+}
+
+% Caso: \ref no meio de um \parbox com vários \ref — cada um quebrado individualmente
+...comparison in Table~}\DIFaddend \ref{tab:metricsSummary}\DIFaddbegin \DIFadd{.}
+\DIFadd{As noted in Section~}\DIFaddend \ref{sec:results}\DIFaddbegin \DIFadd{, the smaller ...lower than those in Table~}\DIFaddend \ref{tab:metricsSummary}\DIFaddbegin \DIFadd{ (F3, ...}
 ```
-
-**Pattern:** locate `} }` or `} }\hskip0pt` immediately after a `\cite{...}` inside a `\DIFadd{}` region. Each extra `}` that is not the intended closing brace of a `\DIFadd{}` must be removed.
-
-### Fix (PowerShell — targeted)
-```powershell
-$c = Get-Content -Raw "latex_build/review_clean.tex"
-# Remove \hskip0pt artefacts that latexdiff injects after broken \cite splits
-$c = $c -replace '\\hskip0pt\b', ''
-# Remove the stray } that lands right after \cite{KEY} and before the continuation
-$c = $c -replace '(\\cite\{[^}]+\})\s*\}(\s*[a-z])', '$1 $2'
-$c | Set-Content "latex_build/review_clean.tex" -Encoding UTF8
-```
-
-> **Note:** `\hskip0pt` removal is already handled by the cleanup script. The stray `}` pattern is harder to fix automatically because it depends on context. Manual inspection is recommended when the log shows `Too many }'s` at a `\cite{}` line.
 
 ### Prevention
-When writing new paragraphs in `_v7.tex` that contain `\cite{}` inside long sentences, prefer keeping the citation **at the end of a sentence** (before the period), which reduces latexdiff's tendency to break the `\DIFadd{}` span there. Alternatively, split the paragraph into shorter sentences before each `\cite{}`.
-
----
-
-## Updated Decision Table
-
-| Pattern | Root Cause | Fix |
-|---|---|---|
-| `Argument of \DIFdel has an extra }` in `\item` context | DIFdel crosses list structure | Replace list with comment |
-| `Argument of \DIFdelFL has an extra }` in tabular | DIFdelFL inside table cell | Replace table (no DIFdelFL) |
-| `Paragraph ended before \DIFdel was complete` | DIFdel spans blank lines | One-line or remove |
-| `Not allowed in LR mode` | DIFdel in `\paragraph{}` heading | Remove section block |
-| `Unicode character U+251C` | Terminal encoding issue | Strip non-ASCII |
-| `Argument of \DIFaddFL` after `% ... \DIFaddbegin` | Comment hides `\DIFaddbegin` | Split lines |
-| `Missing } inserted` + `Extra }` in table | Mixed FL in one cell | Replace table |
-| `Argument of \DIFdel/\DIFadd has an extra }` (many lines) | DIFdel/DIFadd in `\textbf{}` | PowerShell global regex (Error 7) |
-| `Misplaced \omit` at `\multicolumn{\DIFaddendFL ...}` | DIFaddendFL inside multicolumn arg | Replace table |
-| `Argument of \DIFaddFL` in new table | Whole table in DIFaddbegin | Remove DIFaddbegin/DIFaddend + DIFaddFL |
-| `soul Error: Reconstruction failed` + `Missing number` | `\mbox{\cite{}}` inside `\DIFadd{}` | Remove `\mbox{}` + `\hskip0pt` (Error 10) |
-| `TeX capacity exceeded` + `}\cite{KEY}\DIFaddend\DIFaddbegin` | Stranded cite between markers | Collapse markers (Error 11) |
-| `TeX capacity exceeded` + `\ref{...}` in `\DIFadd{}` | `\ref` or `\subsubsection` inside DIFadd/DIFaddbegin | `\protect\ref` + move heading out (Error 12) |
-| `Paragraph ended before \DIFadd was complete` | Multi-paragraph `\DIFadd{}` block | Split into per-paragraph blocks (Error 13) |
-| `Paragraph ended before \textbf was complete` + `Extra \else` | `\textbf{\DIFadd{...}}` nesting | Remove `\textbf{}` wrapper (Error 14) |
-| **`Too many }'s` at a `\cite{}` line** | **`\DIFadd{}` split incorrectly at `\cite{}`** | **Remove stray `}` + `\hskip0pt` after citation (Error 15)** |
-| No PDF after build | Fatal error unresolved | Find `^!` in log |
-| `??` in PDF citations | Single-pass compilation | Run pdflatex 2nd time |
+Adicionar `\soulregister\ref{1}` no preâmbulo do `review_clean.tex` **não resolve** este problema, pois o conflito é de chaves (`}` do `\ref{label}` fecha o `\DIFadd{}`), não de comandos não registrados. A única solução robusta é manter `\ref{}` fora do argumento de `\DIFadd{}`.
