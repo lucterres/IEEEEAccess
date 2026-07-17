@@ -3,10 +3,10 @@
 Usage examples
 --------------
 # Scenario A — real data only, seed 42
-python train.py --scenario A --seed 42
+conda run -n cv2 python -u train.py --scenario A --seed 42
 
 # Scenario B — real + synthetic, seed 42
-python train.py --scenario B --seed 42
+conda run -n cv2 python -u train.py --scenario B --seed 42
 
 # Low-data regime: 50 real images only
 python train.py --scenario A --seed 42 --n_real 50
