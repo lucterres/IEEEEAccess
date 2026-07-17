@@ -5,6 +5,22 @@
 **Authors:** Luciano D. Terres and Jacob Scharcanski  
 **Revision:** July 2026
 
+### Reviewers Summary
+
+**Reviewer 1** (`## 🔵 Reviewer 1` in `_Reviewer.md`) — 4 major points:
+- R1.1 Comparison with Henriques et al. — **DONE** (Section II rewritten)
+- R1.2 VAE implementation details — **DONE** (Section III, arch + hyperparams added)
+- R1.3 Expert evaluation design (blinding) — **PARTIALLY DONE** (blind experiment protocol added; results pending)
+- R1.4 Statistical significance for DSSIM (~2.2%) — **DONE** (candid discussion added; Wilcoxon infeasibility explained; MSE −16.7% and LBP −12.4% highlighted)
+
+**Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
+- R2.1 Downstream segmentation experiment — **PENDING**
+- R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
+- R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
+- R2.4 Clearer experimental setting — **DONE** (added explicit note in Dataset section explaining the two experimental contexts: F3 400×400px N=600 vs TGS 101×101px; added Experimental setting note in Ablation Study section; clarified why MSE ranges differ by ~16×)
+- R2.5 Reproducibility — **DONE** (VAE details and texture synthesis details added)
+
+
 > All changes listed below are highlighted in `latex_build/Highlighted_PDF.pdf`  
 > (yellow = additions, strikethrough = deletions).  
 > Full rationale for each change is in [`response_to_reviewers.md`](./response_to_reviewers.md).
