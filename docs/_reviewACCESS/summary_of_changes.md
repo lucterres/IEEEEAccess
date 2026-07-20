@@ -14,7 +14,7 @@
 - R1.4 Statistical significance for DSSIM (~2.2%) — **DONE** (candid discussion added; Wilcoxon infeasibility explained; MSE −16.7% and LBP −12.4% highlighted)
 
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
-- R2.1 Downstream segmentation experiment — **PENDING**
+- R2.1 Downstream segmentation experiment — **PARTIALLY DONE** (subsection skeleton + protocol inserted in Sec. IV-E; results `[TODO]` pending experiment execution)
 - R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
 - R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
 - R2.4 Clearer experimental setting — **DONE** (added explicit note in Dataset section explaining the two experimental contexts: F3 400×400px N=600 vs TGS 101×101px; added Experimental setting note in Ablation Study section; clarified why MSE ranges differ by ~16×)
@@ -43,3 +43,5 @@ The table below lists every change made to the manuscript in response to reviewe
 | 10 | R2.4 | **Sec. IV — Dataset subsection** | New note *"Note on experimental settings and numerical ranges"* added: F3 ($400\times400$px, $N=600$, MSE ≈ 3,700–6,700) vs. TGS ($101\times101$px, $N=110$, MSE ≈ 500–850); explains $\sim15.7\times$ area ratio as root cause of MSE scale discrepancy | 373 |
 | 11 | R2.4 | **Sec. V — Ablation Study** | New note *"Experimental setting"* prepended: all ablation experiments on TGS dataset ($101\times101$px); cross-reference to Dataset note | 593 |
 | 12 | R2.5 | **Sec. III-B — Non-parametric Texture Synthesis** | Patch neighborhood size ($11\times11$ px), sampling parameter ($\sigma = \text{kernel\_size}/6.4 \approx 1.72$), boundary dilation ($5\times5$ kernel, 1 iteration → 5 px strip), texture database construction (up to 1,000 pairs, Probabilistic Hough Transform, `patches_db_cache.npz`) added | 256–305 |
+| 13 | R2.1 | **Sec. IV-E — Downstream Segmentation Evaluation** | New subsection skeleton inserted (`\label{sec:downstream}`): Experimental Setup (TGS split 800/800, pool 400 synthetic, U-Net config, Scenarios A/B, 3 seeds, IoU+Dice+Wilcoxon), Results (Table~\ref{tab:downstream} with `[TODO]` values), Low-data Regime Analysis (`[TODO]`). Paper overview paragraph updated to reference Sec. IV-E. **Results pending experiment execution.** | 587–647 |
+| 14 | R2.1 | **Sec. I — Introduction (paper overview)** | Paper overview sentence updated: `Section~\ref{sec:results}` description now mentions downstream segmentation experiment and cross-references `Section~\ref{sec:downstream}` | 80 |

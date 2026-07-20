@@ -85,10 +85,17 @@ If errors appear, see [fix-errors.md](./references/fix-errors.md).
 > |---|---|---|
 > | `soul Error: Reconstruction failed` + `Missing number` | `\mbox{\cite{}}` inside `\DIFadd` | Error 10 |
 > | `TeX capacity exceeded` + `}\cite{KEY}\DIFaddend\DIFaddbegin` | Stranded cite between markers | Error 11 |
-> | `TeX capacity exceeded` + line ends in `\ref{...}.}` | `\ref{}` or `\subsubsection` inside `\DIFaddbegin` | Error 12 |
+> | `TeX capacity exceeded` + line ends in `\ref{...}.}` | `\ref{}` inside `\DIFaddbegin` sem `\soulregister\ref{1}` | Error 12 |
 > | `Paragraph ended before \DIFadd was complete` | Multi-paragraph `\DIFadd{}` block | Error 13 |
-> | `Paragraph ended before \textbf was complete` + `Extra \else` | `\textbf{\DIFadd{...}}` nesting | Error 14 |
+> | `Argument of \DIFadd has an extra }` + `Paragraph ended` | `\textbf{\DIFadd{...}}` nesting | Error 14 |
+> | `Undefined color '{red}'` + `soul Error: Reconstruction failed` | `\textcolor{red}{}` inside `\DIFadd{}` | Error 13 |
 > | `Argument of \DIFdel has an extra }` (many lines) | `\DIFdel` crossing list/heading | Errors 1, 3, 7 |
+> | `Command \DIFadd undefined` | Preamble duplicado (cleanup rodado 2×); apenas `\renewcommand` sem `\providecommand` | Apagar 1º bloco duplicado |
+> 
+> **Visual issue (sem erro de compilação):**
+> | Sintoma no PDF | Causa | Fix |
+> |---|---|---|
+> | Highlight amarelo interrompido em `~Section X` / `~Table X` | `\protect\ref{}` dentro de `\DIFadd{}` | Mover ref para fora do bloco (Error 12 — visual) |
 
 ### Step 4 — Validate Output
 

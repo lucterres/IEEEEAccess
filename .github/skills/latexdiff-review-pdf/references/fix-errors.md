@@ -328,67 +328,148 @@ $c | Set-Content "_review_clean.tex" -Encoding UTF8
 
 ---
 
-## Error 12: `\ref{}` (ou `\protect\ref{}`) dentro de `\DIFadd{}` — soul Quebra a Continuidade
+## Error 12: `\ref{}` dentro de `\DIFadd{}` — soul e conflito de chaves
 
-### Symptoms
+> **Status (2026-07-18):** Este erro **não ocorre** com o setup atual do preamble, que inclui `\soulregister\ref{1}`. O latexdiff também tende a dividir naturalmente `\DIFadd{}` nos pontos de `\ref{}`. A seção abaixo é mantida como referência para setups sem `\soulregister\ref{1}`.
+
+### Symptoms (sem `\soulregister\ref{1}` no preamble)
 ```
 ! Missing \endcsname inserted.
 ! TeX capacity exceeded, sorry [input stack size=10000].
 ```
-O log aponta para linhas como:
+
+### Cause
+Sem `\soulregister\ref{1}`, o pacote `soul` não sabe que `\ref` recebe 1 argumento. Ao encontrar `\ref{label}` dentro de `\hl{}` (expansão de `\DIFadd{}`), o `}` de fechamento de `\ref{label}` é interpretado como fechamento prematuro do próprio `\hl{...}`, corrompendo o balanço de chaves.
+
+Com `\protect\ref{label}` o problema é ainda pior: gera `Missing \endcsname` antes do erro de capacidade.
+
+### Por que não ocorre no setup atual
+
+O preamble injetado pelo `latexdiff_cleanup.py` inclui:
+```latex
+\soulregister\ref{1}
 ```
-l.484 ... described in Section~\ref{sec:ablation}}
-l.660 }
-l.726 }}
+Isso registra `\ref` no soul como comando de 1 argumento. O soul então processa `\ref{label}` corretamente dentro de `\hl{...}`, sem confundir o `}` do argumento com o fechamento do highlight.
+
+Adicionalmente, o latexdiff tende a dividir `\DIFadd{}` naturalmente nos pontos onde há `\ref{}`, resultando em padrões como:
+```latex
+\DIFadd{...in Table} ~\protect\ref{tab:label}\DIFadd{. As noted in Section} ~\protect\ref{sec:label}\DIFadd{, ...}
+```
+onde os `\ref{}` ficam **entre** blocos `\DIFadd{}`, não dentro deles.
+
+### Fix (fallback — se o erro ocorrer mesmo assim)
+
+**Passo 1:** Verificar se `\soulregister\ref{1}` está no preamble de `_review_clean.tex`. Se não estiver, adicioná-lo manualmente antes de `\begin{document}`.
+
+**Passo 2:** Se o erro persistir, quebrar o `\DIFadd{}` ao redor de cada `\ref{}` problemático:
+
+```latex
+% Antes (quebrado — \ref dentro de \DIFadd):
+\DIFadd{texto antes~\ref{label}. Texto após.}
+
+% Depois (corrigido — \ref fora do \DIFadd):
+\DIFadd{texto antes~}\DIFaddend \ref{label}\DIFaddbegin \DIFadd{ texto após.}
+```
+
+> ⚠️ Se não há texto adicionado após o `\ref`, basta fechar o bloco sem reabrir:
+> ```latex
+> \DIFadd{texto antes~}\DIFaddend \ref{label}.
+> ```
+
+### Problema visual (não causa erro de compilação)
+
+Mesmo com `\soulregister\ref{1}`, o token `\protect` antes de `\ref` pode interromper visualmente o highlight amarelo no PDF — o número da seção/tabela aparece sem fundo amarelo no meio de texto destacado.
+
+**Fix**: mover `\protect\ref{label}` para **fora** do argumento `\DIFadd{}`:
+
+```latex
+% Antes (highlight interrompido):
+\DIFadd{...described in Section~\protect\ref{sec:results}). A stratified...}
+
+% Depois (highlight contínuo):
+\DIFadd{...described in Section~}\protect\ref{sec:results}\DIFadd{). A stratified...}
+```
+
+> Aplicar em todos os `\protect\ref{}` dentro de `\DIFadd{}`. O número da referência ficará sem amarelo, mas o texto ao redor permanece destacado continuamente.
+
+---
+
+## Error 13: `\textcolor{color}{}` dentro de `\DIFadd{}` — xcolor Quebra com soul
+
+### Symptoms
+```
+! Package xcolor Error: Undefined color `{red}'.
+! Argument of \textcolor has an extra }.
+! Paragraph ended before \textcolor was complete.
+! Package soul Error: Reconstruction failed.
 ```
 
 ### Cause
-O pacote `soul` (`\hl{}`) — usado por `\DIFadd{}` para o highlight amarelo — **não consegue processar `\ref{label}` dentro de seu argumento**. A chave `}` que fecha `\ref{label}` é interpretada como fechamento prematuro do `\hl{...}` (ou `\DIFadd{...}`), corrompendo o balanço de chaves e causando o loop de capacidade do TeX.
+`\textcolor{red}{content}` dentro de `\DIFadd{}` expande para `\textcolor{red}{content}` dentro de `\hl{}` (soul). O soul tenta tokenizar `\textcolor` mas confunde a chave `{red}` como argumento inválido — a cor entre chaves simples é interpretada como `{red}` (com chaves), não como `red`.
 
-O prefixo `\protect` agrava ainda mais o problema: `~\protect\ref{label}` dentro de `\DIFadd{}` gera `Missing \endcsname` antes mesmo do erro de capacidade.
-
-Exemplo de código problemático gerado pelo latexdiff:
+Ocorre tipicamente em marcadores TODO coloridos que foram adicionados no texto novo:
 ```latex
-\DIFadd{, and also for the ablation experiments described in Section~\protect\ref{sec:ablation}}
-\DIFadd{diffusion-based seismic image synthesis methods reviewed in Section~\protect\ref{sec:related}.}
-\DIFadd{...Table~\protect\ref{tab:metricsSummary}.}
+\DIFadd{\textcolor{red}{\textbf{[TODO: text]}}}
 ```
 
-### Fix — Passo 1: remover `\protect` (PowerShell)
-```powershell
-(Get-Content "_review_clean.tex" -Raw) -replace '~\\protect\\ref\{', '~\ref{' |
-    Set-Content "_review_clean.tex" -NoNewline
-```
-
-### Fix — Passo 2: quebrar `\DIFadd{}` ao redor de cada `\ref{}` (manual)
-Após remover `\protect`, ainda resta o conflito de chaves. Para cada `\ref{}` dentro de um `\DIFadd{}`, quebre o bloco de forma que o `\ref{}` fique **fora** do argumento do `\DIFadd{}`:
+### Fix
+Remover o wrapper `\textcolor{}{}`, mantendo apenas o conteúdo interno:
 
 ```latex
 % Antes (quebrado):
-\DIFadd{texto antes do ref~\ref{label}. Texto após.}
+\DIFadd{\textcolor{red}{\textbf{[TODO: text]}}}
 
-% Depois (corrigido) — se o \ref for o ÚLTIMO elemento do bloco \DIFadd:
-...texto antes~}\DIFaddend \ref{label}. Texto fora do bloco adicionado.
-
-% Depois (corrigido) — se houver texto adicionado APÓS o \ref também:
-...texto antes~}\DIFaddend \ref{label}\DIFaddbegin \DIFadd{ texto após.}
+% Depois (corrigido):
+\DIFadd{\textbf{[TODO: text]}}
 ```
 
-> ⚠️ **Não introduzir `\DIFaddbegin \DIFadd{}\DIFaddend` vazio** após o `\ref`. Se não há texto adicionado após o `\ref`, basta fechar com `\DIFaddend` e deixar o resto (ponto, vírgula, texto normal) fora do bloco.
+> Se o `\textcolor` for essencial para o output final, mova-o para fora do `\DIFadd{}`:
+> ```latex
+> \textcolor{red}{\DIFadd{\textbf{[TODO: text]}}}
+> ```
+> Atenção: `\textcolor{}{}` não é soulregistered por padrão — se houver outros itens dentro do `\hl{}`, pode falhar. Prefira remover o `\textcolor` em blocos `\DIFadd{}`.
 
-Exemplos reais corrigidos em `_review_clean.tex`:
+---
+
+## Error 14: `\textbf{\DIFadd{...}}` — soul não suporta `\hl{}` dentro de argumento
+
+### Symptoms
+```
+! Argument of \DIFadd has an extra }.
+! Paragraph ended before \DIFadd was complete.
+```
+O log aponta para linhas com `}}` no final, como:
+```
+l.729 \noindent\textbf{\DIFadd{Dataset.}}
+l.735 ...textbf{\DIFadd{800 real training images}}
+```
+
+### Cause
+`\textbf{\DIFadd{text}}` faz com que `\DIFadd` (que expande para `\hl{}`) seja chamado **dentro** do argumento de `\textbf{}`. O soul não pode operar dentro de um grupo aberto por outro comando — ele precisa estar no nível de texto horizontal.
+
+Diferente do Error 7 (que remove o marker), aqui o marker deve ser **preservado** para manter o highlight.
+
+### Fix
+Inverter a ordem — mover `\textbf{}` para dentro de `\DIFadd{}`:
+
 ```latex
-% Caso: \ref é o último elemento — apenas fecha e deixa o ponto fora
-...described in Section~}\DIFaddend \ref{sec:ablation}.
+% Antes (quebrado):
+\textbf{\DIFadd{Dataset.}}
+\noindent\textbf{\DIFadd{Segmentation model.}}
 
-% Caso: há texto adicionado após o \ref
-...methods reviewed in Section~}\DIFaddend \ref{sec:related}\DIFaddbegin \DIFadd{.
-}
-
-% Caso: \ref no meio de um \parbox com vários \ref — cada um quebrado individualmente
-...comparison in Table~}\DIFaddend \ref{tab:metricsSummary}\DIFaddbegin \DIFadd{.}
-\DIFadd{As noted in Section~}\DIFaddend \ref{sec:results}\DIFaddbegin \DIFadd{, the smaller ...lower than those in Table~}\DIFaddend \ref{tab:metricsSummary}\DIFaddbegin \DIFadd{ (F3, ...}
+% Depois (corrigido — highlight preservado):
+\DIFadd{\textbf{Dataset.}}
+\noindent\DIFadd{\textbf{Segmentation model.}}
 ```
 
-### Prevention
-Adicionar `\soulregister\ref{1}` no preâmbulo do `_review_clean.tex` **não resolve** este problema, pois o conflito é de chaves (`}` do `\ref{label}` fecha o `\DIFadd{}`), não de comandos não registrados. A única solução robusta é manter `\ref{}` fora do argumento de `\DIFadd{}`.
+### Fix (PowerShell — casos simples, sem braces aninhadas)
+```powershell
+$c = Get-Content -Raw "_review_clean.tex"
+# \textbf{\DIFadd{TEXT}} → \DIFadd{\textbf{TEXT}}
+$c = $c -replace '\\textbf\{\\DIFadd\{([^{}]+)\}\}', '\DIFadd{\textbf{$1}}'
+# \noindent\textbf{\DIFadd{TEXT}} → \noindent\DIFadd{\textbf{TEXT}}
+$c = $c -replace '\\noindent\\textbf\{\\DIFadd\{([^{}]+)\}\}', '\noindent\DIFadd{\textbf{$1}}'
+$c | Set-Content "_review_clean.tex" -Encoding UTF8
+```
+
+> Para casos com múltiplos `\DIFadd{}` dentro do `\textbf{}` (ex: `\textbf{\DIFadd{A }\emph{\DIFadd{et al.}}\DIFadd{...}}`), substituir manualmente: remover os `\DIFadd{}` internos e deixar apenas o conteúdo sem highlight, ou reestruturar o bloco inteiro.
