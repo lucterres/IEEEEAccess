@@ -145,3 +145,7 @@ O manuscrito revisado já responde adequadamente ao R2.3 ao:
 ---
 
 *Relatório gerado em 2026-07-19. Baseado em pesquisa de artigos acessíveis via arXiv e web.*
+Próximos passos sugeridos:
+
+(A) Posso adicionar Wang et al. (2024) ao _v7.tex agora — novo bibitem + linha na tabela + frase no parágrafo contextual
+(B) Para SeisGAN e ConSeisDiff: verificar via acesso institucional (Springer/ScienceDirect) antes de citar
