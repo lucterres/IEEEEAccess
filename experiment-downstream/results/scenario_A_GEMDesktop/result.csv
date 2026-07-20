@@ -1,0 +1,2 @@
+scenario,seed,n_real,n_synth,best_val_iou,test_iou,test_dice,epochs_run,elapsed_s
+A,42,3198,0,0.4417,0.427,0.4609,50,17608.7
