@@ -1,7 +1,7 @@
 \documentclass{ieeeaccess}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL docs/reviewPacote-submetido-jun/_v6.tex   Mon Jul 13 20:24:06 2026
-%DIF ADD _v7.tex                                   Thu Aug 27 15:21:40 2026
+%DIF ADD _v7.tex                                   Fri Sep  4 11:16:53 2026
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -204,13 +204,14 @@ In recent years, the introduction of deep learning techniques in seismic image s
 
 However, the success of CNNs came with a significant challenge: learning schemes for synthesizing such seismic image structures require large, annotated datasets for training. In seismic imaging, such datasets tend to be unavailable, or difficult to produce. Therefore, researchers have explored various alternatives, including data augmentation with synthetic data and transfer learning. Despite these efforts, the issue of limited training data remains a hurdle in the widespread application of CNNs to seismic image synthesis~\cite{Wang2021}.
 
-More recently, R. S. Ferreira \emph{et al.}~\cite{Ferreira2020} proposed a scheme for generating synthetic seismic images. In addition to using expert evaluation, they also evaluated their results using measures that estimate the differences between synthetic and real images. Their work addresses the generation of synthetic seismic images of various geological fields, including geological faults and salt domes. The method is based on a conditional Generative Adversarial Network (cGAN) following the pix2pix~\cite{pix2pix2017} image-to-image translation framework: a sketch provided by the user serves as the conditional input, and the GAN generator learns to synthesize a realistic seismic image matching that structural layout. The discriminator evaluates the realism and alignment of the generated images. Since the work of R. S. Ferreira \emph{et al.}~\cite{Ferreira2020} approaches the same problem and is a clear representative of the state-of-the-art in the field, we compare their results with the results obtained by the proposed scheme using the same measures and methodologies, evaluating the realism of synthetic seismic images when contrasted with real seismic images.
+More recently, R. S. Ferreira \emph{et al.}~\cite{Ferreira2020} proposed a scheme for generating synthetic seismic images. In addition to using expert evaluation, they also evaluated their results using measures that estimate the differences between synthetic and real images. Their work addresses the generation of synthetic seismic images of various geological fields, including geological faults and salt domes. \DIFaddbegin \DIFadd{The method is based on a conditional Generative Adversarial Network (cGAN) following the pix2pix~\cite{pix2pix2017}\hskip0ptimage-to-image translation framework: a sketch provided by the user serves as the conditional input, and the GAN generator learns to synthesize a realistic seismic image matching that structural layout. The discriminator evaluates the realism and alignment of the generated images. }\DIFaddend Since the work of R. S. Ferreira \emph{et al.}~\cite{Ferreira2020} approaches the same problem and is a clear representative of the state-of-the-art in the field, we compare their results with the results obtained by the proposed scheme using the same measures and methodologies, evaluating the realism of synthetic seismic images when contrasted with real seismic images.
 
-Similarly, Henriques \emph{et al.}~\cite{Henriques2021} proposed a two-stage generative pipeline for data augmentation. In their method, a VAE generates salt body masks, and a Conditional Normalizing Flow (CNF) model subsequently synthesizes seismic image patches conditioned on those masks. While both approaches use a VAE for mask generation, they differ fundamentally in architecture and practice. The CNF model for texture synthesis required training on 24,872 annotated patch pairs, which hinders implementation where only small annotated seismic datasets are available, a common situation in geosciences applications. In contrast, the proposed method replaces the learned generative texture model with a non-parametric context-oriented texture synthesis algorithm that does not require training and operates directly from a small set of reference patches. By explicitly decomposing the seismic image into distinct geological zones --- salt body, surrounding rock, and boundary regions --- and synthesizing each zone independently, the proposed method also captures the non-stationary texture properties inherent to seismic data. Finally, Henriques \emph{et al.} evaluate their results only indirectly, measuring improvements in downstream segmentation performance on a different synthetic dataset, which precludes a direct quantitative comparison.
+Similarly, Henriques \emph{et al.}~\cite{Henriques2021} proposed a \DIFdelbegin \DIFdel{very similar data augmentationmethod based on training two generative models to augment the number of samples in a seismic image dataset for the semantic segmentation of salt bodies. However, they perform an indirect evaluation of results }\DIFdelend \DIFaddbegin \DIFadd{two-stage generative pipeline for data augmentation. In their method, a VAE generates salt body masks, and a Conditional Normalizing Flow (CNF) model subsequently synthesizes seismic image patches conditioned on those masks. While both approaches use a VAE for mask generation, they differ fundamentally in architecture and practice. The CNF model for texture synthesis required training on 24}\DIFaddend ,\DIFdelbegin \DIFdel{based on the improvement in the performance of segmentation methods based on convolutional neural networks, which could be difficult to use as a direct comparison of results with our proposed method and on a different database}\DIFdelend \DIFaddbegin \DIFadd{872 annotated patch pairs, which hinders implementation where only small annotated seismic datasets are available, a common situation in geosciences applications. In contrast, the proposed method replaces the learned generative texture model with a non-parametric context-oriented texture synthesis algorithm that does not require training and operates directly from a small set of reference patches. By explicitly decomposing the seismic image into distinct geological zones --- salt body, surrounding rock, and boundary regions --- and synthesizing each zone independently, the proposed method also captures the non-stationary texture properties inherent to seismic data. Finally, Henriques }\emph{\DIFadd{et al.}} \DIFadd{evaluate their results only indirectly, measuring improvements in downstream segmentation performance on a different synthetic dataset, which precludes a direct quantitative comparison}\DIFaddend .
 
-Choi \emph{et al.}~\cite{Choi2025} address the scarcity of labeled seismic data for training deep learning models by employing advanced generative techniques. They propose a conditional pix2pix GAN method for generating synthetic seismic images targeting fault detection. Their generator is conditioned on fault-label images and learns to produce realistic seismic sections. The study demonstrates that GAN-based synthesis can capture seismic texture patterns and that training augmented with synthetic data improves fault detection performance. More recently, the same group extended this line of work by replacing the GAN backbone with a conditional diffusion model~\cite{Choi2025}, which further improved visual realism by leveraging the iterative denoising generation process proficient in various image synthesis tasks. While their primary focus is on fault detection rather than salt dome synthesis, their results confirm that conditional generative models --- whether GAN-based or diffusion-based --- can effectively produce geologically plausible seismic images, reinforcing the relevance of the data augmentation strategy pursued in the present work.
+Choi \emph{et al.}~\cite{Choi2025} address the scarcity of labeled seismic data for training deep learning models by employing advanced generative techniques. They propose a \DIFaddbegin \DIFadd{conditional pix2pix GAN }\DIFaddend method for generating synthetic seismic images \DIFdelbegin \DIFdel{using diffusion models, a class of generative models }\DIFdelend \DIFaddbegin \DIFadd{targeting fault detection. Their generator is conditioned on fault-label images and learns to produce realistic seismic sections. The study demonstrates that GAN-based synthesis can capture seismic texture patterns and that training augmented with synthetic data improves fault detection performance. More recently, the same group extended this line of work by replacing the GAN backbone with a conditional diffusion model~\cite{Choi2025}, which further improved visual realism by leveraging the iterative denoising generation process }\DIFaddend proficient in various image synthesis tasks. While their primary focus is on \DIFdelbegin \DIFdel{generating synthetic seismic data for fault detection , their conditional diffusion model incorporates geological context, ensuring the synthetic images are not only realistic, but also are geologically plausible. Their study demonstrates that diffusion models can effectively capture the complex patterns and textures in seismic imaging data , yielding high-quality synthetic images}\DIFdelend \DIFaddbegin \DIFadd{fault detection rather than salt dome synthesis, their results confirm that conditional generative models --- whether GAN-based or diffusion-based --- can effectively produce geologically plausible seismic images, reinforcing the relevance of the data augmentation strategy pursued in the present work.
+}
 
-For GAN-based approaches more broadly, Wang \emph{et al.}~\cite{Wang2021} proposed SeismoGen, which applies GANs to seismic waveform synthesis for data augmentation. Their results demonstrate that GAN-generated synthetic seismic data can enhance model training, but their evaluation focuses on waveform-level realism rather than image-level structural fidelity, which makes a direct metric comparison with the present image-based method unsuitable.
+\DIFadd{For GAN-based approaches more broadly, Wang }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Wang2021}\hskip0ptproposed SeismoGen, which applies GANs to seismic waveform synthesis for data augmentation}\DIFaddend . Their results \DIFdelbegin \DIFdel{confirm that synthetic seismic images enhance the trainingof fault detection algorithms, leading to an improved performance in identifying subsurface structures}\DIFdelend \DIFaddbegin \DIFadd{demonstrate that GAN-generated synthetic seismic data can enhance model training, but their evaluation focuses on waveform-level realism rather than image-level structural fidelity, which makes a direct metric comparison with the present image-based method unsuitable}\DIFaddend .
 
 In summary, \DIFdelbegin \DIFdel{while there has been significant progress in the field }\DIFdelend \DIFaddbegin \DIFadd{the landscape }\DIFaddend of seismic image synthesis \DIFdelbegin \DIFdel{, some }\DIFdelend \DIFaddbegin \DIFadd{includes: (1) sketch-based cGAN methods (Ferreira et al.~\cite{Ferreira2020}), which require user-provided conditional sketches; (2) two-stage VAE + CNF methods (Henriques et al.~\cite{Henriques2021}), which require large annotated training sets for the texture synthesis stage; (3) conditional pix2pix GAN and conditional diffusion methods (Choi et al.~\cite{Choi2025}), evaluated on fault detection rather than salt dome synthesis; and (4) the proposed context-oriented method, which is the only approach that combines training-free texture synthesis with explicit zone decomposition and is evaluated directly on labeled salt dome data. While }\DIFaddend challenging issues remain \DIFdelbegin \DIFdel{open }\DIFdelend in terms of data availability \DIFdelbegin \DIFdel{, evaluation methodologies, }\DIFdelend and the need for \DIFdelbegin \DIFdel{more robust generative models. Our }\DIFdelend \DIFaddbegin \DIFadd{unified benchmarks, our }\DIFaddend work addresses these challenges by leveraging VAEs and \DIFdelbegin \DIFdel{advanced texture synthesis techniques }\DIFdelend \DIFaddbegin \DIFadd{context-aware texture synthesis }\DIFaddend to produce high-quality \DIFaddbegin \DIFadd{labeled }\DIFaddend synthetic seismic images \DIFaddbegin \DIFadd{without requiring paired training data for the texture stage}\DIFaddend .
 
@@ -568,7 +569,7 @@ The LBP is a more robust texture attribute successfully applied in medical image
 \caption{Result table: real images evaluation by the experts.}
 \label{tab:real_images_evaluation}
 \sisetup{output-decimal-marker = {,}}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
 \toprule
 & \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
@@ -585,7 +586,7 @@ Mean & 0.91480 & 0.91563 & 0.91396 & 0.91845 & 0.90420 & 0.91064 & 0.82958 & 0.8
 \caption{Result table: Synthetic images evaluation by the experts.}
 \label{tab:synthetic_images_evaluation}
 \sisetup{output-decimal-marker = {,}}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
 \toprule
 & \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
@@ -648,35 +649,42 @@ In Ferreira \emph{et al.}~\cite{Ferreira2020}, the median DSSIM achieved $0.39$ 
 \DIFdelbegin \DIFdel{The relatively small difference in DSSIMsuggests that both methods are capable of capturing the overall structure of the seismic images , but our proposed method may have an advantage in terms of providing finer details.
 }\DIFdelend 
 
-The work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported the lowest median LBP Distance value of $0.17$. In contrast, our proposed method achieved a LBP Distance median of $0.150075$, a reduction of approximately $12.4\%$, indicating that our method generates textures with substantially higher fidelity to the original images at the level of local binary patterns.
+The work in Ferreira \emph{et al.}~\cite{Ferreira2020} reported the lowest median LBP Distance value of $0.17$. In contrast, our proposed method achieved a LBP Distance median of $0.150075$, \DIFaddbegin \DIFadd{a reduction of approximately $12.4\%$, }\DIFaddend indicating that our method \DIFdelbegin \DIFdel{tends to generate textures with }\DIFdelend \DIFaddbegin \DIFadd{generates textures with substantially }\DIFaddend higher fidelity to the original images \DIFaddbegin \DIFadd{at the level of local binary patterns}\DIFaddend .
 
-Overall, our proposed context-oriented synthesis approach obtains better quantitative performance across all three measures when compared to the sketch-based method of Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in MSE ($\approx 16.7\%$ reduction: from $4712.1$ to $3926.2$) and LBP Distance ($\approx 12.4\%$ reduction: from $0.17$ to $0.15$), which together suggest meaningful gains in pixel-level accuracy and textural fidelity. The DSSIM difference is marginal ($\approx 0.2\%$), and we do not claim statistical significance for it; both methods are structurally comparable by this measure, and the primary advantages of the proposed approach are better captured by MSE and LBP Distance.
+Overall, our proposed context-oriented synthesis approach \DIFdelbegin \DIFdel{tends to obtain a }\DIFdelend \DIFaddbegin \DIFadd{obtains }\DIFaddend better quantitative performance across all three measures when compared to the sketch-based method \DIFdelbegin \DIFdel{proposed in }\DIFdelend \DIFaddbegin \DIFadd{of }\DIFaddend Ferreira \emph{et al.}~\cite{Ferreira2020}. The improvement is most pronounced in \DIFdelbegin \DIFdel{terms of the MSE and LBP distance measures, suggesting notable gains in terms of }\DIFdelend \DIFaddbegin \DIFadd{MSE ($\approx 16.7\%$ reduction: from $4712.1$ to $3926.2$) and LBP Distance ($\approx 12.4\%$ reduction: from $0.17$ to $0.15$), which together suggest meaningful gains in }\DIFaddend pixel-level accuracy and \DIFdelbegin \DIFdel{texture fidelity. }\DIFdelend \DIFaddbegin \DIFadd{textural fidelity. The DSSIM difference is marginal ($\approx 0.2\%$), and we do not claim statistical significance for it; both methods are structurally comparable by this measure, and the primary advantages of the proposed approach are better captured by MSE and LBP Distance.
+}\DIFaddend 
 
-\subsubsection{Contextual Comparison with GAN-based and Diffusion-based Methods}
+\DIFdelbegin \DIFdel{It is important to observe that quantitative measures may not always align with qualitative human assessment.
+In our work, we supplemented our quantitative findings with a detailed qualitative analysis by domain experts. The experts evaluations concluded that the synthetic images were virtually indistinguishable from the real world ones, }\DIFdelend \DIFaddbegin \subsubsection{\DIFadd{Contextual Comparison with GAN-based and Diffusion-based Methods}}
 
-Beyond the direct numerical comparison with Ferreira \emph{et al.}~\cite{Ferreira2020}, it is informative to position the proposed method within the broader landscape of GAN-based and diffusion-based seismic image synthesis methods reviewed in Section~\ref{sec:related}.
+\DIFadd{Beyond the direct numerical comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}, it is informative to position the proposed method within the broader landscape of GAN-based }\DIFaddend and \DIFdelbegin \DIFdel{these findings were supported by an }\DIFdelend \DIFaddbegin \DIFadd{diffusion-based seismic image synthesis methods reviewed in Section~\protect\ref{sec:related}.
+}
 
-Henriques \emph{et al.}~\cite{Henriques2021} also use a VAE for mask generation and are therefore the most closely related architectural baseline. However, their method evaluates quality only through downstream segmentation performance on a proprietary synthetic dataset and does not report MSE, DSSIM, or LBP Distance on a public benchmark; a direct numerical comparison is therefore not possible. From an architectural perspective, the key distinction is that their Conditional Normalizing Flow (CNF) texture stage requires training on 24,872 annotated patch pairs, while the proposed method's texture synthesis stage is non-parametric and training-free. This design choice makes the proposed method more data-efficient and directly applicable in settings where only a small number of annotated seismic images are available.
+\DIFadd{Henriques }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Henriques2021}\hskip0ptalso use a VAE for mask generation and are therefore the most closely related architectural baseline. However, their method evaluates quality only through downstream segmentation performance on a proprietary synthetic dataset and does not report MSE, DSSIM, or LBP Distance on a public benchmark; a direct numerical comparison is therefore not possible. From an architectural perspective, the key distinction is that their Conditional Normalizing Flow (CNF) texture stage requires training on 24,872 annotated patch pairs, while the proposed method's texture synthesis stage is non-parametric and training-free. This design choice makes the proposed method more data-efficient and directly applicable in settings where only a small number of annotated seismic images are available.
+}
 
-Choi \emph{et al.}~\cite{Choi2025} evaluate a conditional pix2pix GAN and a conditional diffusion model for seismic data synthesis. Their evaluation, however, targets fault detection and is conducted on a private dataset using downstream segmentation metrics (F1-score, IoU), not image-level similarity measures (MSE, DSSIM, LBP Distance); a direct numerical comparison is therefore also not feasible. From a modeling perspective, their conditional diffusion model requires hundreds of denoising steps at inference time and large annotated training sets, in contrast to the single-pass generation and training-free texture synthesis of the proposed approach.
+\DIFadd{Choi }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Choi2025}\hskip0ptevaluate a conditional pix2pix GAN and a conditional diffusion model for seismic data synthesis. Their evaluation, however, targets fault detection and is conducted on a private dataset using downstream segmentation metrics (}\DIFaddend F1-score\DIFdelbegin \DIFdel{difference of less than $2$\%. }\DIFdelend \DIFaddbegin \DIFadd{, IoU), not image-level similarity measures (MSE, DSSIM, LBP Distance); a direct numerical comparison is therefore also not feasible. From a modeling perspective, their conditional diffusion model requires hundreds of denoising steps at inference time and large annotated training sets, in contrast to the single-pass generation and training-free texture synthesis of the proposed approach.
+}\DIFaddend 
 
-Wang \emph{et al.}~\cite{Wang2021} (SeismoGen) apply GANs to seismic waveform synthesis and evaluate results at the waveform level; their evaluation framework is incompatible with image-level structural similarity metrics.
+\DIFaddbegin \DIFadd{Wang }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Wang2021}(SeismoGen) apply GANs to seismic waveform synthesis and evaluate results at the waveform level; their evaluation framework is incompatible with image-level structural similarity metrics.
+}
 
-In summary, among the methods reviewed, \textbf{Ferreira \emph{et al.}~\cite{Ferreira2020} is the only baseline for which a direct, fair numerical comparison on a common public benchmark (F3 dataset) using the same metrics (MSE, DSSIM, LBP Distance) is possible}. The remaining methods (Henriques et al., Choi et al., Wang et al.) were evaluated on different datasets, with different metrics, or for different geological targets, precluding a direct numerical comparison. This is a known limitation of the current evaluation, acknowledged candidly, and reflects the broader challenge of the absence of a universally adopted benchmark for seismic image synthesis. Table~\ref{tab:comparison_overview} summarizes the key characteristics of these methods to provide a structured contextual comparison.
+\DIFadd{In summary, among the methods reviewed, }\textbf{\DIFadd{Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}\hskip0ptis the only baseline for which a direct, fair numerical comparison on a common public benchmark (F3 dataset) using the same metrics (MSE, DSSIM, LBP Distance) is possible}}\DIFadd{. The remaining methods (Henriques et al., Choi et al., Wang et al.) were evaluated on different datasets, with different metrics, or for different geological targets, precluding a direct numerical comparison. This is a known limitation of the current evaluation, acknowledged candidly, and reflects the broader challenge of the absence of a universally adopted benchmark for seismic image synthesis. Table~\protect\ref{tab:comparison_overview} summarizes the key characteristics of these methods to provide a structured contextual comparison.
+}
 
-\begin{table}[htbp]
+\DIFaddend \begin{table}[htbp]
     \centering
-    \caption{Contextual comparison of seismic image synthesis methods. Direct numerical comparison on a common benchmark is only possible with Ferreira et al.~\cite{Ferreira2020}.}
+     \caption{\DIFaddFL{Contextual comparison of seismic image synthesis methods. Direct numerical comparison on a common benchmark is only possible with Ferreira et al.~\cite{Ferreira2020}.}}
     \label{tab:comparison_overview}
     \footnotesize
     \begin{tabular}{p{2.0cm}p{1.5cm}p{1.6cm}p{1.5cm}}
         \toprule
         \textbf{Method} & \textbf{Generative model} & \textbf{Target task} & \textbf{Direct comparison} \\
         \midrule
-        Ferreira et al.~\cite{Ferreira2020} & cGAN (pix2pix) & Salt domes, faults & \textbf{Yes} (F3, same metrics) \\
-        Henriques et al.~\cite{Henriques2021} & VAE + CNF & Salt domes & No (different dataset \& metrics) \\
-        Choi et al.~\cite{Choi2025} & Cond.\ pix2pix GAN / Diffusion & Fault detection & No (private dataset, downstream metrics) \\
-        Wang et al.~\cite{Wang2021} & GAN & Waveforms & No (waveform-level evaluation) \\
+        \DIFaddFL{Ferreira et al.~\cite{Ferreira2020}}& cGAN (pix2pix) & Salt domes, faults & \textbf{Yes} (F3, same metrics) \\
+        \DIFaddFL{Henriques et al.~\cite{Henriques2021}}& VAE + CNF & Salt domes & No (different dataset \& metrics) \\
+        \DIFaddFL{Choi et al.~\cite{Choi2025}}& Cond.\ pix2pix GAN / Diffusion & Fault detection & No (private dataset, downstream metrics) \\
+        \DIFaddFL{Wang et al.~\cite{Wang2021}}& GAN & Waveforms & No (waveform-level evaluation) \\
         \midrule
         \textbf{Proposed} & VAE + Non-param.\ texture & Salt domes & --- \\
         \bottomrule
@@ -712,28 +720,35 @@ In summary, among the methods reviewed, \textbf{Ferreira \emph{et al.}~\cite{Fer
 \DIFaddbegin \subsection{\DIFadd{Downstream Segmentation Evaluation}}
 \label{sec:downstream}
 
-To address the practical utility of the proposed synthesis framework, we conduct a downstream segmentation experiment measuring whether augmenting the training set with synthetic data improves segmentation performance on real seismic images.
+\DIFadd{To address the practical utility of the proposed synthesis framework, we conduct a downstream segmentation experiment measuring whether augmenting the training set with synthetic data improves segmentation performance on real seismic images.
+}
 
-\subsubsection{Experimental Setup}
+\subsubsection{\DIFadd{Experimental Setup}}
 
-\noindent\textbf{Dataset.} All experiments use the TGS Salt Identification Challenge dataset~\cite{TGS2023} ($101 \times 101$ pixels, 8-bit grayscale; described in Section~\ref{sec:results}). A stratified split by salt-coverage fraction (0--10\%, 10--30\%, 30--50\%, $>$50\%) yields \textbf{1,200 real training images} and a \textbf{fixed test set of 800 real images} that is never used during training.
+\noindent\textbf{\DIFadd{Dataset.}} \DIFadd{All experiments use the TGS Salt Identification Challenge dataset~\cite{TGS2023}($101 \times 101$ pixels, 8-bit grayscale; described in Section~\protect\ref{sec:results}). A stratified split by salt-coverage fraction (0--10\%, 10--30\%, 30--50\%, $>$50\%) yields }\textbf{\DIFadd{1}{\DIFadd{,}}\DIFadd{200 real training images}} \DIFadd{and a }\textbf{\DIFadd{fixed test set of 800 real images}} \DIFadd{that is never used during training.
+}
 
-\noindent\textbf{Synthetic pool.} The proposed method generates \textbf{1,200 synthetic image--mask pairs}: 1,200 latent vectors $z \sim \mathcal{N}(0,I)$ ($d = 100$) are decoded by the VAE (Section~\ref{sec:methodology}) into binary masks, which are then processed by the context-oriented texture synthesis pipeline (Section~\ref{sec:methodology}). All synthetic content is derived from newly sampled masks and is independent of any test-set image.
+\noindent\textbf{\DIFadd{Synthetic pool.}} \DIFadd{The proposed method generates }\textbf{\DIFadd{1}{\DIFadd{,}}\DIFadd{200 synthetic image--mask pairs}}\DIFadd{: 1}{\DIFadd{,}}\DIFadd{200 latent vectors $z \sim \mathcal{N}(0,I)$ ($d = 100$) are decoded by the VAE (Section~\protect\ref{sec:methodology}) into binary masks, which are then processed by the context-oriented texture synthesis pipeline (Section~\protect\ref{sec:methodology}). All synthetic content is derived from newly sampled masks and is independent of any test-set image.
+}
 
-\noindent\textbf{Segmentation model.} We adopt the standard U-Net~\cite{Ronneberger2015} with encoder channel progression $1 \to 16 \to 32 \to 64 \to 128$ (four levels; $3 \times 3$ convolutions, padding~1, BatchNorm, ReLU, MaxPool $2\times2$), a 256-channel bottleneck, symmetric decoder with bilinear upsampling and skip connections, and a $1\times1$ output head producing logits.
+\noindent\textbf{\DIFadd{Segmentation model.}} \DIFadd{We adopt the standard U-Net~\cite{Ronneberger2015}\hskip0ptwith encoder channel progression $1 \to 16 \to 32 \to 64 \to 128$ (four levels; $3 \times 3$ convolutions, padding~1, BatchNorm, ReLU, MaxPool $2\times2$), a 256-channel bottleneck, symmetric decoder with bilinear upsampling and skip connections, and a $1\times1$ output head producing logits.
+}
 
-\noindent\textbf{Training scenarios.} Two scenarios are compared under identical hyperparameters (Adam, $\text{lr} = 10^{-4}$, batch~16, up to 50~epochs, early stopping patience~10 on validation IoU, with horizontal and vertical flips applied equally to both scenarios):
-\begin{itemize}
-    \item \textbf{Scenario~A --- Real only:} trained on 1,200 real images.
-    \item \textbf{Scenario~B --- Real + Synthetic:} trained on 1,200 real + 1,200 synthetic images (2,400 total).
-\end{itemize}
-Each scenario is repeated with three independent random seeds (42, 123, 456) to estimate variance.
+\noindent\textbf{\DIFadd{Training scenarios.}} \DIFadd{Two scenarios are compared under identical hyperparameters (Adam, $\text{lr} = 10^{-4}$, batch~16, up to 50~epochs, early stopping patience~10 on validation IoU, with horizontal and vertical flips applied equally to both scenarios):
+}\begin{itemize}
+    \item \textbf{\DIFadd{Scenario~A --- Real only:}} \DIFadd{trained on 1}{\DIFadd{,}}\DIFadd{200 real images.
+    }\item \textbf{\DIFadd{Scenario~B --- Real + Synthetic:}} \DIFadd{trained on 1}{\DIFadd{,}}\DIFadd{200 real + 1}{\DIFadd{,}}\DIFadd{200 synthetic images (2}{\DIFadd{,}}\DIFadd{400 total).
+}\end{itemize}
+\DIFadd{Each scenario is repeated with three independent random seeds (42, 123, 456) to estimate variance.
+}
 
-\noindent\textbf{Evaluation metrics.} Results are measured on the fixed real test set using IoU (Jaccard index). Each scenario is evaluated across three random seeds; mean and standard deviation of IoU are reported.
+\noindent\textbf{\DIFadd{Evaluation metrics.}} \DIFadd{Results are measured on the fixed real test set using IoU (Jaccard index). Each scenario is evaluated across three random seeds; mean and standard deviation of IoU are reported.
+}
 
-\subsubsection{Results}
+\subsubsection{\DIFadd{Results}}
 
-Table~\ref{tab:downstream} reports mean~$\pm$ standard deviation of IoU over the three seeds for each scenario.
+\DIFadd{Table~\protect\ref{tab:downstream} reports mean~$\pm$ standard deviation of IoU over the three seeds for each scenario.
+}
 
 \begin{table}[htbp]
     \centering
@@ -743,24 +758,50 @@ Table~\ref{tab:downstream} reports mean~$\pm$ standard deviation of IoU over the
         \toprule
         \textbf{Scenario} & \textbf{IoU (mean $\pm$ std)} \\
         \midrule
-        A --- Real only ($N{=}1,200$) & $0.4081 \pm 0.0092$ \\
-        B --- Real + Synthetic ($N{=}2,400$, context seismic) & $\mathbf{0.4276 \pm 0.0062}$ \\
+        A --- Real only ($N{=}1{,}200$)                        & $0.4081 \pm 0.0092$ \\
+        B --- Real + Synthetic ($N{=}2{,}400$, context seismic) & $\mathbf{0.4276 \pm 0.0062}$ \\
         \midrule
-        Absolute gain ($\Delta$ IoU) & $+0.0195$ \\
-        Relative gain & $+4.8\%$ \\
+        Absolute gain ($\Delta$ IoU)                           & $+0.0195$ \\
+        Relative gain                                          & $+4.8\%$ \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Scenario~B consistently outperforms Scenario~A across all three random seeds (seeds 42, 123, and 456), with individual IoU gains of $+0.0292$, $+0.0168$, and $+0.0125$, respectively. The mean IoU improves from $0.4081$ (Scenario~A) to $0.4276$ (Scenario~B), an absolute gain of $+0.0195$ ($+4.8\%$). The lower standard deviation of Scenario~B ($0.0062$ vs.\ $0.0092$) further indicates that augmenting with context-seismic synthetic images not only improves segmentation performance but also stabilizes training across different initialization seeds. Among the seven augmentation strategies evaluated, the proposed \emph{context seismic} method achieved the highest mean IoU ($0.4276$), while the four best-ranked methods --- context seismic, elastic transform, random brightness/contrast, and grid distortion --- all lie within $0.0006$ IoU of each other, confirming that the proposed method is competitive with standard geometric augmentation and additionally provides geologically meaningful synthetic image--mask pairs. These results demonstrate the practical utility of the context-oriented synthesis framework for improving U-Net salt body segmentation models on real seismic data.
+\DIFadd{Scenario~B consistently outperforms Scenario~A across all three random seeds (seeds 42, 123, and 456), with individual IoU gains of $+0.0292$, $+0.0168$, and $+0.0125$, respectively. The mean IoU improves from $0.4081$ (Scenario~A) to $0.4276$ (Scenario~B), an absolute gain of $+0.0195$ ($+4.8\%$). The lower standard deviation of Scenario~B ($0.0062$ vs.\ $0.0092$) further indicates that augmenting with context-seismic synthetic images not only improves segmentation performance but also stabilizes training across different initialization seeds. Among the seven augmentation strategies evaluated, the proposed }\emph{\DIFadd{context seismic}} \DIFadd{method achieved the highest mean IoU ($0.4276$), while the four best-ranked methods — context seismic, elastic transform, random brightness/contrast, and grid distortion — all lie within $0.0006$ IoU of each other, confirming that the proposed method is competitive with standard geometric augmentation and additionally provides geologically meaningful synthetic image--mask pairs. These results demonstrate the practical utility of the context-oriented synthesis framework for improving U-Net salt body segmentation models on real seismic data.
+}
 
-\subsubsection{Low-data Regime Analysis}
+\begin{table}[htbp]
+    \centering
+    \caption{Ranking of augmentation methods in Scenario~B, ordered by mean IoU on the real TGS test set (3~seeds).}
+    \label{tab:downstream_augments}
+    \footnotesize
+    \begin{tabular}{clcc}
+        \toprule
+        \textbf{Rank} & \textbf{Augmentation method} & \textbf{Mean IoU} & \textbf{Std IoU} \\
+        \midrule
+        1 & context seismic & $\mathbf{0.4276}$ & $0.0062$ \\
+        2 & elastic transform & $0.4272$ & $0.0036$ \\
+        3 & random brightness/contrast & $0.4271$ & $0.0068$ \\
+        4 & grid distortion & $0.4270$ & $0.0163$ \\
+        5 & random gamma & $0.4193$ & $0.0050$ \\
+        6 & optical distortion & $0.4166$ & $0.0122$ \\
+        7 & clahe & $0.4147$ & $0.0056$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-To further characterize the augmentation benefit in the low-data regime --- the primary motivating scenario of this work (offshore exploration with scarce annotated data) --- both scenarios are also evaluated with limited real training sets: $N_{\text{real}} \in \{50, 100, 200\}$. The synthetic pool is adjusted proportionally (200~images for $N{=}50$ and $N{=}100$; 400~images for $N{=}200$). The fixed 800-image real test set remains unchanged.
+\DIFadd{Table~\protect\ref{tab:downstream_augments} shows that the proposed }\emph{\DIFadd{context seismic}} \DIFadd{augmentation achieved the highest mean IoU among all Scenario~B strategies. However, the first four methods are numerically very close, with mean IoU values ranging from $0.4270$ to $0.4276$. This indicates that several augmentation strategies improve generalization when additional synthetic or transformed samples are included in training, while the proposed context-oriented approach provides the best average result together with comparatively stable behavior across seeds. In contrast, }\emph{\DIFadd{grid distortion}} \DIFadd{exhibited the highest variability ($\sigma = 0.0163$), suggesting lower robustness despite its competitive mean IoU. Most importantly, the fact that the best downstream segmentation performance is achieved when the additional training data are generated by the proposed }\emph{\DIFadd{context seismic}} \DIFadd{synthesis scheme provides empirical support for the central hypothesis of this paper: synthetic seismic images produced by combining VAE-based mask generation with context-oriented texture synthesis are not only visually plausible, but also sufficiently realistic and informative to improve the training of segmentation models on real seismic data.
+}
 
-\textbf{[TODO: Insert IoU $\times N$ curve (Scenario~A vs.\ Scenario~B) and discussion. Expected outcome: the augmentation benefit is more pronounced under data scarcity, consistent with the core motivation of the method.]}
+\subsubsection{\DIFadd{Low-data Regime Analysis}}
 
-\newpage
+\DIFadd{To further characterize the augmentation benefit in the low-data regime — the primary motivating scenario of this work (offshore exploration with scarce annotated data) — both scenarios are also evaluated with limited real training sets: $N_{\text{real}} \in \{50, 100, 200\}$. The synthetic pool is adjusted proportionally (200~images for $N{=}50$ and $N{=}100$; 400~images for $N{=}200$). The fixed 800-image real test set remains unchanged.
+}
+
+\DIFadd{\textbf{[TODO: Insert IoU $\times N$ curve (Scenario~A vs.\ Scenario~B) and discussion. Expected outcome: the augmentation benefit is more pronounced under data scarcity, consistent with the core motivation of the method.]}
+}
+
+\DIFaddend \newpage
 \section{Ablation Study}
 \label{sec:ablation}
 
@@ -815,7 +856,7 @@ These ablation studies systematically validate our design choices, and provide a
 
 \PARstart{T}{his} work introduced a novel context-oriented data augmentation methodology for synthesizing labeled seismic images containing salt dome structures, addressing a critical challenge in offshore petroleum exploration where annotated training data is scarce and expensive to obtain. By integrating Variational Autoencoders for geometric mask generation with context-aware non-parametric texture synthesis, the proposed approach successfully generates synthetic seismic images that preserve both structural integrity and textural fidelity across three distinct geological zones: salt bodies, conventional rocks, and their boundaries.
 
-The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. \DIFdelbegin \DIFdel{Three geoscience experts evaluated the synthetic samples, achieving F1-scores that differed by less than 2\% from their evaluations of real images (0.86901 vs. 0.88159), demonstrating that the synthetic imagesare virtually indistinguishable from authentic seismic data. }\DIFdelend \DIFaddbegin \DIFadd{A formal blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order to expert geoscientists — is currently being conducted to rigorously assess the perceptual realism of the synthesized images. \textbf{[TODO: Update this paragraph with the results of the blind expert evaluation experiment, replacing the preliminary sequential evaluation results.]} }\DIFaddend Quantitatively, our proposed method tends to \DIFdelbegin \DIFdel{outperform }\DIFdelend \DIFaddbegin \DIFadd{outperform }\DIFaddend the state-of-the-art sketch-based GAN approach on the F3 dataset, considering all three measures proposed in~\cite{Ferreira2020} (MSE, DSSIM, and LBP Distance). %TODO: update with final F3 experiment results
+The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. \DIFdelbegin \DIFdel{Three geoscience experts evaluated the synthetic samples, achieving F1-scores that differed by less than 2\% from their evaluations of real images (0.86901 vs. 0.88159), demonstrating that the synthetic imagesare virtually indistinguishable from authentic seismic data. }\DIFdelend \DIFaddbegin \DIFadd{A formal blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order to expert geoscientists — is currently being conducted to rigorously assess the perceptual realism of the synthesized images. \textbf{[TODO: Update this paragraph with the results of the blind expert evaluation experiment, replacing the preliminary sequential evaluation results.]} }\DIFaddend Quantitatively, our proposed method tends to \DIFdelbegin \DIFdel{outperforms }\DIFdelend \DIFaddbegin \DIFadd{outperform }\DIFaddend the state-of-the-art sketch-based GAN approach on the F3 dataset, considering all three measures proposed in~\cite{Ferreira2020} (MSE, DSSIM, and LBP Distance). %TODO: update with final F3 experiment results
 
 The significance of this work extends beyond technical measures. In the petroleum industry, where seismic interpretation requires extensive expertise and labeled datasets are prohibitively expensive, our automated synthesis method offers a practical solution for generating high-quality training data at scale. The context-oriented approach ensures geological plausibility by respecting the distinct characteristics of different rock types and their interfaces, a crucial requirement for real-world applications in subsurface exploration and reservoir characterization.
 
@@ -892,10 +933,11 @@ TGS Kaggle, ``TGS Salt Identification Challenge | Kaggle,'' 2023. [Online]. Avai
 L.~Baroni, R.~M.~Silva, R.~S.~Ferreira, D.~Chevitarese, D.~Szwarcman, and E.~Vital Brazil, ``Netherlands F3 Interpretation Dataset,'' Zenodo, Sep. 20, 2018, doi: 10.5281/zenodo.1422787.
 
 \bibitem{Ferreira2020}
-R.~S.~Ferreira, J.~Noce, D.~A.~B.~Oliveira, and E.~V.~Brazil, ``Generating sketch-based synthetic seismic images with generative adversarial networks,'' \emph{IEEE Geoscience and Remote Sensing Letters}, vol. 17, no. 8, pp. 1460--1464, Aug. 2020, doi: 10.1109/LGRS.2019.2945680.
+R.~S.~Ferreira, J.~Noce, D.~A.~B.~Oliveira, and E.~V.~Brazil, ``Generating sketch-based synthetic seismic images with generative adversarial networks,'' \emph{IEEE Geoscience and Remote Sensing Letters}, vol. 17, no. 8, pp. 1460--1464, Aug. 2020, doi: 10.1109/LGRS.2019.2945680\DIFaddbegin \DIFadd{.
+}
 
 \bibitem{pix2pix2017}
-P.~Isola, J.-Y.~Zhu, T.~Zhou, and A.~A.~Efros, ``Image-to-image translation with conditional adversarial networks,'' in \emph{2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 2017, pp. 1125--1134, doi: 10.1109/CVPR.2017.632.
+\DIFadd{P.~Isola, J.-Y.~Zhu, T.~Zhou, and A.~A.~Efros, ``Image-to-image translation with conditional adversarial networks,'' in }\emph{\DIFadd{2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}}\DIFadd{, 2017, pp. 1125--1134, doi: 10.1109/CVPR.2017.632}\DIFaddend .
 
 \bibitem{Vatamanu2013}
 O.~A.~Vatamanu, M.~Frandes, M.~Ionescu, and S.~Apostol, ``Content-based image retrieval using local binary pattern, intensity histogram and color coherence vector,'' in \emph{2013 E-Health and Bioengineering Conference (EHB)}, Nov. 2013, pp. 1--6, doi: 10.1109/EHB.2013.6707396.
