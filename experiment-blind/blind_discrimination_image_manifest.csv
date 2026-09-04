@@ -1,0 +1,4 @@
+session_id,image_id,image_filename,image_source_ground_truth,ground_truth_mask_file,randomization_pool,notes
+BLIND001,IMG001,example_001.png,real,gt_masks/example_001_mask.png,main,
+BLIND001,IMG002,example_002.png,synthetic,gt_masks/example_002_mask.png,main,
+BLIND001,IMG003,example_003.png,real,gt_masks/example_003_mask.png,control,
