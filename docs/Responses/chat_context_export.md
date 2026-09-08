@@ -122,3 +122,15 @@ Formulação sugerida:
 ## Observação operacional
 Antes de editar o manuscrito, manter a preferência do usuário:
 - **apresentar um plano primeiro e esperar aprovação explícita**.
+
+Uma nova hipótese principal mais segura seria:
+
+The main research hypothesis of this work is that combining Variational Autoencoders for salt-body mask generation with context-oriented texture synthesis can produce geologically plausible and visually realistic synthetic seismic images, preserving relevant structural and textural characteristics of real seismic data and supporting salt-body interpretation.
+
+Versão mais curta:
+
+The main research hypothesis of this work is that the proposed combination of VAE-based mask generation and context-oriented texture synthesis can generate synthetic seismic images that are geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation.
+
+Se quiser manter uma menção indireta à indistinguibilidade, mas moderada:
+
+The main research hypothesis of this work is that the proposed method can generate synthetic seismic images with sufficient realism to approach the visual characteristics of real seismic images and to support reliable expert interpretation of salt structures.
