@@ -100,7 +100,7 @@ This design provides direct evidence for the "virtually indistinguishable" hypot
 - **Section V (Concluding Remarks)** *(line 614)*: The paragraph summarizing the expert evaluation outcome was updated to reflect the ongoing blind experiment and include a `[TODO]` marker for the final results.
 
 **Current status:**  
-The blind experiment is currently being conducted. All `[TODO]` markers in the manuscript indicate the exact locations where the results will be inserted upon completion of data collection.
+The blind experiment is currently being conducted. All `[TODO]` markers in the manuscript indicate the exact locations where the results will be inserted upon completion of data collection. In addition, to support the practical execution of this redesigned protocol, we prepared a small operational package in `docs/R2.2-experiment-blind/`, including: (i) `experiment-protocol.md`, documenting the evaluation procedure in a form aligned with the revised manuscript; (ii) `blind_discrimination_experiment_template.csv`, to record evaluator-level responses and segmentation results; (iii) `blind_discrimination_image_manifest.csv`, to register the image ground-truth metadata; and (iv) `blind_discrimination_experiment_template_README.md`, documenting the fields and recommended workflow.
 
 ---
 ### Comment R1.4 — Statistical Significance for DSSIM

@@ -17,7 +17,7 @@
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
 
 - R2.1 Downstream segmentation experiment — **DONE** (Experimental Setup corrected to n_real=1200/n_synth=1200; Table~\ref{tab:downstream} filled with real IoU results; analysis paragraph written — IoU-only, no Wilcoxon; Scenario B: IoU 0.4276±0.0062, +4.8% vs. Scenario A: 0.4081±0.0092)
-- R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added; results pending)
+- R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added in manuscript; operational materials prepared in `docs/R2.2-experiment-blind/` — experiment protocol, evaluator-response CSV, image manifest CSV, and README; experimental results still pending)
 - R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
 - R2.4 Clearer experimental setting — **DONE** (added explicit note in Dataset section explaining the two experimental contexts: F3 400×400px N=600 vs TGS 101×101px; added Experimental setting note in Ablation Study section; clarified why MSE ranges differ by ~16×)
 - R2.5 Reproducibility — **DONE** (VAE details and texture synthesis details added)
@@ -51,6 +51,7 @@ The table below lists every change made to the manuscript in response to reviewe
 | 12 | R2.5        | **Sec. III-B — Non-parametric Texture Synthesis**  | Patch neighborhood size ($11\\times11$ px), sampling parameter ($\\sigma = \\text{kernel\\_size}/6.4 \\approx 1.72$), boundary dilation ($5\\times5$ kernel, 1 iteration → 5 px strip), texture database construction (up to 1,000 pairs, Probabilistic Hough Transform, `patches_db_cache.npz`) added                                                                              | 256–305          |
 | 13 | R2.1        | **Sec. IV-E — Downstream Segmentation Evaluation** | Experimental Setup updated to actual experiment values (n_real=1200, n_synth=1200, total 2400 in Scenario B). Table~\ref{tab:downstream} filled with real IoU results (Scenario A: $0.4081 \pm 0.0092$; Scenario B context seismic: $\mathbf{0.4276 \pm 0.0062}$; $\Delta{=}+0.0195$, $+4.8\%$). [TODO] analysis paragraph replaced by full IoU-based analysis (Dice removed; Wilcoxon not calculated). Evaluation metrics paragraph simplified to IoU only. | ~600–650          |
 | 14 | R2.1        | **Sec. I — Introduction (paper overview)**         | Paper overview sentence updated: `Section~\ref{sec:results}` description now mentions downstream segmentation experiment and cross-references `Section~\ref{sec:downstream}`                                                                                                                                                                                                          | 80                 |
+| 15 | R1.3 / R2.2 | **Operational support files (outside manuscript)** | Practical execution material prepared for the blind discrimination experiment in `docs/R2.2-experiment-blind/`: `experiment-protocol.md`, `blind_discrimination_experiment_template.csv`, `blind_discrimination_image_manifest.csv`, and `blind_discrimination_experiment_template_README.md`. These files align the experiment execution workflow with the protocol described in Sec. IV-C of `_v7.tex`. | — |
 
 
 

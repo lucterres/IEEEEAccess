@@ -4,6 +4,18 @@ File: `blind_discrimination_experiment_template.csv`
 
 This CSV is designed to record one row per **image × evaluator** in the blind discrimination experiment.
 
+## Recommended robust version
+
+Use a total of **80 images**:
+- **35 real images with salt**
+- **35 synthetic images with salt**
+- **10 control images without salt**
+
+This distribution is already reflected in `blind_discrimination_image_manifest.csv` through the IDs:
+- `R001–R035` → real with salt
+- `S001–S035` → synthetic with salt
+- `C001–C010` → control without salt
+
 ## Related files
 
 - `blind_discrimination_experiment_template.csv` — evaluator responses and segmentation results
