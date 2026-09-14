@@ -140,3 +140,52 @@ synthetic     35.6       64.4
 
   Nota: 'sig.' = significativo (p < 0.05), 'n.s.' = não significativo
 
+
+Total de imagens de controle no dataset: 10
+Especialistas: Expert_1, Expert_2, Expert_3
+
+=== Contagem e Avaliação — Imagens de Controle ===
+              Total controle  Corretos (∅)  Falso Positivo  Taxa FP (%)  Julgou: real  Julgou: synth  Julgou: ctrl
+Especialista                                                                                                      
+Expert_1                  10            10               0          0.0             0              0            10
+Expert_2                  10            10               0          0.0             0              0            10
+Expert_3                  10            10               0          0.0 
+
+
+
+Se os avaliadores acertam 65%–70%, então:
+
+eles estão distinguindo real vs. sintético melhor que o acaso;
+a afirmação “virtually indistinguishable” fica fraca ou inválida;
+omitir o experimento depois de tê-lo feito seria metodologicamente ruim perante o revisor.
+O que fazer
+1. Reformular a hipótese principal
+Trocar algo como:
+
+“virtually indistinguishable from real images”
+por algo mais defensável, por exemplo:
+
+“highly realistic and geologically plausible”
+“comparable to real seismic images for salt-body interpretation”
+“sufficiently realistic to support expert interpretation and downstream use”
+2. Reportar o blind experiment com honestidade
+Se deu 65%–70%, o resultado ainda pode ser útil. Ele permite dizer algo como:  as imagens sintéticas apresentam alto realismo perceptual;
+porém não são completamente indistinguíveis das reais;
+ainda assim preservam características relevantes para interpretação.
+3. Ajustar a conclusão
+Em vez de dizer que os especialistas não conseguem distinguir, dizer que:
+a discriminação foi moderada;
+apesar disso, a qualidade perceptual foi alta;
+o experimento de interpretação de sal continua mostrando utilidade prática.
+
+Formulação possível
+The blind discrimination experiment showed that evaluators distinguished real from synthetic images with an accuracy of 65–70%, indicating that the generated images are highly realistic but not fully indistinguishable from real seismic images. Accordingly, we moderated this claim and now state that the proposed method produces geologically plausible and visually convincing synthetic images that are comparable to real ones for salt-body interpretation.
+
+nova hipótese principal - > 
+
+
+The main research hypothesis of this work is that the proposed combination of VAE-based mask generation and context-oriented texture synthesis can generate synthetic seismic images that are geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation.
+
+
+parágrafo do manuscrito,
+resposta ao revisor.
