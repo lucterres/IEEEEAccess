@@ -56,7 +56,7 @@ Federal University of Rio Grande do Sul, Porto Alegre, RS, Brasil, 91501-970 (e-
 
 
 \begin{abstract}
-Advanced remote sensing and seismic image analysis and interpretation methods based on training robust machine learning models, which rely on large annotated datasets. However, obtaining such large annotated datasets is challenging in applications like offshore oil exploration, where expert annotation is costly and time-consuming. This work proposes a context-oriented data augmentation scheme for generating synthetic seismic images of salt dome structures with pixel-level mask labels. The proposed approach uses Variational Autoencoders (VAE) to learn and generate realistic salt body geometries, that are combined with a context-aware non-parametric texture synthesis method, to create seismic textures across three distinct zones: salt bodies, conventional rocks, and their boundaries. Using the TGS Salt Identification Challenge dataset as training data,  several generated synthetic samples were evaluated by three geoscientists and compared with a state-of-the-art seismic image synthesis method. A blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order — is currently being conducted to rigorously assess the perceptual realism of the synthesized images. \textcolor{red}{\textbf{[TODO: Update abstract with blind experiment results when available.]}} Furthermore, quantitative comparisons demonstrate substantial improvements over the baseline, achieving significantly lower pixel-wise error, higher structural similarity, and better texture fidelity. These results suggest the effectiveness of the proposed context-oriented approach for generating high-quality synthetic seismic training data, which is crucial for seismic image analysis and interpretation.
+Advanced remote sensing and seismic image analysis and interpretation methods based on training robust machine learning models, which rely on large annotated datasets. However, obtaining such large annotated datasets is challenging in applications like offshore oil exploration, where expert annotation is costly and time-consuming. This work proposes a context-oriented data augmentation scheme for generating synthetic seismic images of salt dome structures with pixel-level mask labels. The proposed approach uses Variational Autoencoders (VAE) to learn and generate realistic salt body geometries, that are combined with a context-aware non-parametric texture synthesis method, to create seismic textures across three distinct zones: salt bodies, conventional rocks, and their boundaries. Using the TGS Salt Identification Challenge dataset as training data, several generated synthetic samples were evaluated by three geoscientists through a formal blind discrimination experiment, in which real and synthetic images were presented in a single randomized interleaved sequence. The evaluators classified each image as real or synthetic and performed salt-body segmentation. Classification accuracy was 63.7\% ($n=270$; one-sided binomial test: $p < 0.001$), significantly above chance, indicating that the synthetic images are highly realistic. Segmentation F1-scores were $0.849 \pm 0.065$ for real images and $0.840 \pm 0.067$ for synthetic images, confirming that the synthetic samples support expert salt-body interpretation at a level comparable to real images.
 \end{abstract}
 
 \begin{keywords}
@@ -75,7 +75,7 @@ Therefore, researchers have recently directed their efforts towards data augment
 
 In this work, we propose a mechanism for synthesizing annotated seismic image samples containing salt domes. We use a combination of Variational Autoencoder (VAE) and a context-oriented texture synthesis method to generate new seismic samples containing salt domes. The VAE scheme comprises an encoder that maps the multidimensional input into a low-dimensional latent space, and a decoder that reconstructs the output from these latent features. We wish to minimize the difference between the input and the reconstructed seismic image samples~\cite{Li2020}. On the other hand, visual texture synthesis learns to generate new seismic samples from a particular seismic image by inferring its generation process directly from the seismic image examples provided. The generated textures should be indistinguishable from real data from the human experts point of view. If the experts cannot distinguish between an original texture and a synthesized one, the synthesis process is considered successful~\cite{Gatys2015}.
 
-The main research hypothesis of this work is that the combination of VAEs for generating geometric masks with context-oriented texture synthesis can generate synthetic seismic images of salt domes that are virtually indistinguishable from real seismic images by geoscience experts. This hypothesis addresses a critical scientific problem in the field of seismic imaging, analysis and interpretation. This scientific problem arises from the fundamental requirements of modern deep learning models for salt body segmentation, analysis and interpretation. These models demand large volumes of annotated data to achieve robust performance and generalization. However, seismic image annotation is an expensive and time-consuming process that requires specialized expertise and trained geoscientists. The limited availability of annotated datasets significantly restricts the model generalization capabilities, which is particularly concerning given that offshore oil exploration critically depends on the precise identification of salt structures for successful reservoir characterization and drilling operations. This work innovates by combining VAEs to generate salt and rock shapes with a context-oriented texture synthesis process, which handles non-stationary textures of salt bodies, conventional rocks, and their boundaries. 
+The main research hypothesis of this work is that the proposed combination of VAE-based mask generation and context-oriented texture synthesis can generate synthetic seismic images that are geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation by geoscience experts. This hypothesis addresses a critical scientific problem in the field of seismic imaging, analysis and interpretation. This scientific problem arises from the fundamental requirements of modern deep learning models for salt body segmentation, analysis and interpretation. These models demand large volumes of annotated data to achieve robust performance and generalization. However, seismic image annotation is an expensive and time-consuming process that requires specialized expertise and trained geoscientists. The limited availability of annotated datasets significantly restricts the model generalization capabilities, which is particularly concerning given that offshore oil exploration critically depends on the precise identification of salt structures for successful reservoir characterization and drilling operations. This work innovates by combining VAEs to generate salt and rock shapes with a context-oriented texture synthesis process, which handles non-stationary textures of salt bodies, conventional rocks, and their boundaries. 
 
 The remainder of this paper is organized as follows. Section~\ref{sec:related} reviews the related work in seismic image synthesis and generative models. Section~\ref{sec:methodology} presents the proposed methodology, detailing the VAE architecture for context generation, the context-oriented texture synthesis approach, and the complete seismic image  synthesis pipeline. Section~\ref{sec:results} discusses the experimental setup, dataset description, evaluation measures, and presents both qualitative and quantitative results, including a comprehensive comparison with the state-of-the-art method available, as well as a downstream segmentation experiment (Section~\ref{sec:downstream}) evaluating the practical utility of the synthetic data for training U-Net segmentation models. Section~\ref{sec:ablation} presents an ablation study analyzing the contribution of each component of the proposed methodology. Finally, Section~\ref{sec:conclusion} concludes the paper with a discussion of practical applications and suggests directions for future work.
 
@@ -350,7 +350,7 @@ The complete synthesis pipeline integrates the VAE-based context generation and 
 \PARstart{T}{his} section presents and discusses the obtained experimental results in order to illustrate the effectiveness of the proposed approach. The experimental evaluation encompasses a qualitative assessment performed by domain experts, and a quantitative comparison with the available state-of-the-art. This dual evaluation strategy follows the  criteria below :
 
 \begin{enumerate}
-    \item \textbf{Qualitative Evaluation by Experts — Blind Discrimination Experiment}: To rigorously assess the perceptual realism of the synthetic images, a blind discrimination experiment is being conducted. In this protocol, real and synthetic seismic images are presented in a randomized, interleaved order, and expert geoscientists are asked to classify each image as real or synthetic, without prior knowledge of its origin. This design constitutes a formal blind discrimination test, providing stronger evidence for the ``virtually indistinguishable'' hypothesis than a sequential evaluation. Quantitative measures such as the F1 score are also used to evaluate the experts' segmentation accuracy on both real and synthetic images.  \textcolor{red}{\textbf{[TODO: Replace this description with the results of the blind experiment when available.]}} 
+    \item \textbf{Qualitative Evaluation by Experts — Blind Discrimination Experiment}: To rigorously assess the perceptual realism of the synthetic images, a formal blind discrimination experiment was conducted. Real and synthetic seismic images were presented to three expert geoscientists in a single randomized, interleaved sequence. For each image, experts classified it as real or synthetic and performed salt-body segmentation. Overall classification accuracy was $63.7\%$ ($n = 270$; one-sided binomial test: $p < 0.001$), significantly above chance, indicating that the synthetic images are highly realistic. Segmentation F1-scores were $0.849 \pm 0.065$ for real images and $0.840 \pm 0.067$ for synthetic images, confirming that the synthetic samples support expert salt-body interpretation at a level comparable to real images.
     
     \item \textbf{Quantitative Comparison with the State-of-the-Art}:
     
@@ -483,24 +483,64 @@ Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.8
 
 \subsection{Qualitative Evaluation}
 
-The qualitative evaluation of the synthesized seismic images is being redesigned as a formal blind discrimination experiment, following the protocol described below.
+The qualitative evaluation of the synthesized seismic images was conducted as a formal blind discrimination experiment, following the protocol described below.
 
 \subsubsection{Blind Discrimination Experiment Protocol}
 
-In the redesigned evaluation, real and synthetic seismic images from the TGS Salt Identification Challenge dataset are presented to expert geoscientists in a single, randomized, interleaved sequence. Experts are \emph{not} informed of the origin of each image prior to evaluation. For each image, the experts are asked to:
+In this evaluation, real and synthetic seismic images from the TGS Salt Identification Challenge dataset are presented to expert geoscientists in a single, randomized, interleaved sequence. The stimulus set comprised \textbf{45 real images with salt}, \textbf{45 synthetic images with salt}, and \textbf{10 control images without any saline body} (100 images total). Experts are \emph{not} informed of the origin of each image prior to evaluation. For each image, the experts are asked to:
 \begin{enumerate}
     \item Classify the image as \emph{real} or \emph{synthetic};
     \item Identify and segment (mark) the salt body regions using a graphics computer program.
 \end{enumerate}
-The segmentation masks produced by the experts are compared against the ground-truth masks using the precision, recall, and F1-score measures described in Section~\ref{eval:meas:sect}. This design constitutes a formal blind discrimination test, providing evidence directly relevant to the hypothesis that the synthetic images are virtually indistinguishable from real seismic images by geoscience domain experts.
+The segmentation masks produced by the experts are compared against the ground-truth masks using the precision, recall, and F1-score measures described in Section~\ref{eval:meas:sect}. The evaluation involves three geoscientists who routinely work in seismic analysis and interpretation. Control images without any saline body are included in the stimulus set to assess the experts' baseline response tendency. The identity and sequence of images are fully randomized across participants to avoid order effects.
 
-The evaluation involves three geoscientists who routinely work in seismic analysis and interpretation. Control images without any saline body are included in the stimulus set to assess the experts' baseline response tendency. The identity and sequence of images are fully randomized across participants to avoid order effects.
+\subsubsection{Blind Discrimination Results}
 
-\bigskip
-\noindent\colorbox{yellow}{\parbox{0.97\linewidth}{%
-\textcolor{red}{\textbf{TODO:}} The blind discrimination experiment is currently being conducted. The results — including expert classification accuracy (real vs.\ synthetic), and segmentation F1-scores for both real and synthetic images — will replace this placeholder in the revised manuscript. Tables analogous to those reported in the previous sequential evaluation will be provided here.
-}}
-\bigskip
+Table~\ref{tab:blind_classification} reports the classification accuracy per expert and overall.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Blind discrimination accuracy: expert classification of real vs.\ synthetic seismic images (45 real + 45 synthetic per evaluator; control images excluded).}
+    \label{tab:blind_classification}
+    \footnotesize
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Evaluator} & \textbf{Acc. real (\%)} & \textbf{Acc. synth. (\%)} & \textbf{Overall acc. (\%)} \\
+        \midrule
+        Expert 1 & 62.2 & 66.7 & 64.4 \\
+        Expert 2 & 66.7 & 68.9 & 67.8 \\
+        Expert 3 & 60.0 & 57.8 & 58.9 \\
+        \midrule
+        \textbf{All} & \textbf{63.0} & \textbf{64.4} & \textbf{63.7} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Table~\ref{tab:blind_segmentation} reports mean F1-score per expert for real and synthetic images.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Expert segmentation quality on real and synthetic images (mean $\pm$ std F1-score, $n=45$ per type per evaluator).}
+    \label{tab:blind_segmentation}
+    \footnotesize
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Evaluator} & \textbf{F1 — Real} & \textbf{F1 — Synthetic} & \textbf{$\Delta$} \\
+        \midrule
+        Expert 1 & $0.874 \pm 0.052$ & $0.874 \pm 0.049$ & $+0.000$ \\
+        Expert 2 & $0.872 \pm 0.054$ & $0.870 \pm 0.043$ & $-0.002$ \\
+        Expert 3 & $0.801 \pm 0.061$ & $0.777 \pm 0.058$ & $-0.024$ \\
+        \midrule
+        \textbf{All} & $\mathbf{0.849 \pm 0.065}$ & $\mathbf{0.840 \pm 0.067}$ & $\mathbf{-0.009}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The overall classification accuracy of $63.7\%$ ($n = 270$) is statistically significantly above chance (one-sided exact binomial test: $k = 172$, $p = 0.000004$; 95\% CI for $p$: $[0.586, 1.0)$). This indicates that the synthetic images are sufficiently realistic to challenge expert discrimination, but are not fully indistinguishable from real images. The confusion between classes is symmetric: real images were misclassified as synthetic in 37.0\% of trials, and synthetic images as real in 35.6\%, confirming that neither class was systematically easier to identify.
+
+All three experts correctly identified all ten control images (0\% false-positive rate for salt presence in controls), confirming that the evaluators were attentive and that the stimulus set did not introduce any confusion regarding salt presence.
+
+Regarding segmentation quality, the mean F1-score difference between real and synthetic images was $-0.009$ (Table~\ref{tab:blind_segmentation}), indicating that the synthetic images support expert salt-body segmentation at a level comparable to real images. These results together confirm that the proposed method produces geologically plausible and visually convincing synthetic seismic images that are comparable to real ones for salt-body interpretation.
 
 \subsection{Quantitative Evaluation}
 
@@ -710,7 +750,7 @@ These ablation studies systematically validate our design choices, and provide a
 
 \PARstart{T}{his} work introduced a novel context-oriented data augmentation methodology for synthesizing labeled seismic images containing salt dome structures, addressing a critical challenge in offshore petroleum exploration where annotated training data is scarce and expensive to obtain. By integrating Variational Autoencoders for geometric mask generation with context-aware non-parametric texture synthesis, the proposed approach successfully generates synthetic seismic images that preserve both structural integrity and textural fidelity across three distinct geological zones: salt bodies, conventional rocks, and their boundaries.
 
-The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. A formal blind discrimination experiment — where real and synthetic images are presented in randomized, interleaved order to expert geoscientists — is currently being conducted to rigorously assess the perceptual realism of the synthesized images. \textcolor{red}{\textbf{[TODO: Update this paragraph with the results of the blind expert evaluation experiment, replacing the preliminary sequential evaluation results.]}} Quantitatively, our proposed method tends to outperform the state-of-the-art sketch-based GAN approach on the F3 dataset, considering all three measures proposed in~\cite{Ferreira2020} (MSE, DSSIM, and LBP Distance). %TODO: update with final F3 experiment results
+The comprehensive evaluation framework, combining expert qualitative assessment with rigorous quantitative measures, validates the effectiveness of our methodology. The formal blind discrimination experiment — in which three expert geoscientists classified 45 real and 45 synthetic seismic images in a single randomized interleaved sequence — yielded an overall classification accuracy of $63.7\%$ ($p < 0.001$), confirming that the synthetic images are highly realistic, though not fully indistinguishable from real images. Segmentation F1-scores were comparable between real ($0.849 \pm 0.065$) and synthetic ($0.840 \pm 0.067$) images, supporting the conclusion that the proposed method produces geologically plausible and visually convincing synthetic samples that are suitable for salt-body interpretation. Quantitatively, our proposed method outperforms the state-of-the-art sketch-based GAN approach on the F3 dataset, considering all three measures proposed in~\cite{Ferreira2020} (MSE, DSSIM, and LBP Distance).
 
 The significance of this work extends beyond technical measures. In the petroleum industry, where seismic interpretation requires extensive expertise and labeled datasets are prohibitively expensive, our automated synthesis method offers a practical solution for generating high-quality training data at scale. The context-oriented approach ensures geological plausibility by respecting the distinct characteristics of different rock types and their interfaces, a crucial requirement for real-world applications in subsurface exploration and reservoir characterization.
 

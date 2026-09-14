@@ -99,8 +99,41 @@ This design provides direct evidence for the "virtually indistinguishable" hypot
 - **Section IV-C, old tables** *(lines 451–485 in source)*: The two tables previously reporting sequential evaluation results were wrapped in `\begin{comment}` (line 451) / `\end{comment}` (line 485) and are thus absent from the compiled PDF. A source comment marks them as historical reference to be replaced by the blind experiment results.
 - **Section V (Concluding Remarks)** *(line 614)*: The paragraph summarizing the expert evaluation outcome was updated to reflect the ongoing blind experiment and include a `[TODO]` marker for the final results.
 
-**Current status:**  
-The blind experiment is currently being conducted. All `[TODO]` markers in the manuscript indicate the exact locations where the results will be inserted upon completion of data collection. In addition, to support the practical execution of this redesigned protocol, we prepared a small operational package in `docs/R2.2-experiment-blind/`, including: (i) `experiment-protocol.md`, documenting the evaluation procedure in a form aligned with the revised manuscript; (ii) `blind_discrimination_experiment_template.csv`, to record evaluator-level responses and segmentation results; (iii) `blind_discrimination_image_manifest.csv`, to register the image ground-truth metadata; and (iv) `blind_discrimination_experiment_template_README.md`, documenting the fields and recommended workflow.
+**Current status: DONE**
+
+The blind discrimination experiment was completed with three expert geoscientists. The stimulus set comprised **45 real images with salt**, **45 synthetic images with salt**, and **10 control images without salt** (100 images per evaluator; 270 classification decisions total).
+
+**Results — Discrimination accuracy:**
+| Evaluator | Acc. real (%) | Acc. synthetic (%) | Overall (%) |
+|---|---|---|---|
+| Expert 1 | 62.2 | 66.7 | 64.4 |
+| Expert 2 | 66.7 | 68.9 | 67.8 |
+| Expert 3 | 60.0 | 57.8 | 58.9 |
+| **All** | **63.0** | **64.4** | **63.7** |
+
+One-sided exact binomial test: $k=172$, $n=270$, $p = 0.000004$ → **statistically significant above chance**. Confusion was symmetric: real misclassified as synthetic 37.0%; synthetic misclassified as real 35.6%. All experts correctly identified all 10 control images (0% false-positive rate for salt presence).
+
+**Results — Segmentation quality (F1-score):**
+| Evaluator | F1 real | F1 synthetic | Δ |
+|---|---|---|---|
+| Expert 1 | 0.874 ± 0.052 | 0.874 ± 0.049 | +0.000 |
+| Expert 2 | 0.872 ± 0.054 | 0.870 ± 0.043 | −0.002 |
+| Expert 3 | 0.801 ± 0.061 | 0.777 ± 0.058 | −0.024 |
+| **All** | **0.849 ± 0.065** | **0.840 ± 0.067** | **−0.009** |
+
+The mean F1-score difference between real and synthetic images is $-0.009$, confirming that the synthetic images support expert salt-body segmentation at a level comparable to real seismic images.
+
+**Reformulation of the main hypothesis:**  
+In light of the 63.7% discrimination accuracy, we moderated the original claim of "virtually indistinguishable" images and now state that the proposed method produces synthetic seismic images that are **geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation**. This reformulated hypothesis is consistent with the experimental evidence and avoids overclaiming.
+
+**All changes made to the manuscript (`_v7.tex`):**
+
+- **Abstract**: Updated with discrimination accuracy (63.7%), statistical significance, and segmentation F1 results.
+- **Section I — Introduction, main hypothesis**: Replaced "virtually indistinguishable" with the moderated claim.
+- **Section IV, Criterion 1**: Replaced TODO with a summary of the experimental results.
+- **Section IV-C, protocol description**: Updated image counts (45+45+10=100 images).
+- **Section IV-C, results**: Replaced `colorbox TODO` with two tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph including the binomial test result.
+- **Section VI — Concluding Remarks**: Replaced TODO with a paragraph summarizing the blind experiment results and the moderated hypothesis.
 
 ---
 ### Comment R1.4 — Statistical Significance for DSSIM

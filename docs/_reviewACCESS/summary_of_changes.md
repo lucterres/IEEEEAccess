@@ -11,13 +11,13 @@
 
 - R1.1 Comparison with Henriques et al. — **DONE** (Section II rewritten)
 - R1.2 VAE implementation details — **DONE** (Section III, arch + hyperparams added)
-- R1.3 Expert evaluation design (blinding) — **PARTIALLY DONE** (blind experiment protocol added; results pending)
+- R1.3 Expert evaluation design (blinding) — **DONE** (blind experiment completed: 45 real + 45 synthetic + 10 control images, 3 experts; accuracy 63.7%, $p<0.001$; segmentation F1 real=0.849 vs. synthetic=0.840; hypothesis moderated from "virtually indistinguishable" to "geologically plausible and comparable for salt-body interpretation"; two result tables and analysis paragraph added in Sec. IV-C)
 - R1.4 Statistical significance for DSSIM (~2.2%) — **DONE** (candid discussion added; Wilcoxon infeasibility explained; MSE −16.7% and LBP −12.4% highlighted)
 
 **Reviewer 2** (`## 🟠 Reviewer 2` in `_Reviewer.md`) — 5 points:
 
 - R2.1 Downstream segmentation experiment — **DONE** (Experimental Setup corrected to n_real=1200/n_synth=1200; Table~\ref{tab:downstream} filled with real IoU results; analysis paragraph written — IoU-only, no Wilcoxon; Scenario B: IoU 0.4276±0.0062, +4.8% vs. Scenario A: 0.4081±0.0092)
-- R2.2 Blind discrimination experiment — **PARTIALLY DONE** (protocol added in manuscript; operational materials prepared in `docs/R2.2-experiment-blind/` — experiment protocol, evaluator-response CSV, image manifest CSV, and README; experimental results still pending)
+- R2.2 Blind discrimination experiment — **DONE** (same experiment as R1.3; protocol aligned with manuscript; results inserted in Sec. IV-C)
 - R2.3 Expanded baseline comparison (GAN/diffusion) — **DONE** (contextual comparison added: Related Work expanded; new subsubsection + Table~\\ref{tab:comparison_overview} in Sec IV; pix2pix2017 bibitem added)
 - R2.4 Clearer experimental setting — **DONE** (added explicit note in Dataset section explaining the two experimental contexts: F3 400×400px N=600 vs TGS 101×101px; added Experimental setting note in Ablation Study section; clarified why MSE ranges differ by ~16×)
 - R2.5 Reproducibility — **DONE** (VAE details and texture synthesis details added)
