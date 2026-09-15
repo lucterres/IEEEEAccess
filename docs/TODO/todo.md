@@ -1,0 +1,1 @@
+\textcolor{red}{\textbf{[TODO: Insert IoU $\times N$ curve (Scenario~A vs.\ Scenario~B) and discussion. Expected outcome: the augmentation benefit is more pronounced under data scarcity, consistent with the core motivation of the method.]}}
