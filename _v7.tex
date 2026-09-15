@@ -372,6 +372,13 @@ The F3 dataset, containing 3D post-stack seismic data from the Dutch North Sea, 
 
 \noindent\textbf{Note on experimental settings and numerical ranges.} The two experimental contexts in this work — the quantitative comparison with the state-of-the-art (Section~\ref{sec:results}) and the ablation study (Section~\ref{sec:ablation}) — use \emph{different datasets, image dimensions, and sample sizes}, and are therefore not directly numerically comparable. The quantitative comparison with Ferreira \emph{et al.}~\cite{Ferreira2020} is conducted on the F3 dataset using $400 \times 400$ pixel images ($N = 600$ synthetic images), producing MSE values in the range of approximately 3,700–6,700. The ablation study is conducted on the TGS dataset using $101 \times 101$ pixel images ($N = 110$ images for the texture ablation; $N = 200$ masks for the VAE ablation), producing MSE values in the range of approximately 500–850. The substantially smaller image area ($101^2 = 10{,}201$ pixels vs.\ $400^2 = 160{,}000$ pixels) accounts for the order-of-magnitude difference in absolute MSE values between the two experimental contexts, since MSE is computed as the mean of squared pixel differences over all pixels of each image pair. DSSIM and LBP Distance values are less sensitive to image size but are still influenced by the different image content characteristics of the two datasets. Readers should therefore interpret the ablation and the comparative results within their respective experimental contexts.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/terre7.png}
+    \caption{Comparison between a real seismic image sample, and the geoscience specialist selection in terms of saline area and ground truth (saline mask).}
+    \label{fig:expert1}
+\end{figure}
+
 \subsection{Evaluation Measures} \label{eval:meas:sect}
 
 Through qualitative analysis, the geoscience specialist evaluates the seismic image samples to identify the portions of salt bodies in these images. To assess the quality of the seismic image synthesis, the precision, recall, and F1-score measures are used to compare the synthetic seismic image with the ground truth, as detailed below:
@@ -443,51 +450,13 @@ The LBP is a more robust texture attribute successfully applied in medical image
     \label{fig:expert2}
 \end{figure}
 
-% --- TABELAS DO EXPERIMENTO SEQUENCIAL (substituído pelo experimento cego) ---
-% Mantidas aqui como referência histórica; serão substituídas pelos resultados do experimento cego.
-\begin{comment}
-\begin{table*}[htbp]
-\centering
-\caption{Result table: real images evaluation by the experts.}
-\label{tab:real_images_evaluation}
-\sisetup{output-decimal-marker = {,}}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
-\toprule
-& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
-\textbf{Measures} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
-\midrule
-Std Dev & 0.06034 & 0.04584 & 0.04037 & 0.05429 & 0.04763 & 0.04408 & 0.04780 & 0.05288 & 0.03414 & 0.03953 \\
-Mean & 0.91480 & 0.91563 & 0.91396 & 0.91845 & 0.90420 & 0.91064 & 0.82958 & 0.81400 & 0.82017 & 0.88159 \\
-\bottomrule
-\end{tabular*}
-\end{table*}
-
-\begin{table*}[htbp]
-\centering
-\caption{Result table: Synthetic images evaluation by the experts.}
-\label{tab:synthetic_images_evaluation}
-\sisetup{output-decimal-marker = {,}}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5] S[table-format=1.5]@{}}
-\toprule
-& \multicolumn{3}{c}{\textbf{Expert 1}} & \multicolumn{3}{c}{\textbf{Expert 2}} & \multicolumn{3}{c}{\textbf{Expert 3}} & \textbf{Mean} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
-\textbf{Measures} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{Precision}} & {\textbf{Recall}} & {\textbf{F1-score}} & {\textbf{F1-score}} \\
-\midrule
-Std Dev & 0.06706 & 0.04698 & 0.04509 & 0.05597 & 0.05397 & 0.04433 & 0.05221 & 0.05644 & 0.03889 & 0.04277 \\
-Mean & 0.90439 & 0.89575 & 0.89868 & 0.88823 & 0.87772 & 0.88186 & 0.83354 & 0.82261 & 0.82648 & 0.86901 \\
-\bottomrule
-\end{tabular*}
-\end{comment}
-% ---------------------------------------------------------------------------
-
 \subsection{Qualitative Evaluation}
 
 The qualitative evaluation of the synthesized seismic images was conducted as a formal blind discrimination experiment, following the protocol described below.
 
 \subsubsection{Blind Discrimination Experiment Protocol}
 
-In this evaluation, real and synthetic seismic images from the TGS Salt Identification Challenge dataset are presented to expert geoscientists in a single, randomized, interleaved sequence. The stimulus set comprised \textbf{45 real images with salt}, \textbf{45 synthetic images with salt}, and \textbf{10 control images without any saline body} (100 images total). Experts are \emph{not} informed of the origin of each image prior to evaluation. For each image, the experts are asked to:
+In this evaluation, real images from the TGS Salt Identification Challenge dataset and synthetic seismic images, such as those illustrated in Fig.~\ref{fig:synthetic_samples}, were presented to expert geoscientists in a single, randomized, interleaved sequence. The stimulus set consisted of \textbf{45 real images with salt}, \textbf{45 synthetic images with salt}, and \textbf{10 control images without any saline body} (100 images total). Experts are \emph{not} informed of the origin of each image prior to evaluation. For each image, the experts are asked to:
 \begin{enumerate}
     \item Classify the image as \emph{real} or \emph{synthetic};
     \item Identify and segment (mark) the salt body regions using a graphics computer program.
@@ -525,7 +494,7 @@ Table~\ref{tab:blind_segmentation} reports mean F1-score per expert for real and
     \footnotesize
     \begin{tabular}{lccc}
         \toprule
-        \textbf{Evaluator} & \textbf{F1 — Real} & \textbf{F1 — Synthetic} & \textbf{$\Delta$} \\
+        \textbf{Evaluator} & \textbf{F1 — Real} & \textbf{F1 — Synthetic} & $\bm{\Delta}$ \\
         \midrule
         Expert 1 & $0.874 \pm 0.052$ & $0.874 \pm 0.049$ & $+0.000$ \\
         Expert 2 & $0.872 \pm 0.054$ & $0.870 \pm 0.043$ & $-0.002$ \\
@@ -690,11 +659,6 @@ Scenario~B consistently outperforms Scenario~A across all three random seeds (se
 
 Table~\ref{tab:downstream_augments} shows that the proposed \emph{context seismic} augmentation achieved the highest mean IoU among all Scenario~B strategies. However, the first four methods are numerically very close, with mean IoU values ranging from $0.4270$ to $0.4276$. This indicates that several augmentation strategies improve generalization when additional synthetic or transformed samples are included in training, while the proposed context-oriented approach provides the best average result together with comparatively stable behavior across seeds. In contrast, \emph{grid distortion} exhibited the highest variability ($\sigma = 0.0163$), suggesting lower robustness despite its competitive mean IoU. Most importantly, the fact that the best downstream segmentation performance is achieved when the additional training data are generated by the proposed \emph{context seismic} synthesis scheme provides empirical support for the central hypothesis of this paper: synthetic seismic images produced by combining VAE-based mask generation with context-oriented texture synthesis are not only visually plausible, but also sufficiently realistic and informative to improve the training of segmentation models on real seismic data.
 
-\subsubsection{Low-data Regime Analysis}
-
-To further characterize the augmentation benefit in the low-data regime — the primary motivating scenario of this work (offshore exploration with scarce annotated data) — both scenarios are also evaluated with limited real training sets: $N_{\text{real}} \in \{50, 100, 200\}$. The synthetic pool is adjusted proportionally (200~images for $N{=}50$ and $N{=}100$; 400~images for $N{=}200$). The fixed 800-image real test set remains unchanged.
-
-\newpage
 \section{Ablation Study}
 \label{sec:ablation}
 

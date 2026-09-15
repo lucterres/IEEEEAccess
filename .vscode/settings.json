@@ -16,7 +16,8 @@
         "-synctex=1",
         "-interaction=nonstopmode",
         "-file-line-error",
-        "-output-directory=latex_build",
+        "-output-directory=%OUTDIR%",
+        "-jobname=%DOCFILE%",
         "%DOC%"
       ]
     },
@@ -27,7 +28,7 @@
         "-synctex=1",
         "-interaction=nonstopmode",
         "-file-line-error",
-        "-output-directory=latex_build",
+        "-output-directory=%OUTDIR%",
         "-jobname=Highlighted_PDF",
         "%DOC%"
       ]
