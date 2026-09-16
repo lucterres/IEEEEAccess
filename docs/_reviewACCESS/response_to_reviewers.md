@@ -93,11 +93,11 @@ This design provides direct evidence for the "virtually indistinguishable" hypot
 
 **Changes made to each section of the manuscript:**
 
-- **Abstract** *(line 59)*: Replaced the reference to the sequential evaluation with a sentence describing the blind discrimination experiment as currently being conducted. A `[TODO]` marker was added to indicate where results will be inserted.
+- **Abstract** *(line 59)*: Updated with the blind discrimination experiment results: discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1-scores (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067). The original placeholder sentence about an ongoing experiment was replaced with the final reported results.
 - **Section IV, Criterion 1** *(lines 352–365)*: The opening paragraph of the Results section was updated. The reference to the dual evaluation strategy now explicitly cites Ferreira et al.~\cite{Ferreira2020}. The LBP metric description was clarified to read *"Euclidean distance between Local Binary Pattern (LBP) histograms"* (removing the ambiguous modifier "using LBP"). The redundant closing sentence was removed. The claim "highly realistic" in Criterion 1 was moderated to *"sufficiently realistic to challenge expert discrimination"*, consistent with the 63.7% discrimination accuracy and the wording used in the abstract and Section IV-C.
-- **Section IV-C** *(lines 492–507)*: The subsection *Qualitative Evaluation* was restructured. A new subsubsection *Blind Discrimination Experiment Protocol* was added at line 492, describing the full experimental design. A prominent yellow/red `TODO` box (lines 504–506) was inserted as a placeholder for results.
+- **Section IV-C** *(lines 492–507)*: The subsection *Qualitative Evaluation* was restructured. A new subsubsection *Blind Discrimination Experiment Protocol* was added, describing the full experimental design. Added two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph including the binomial test result ($k=172$, $n=270$, $p=0.000004$).
 - **Section IV-C, old tables** *(lines 451–485 in source)*: The two tables previously reporting sequential evaluation results were wrapped in `\begin{comment}` (line 451) / `\end{comment}` (line 485) and are thus absent from the compiled PDF. A source comment marks them as historical reference to be replaced by the blind experiment results.
-- **Section V (Concluding Remarks)** *(line 614)*: The paragraph summarizing the expert evaluation outcome was updated to reflect the ongoing blind experiment and include a `[TODO]` marker for the final results.
+- **Section VI — Concluding Remarks** *(line 614)*: The paragraph summarizing the expert evaluation outcome was updated with the final blind experiment results and the moderated hypothesis (*"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*).
 
 **Current status: DONE**
 
@@ -128,12 +128,12 @@ In light of the 63.7% discrimination accuracy, we moderated the original claim o
 
 **All changes made to the manuscript (`_v7.tex`):**
 
-- **Abstract**: Updated with discrimination accuracy (63.7%), statistical significance, and segmentation F1 results.
-- **Section I — Introduction, main hypothesis**: Replaced "virtually indistinguishable" with the moderated claim.
-- **Section IV, Criterion 1**: Replaced TODO with a summary of the experimental results.
-- **Section IV-C, protocol description**: Updated image counts (45+45+10=100 images).
-- **Section IV-C, results**: Replaced `colorbox TODO` with two tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph including the binomial test result.
-- **Section VI — Concluding Remarks**: Replaced TODO with a paragraph summarizing the blind experiment results and the moderated hypothesis.
+- **Abstract**: Updated with discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1 results (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
+- **Section I — Introduction, main hypothesis**: "Virtually indistinguishable" replaced with the moderated claim: *"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*.
+- **Section IV, Criterion 1**: Summary of blind experiment results added: 63.7% overall discrimination accuracy, statistically significant above chance.
+- **Section IV-C, protocol description**: Image counts updated to 45 real + 45 synthetic + 10 control = 100 images per evaluator.
+- **Section IV-C, results**: Two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph added, including the binomial test ($k=172$, $n=270$, $p=0.000004$) and per-evaluator F1 results.
+- **Section VI — Concluding Remarks**: Paragraph updated with the blind experiment outcome and the moderated hypothesis.
 
 ---
 ### Comment R1.4 — Statistical Significance for DSSIM
@@ -382,11 +382,4 @@ We thank the reviewer for this detailed and constructive list of missing impleme
 
 **Note on cross-reference with Reviewer 1 (R1.2):** The VAE implementation details above were also requested by Reviewer 1, Comment 2. Both responses refer to the same manuscript changes in Section III-A.
 
----
-
-## Summary of Changes
-
-A complete table of all manuscript changes — with affected sections and exact line numbers in `_v7.tex` — is maintained in the dedicated file:
-
-👉 [`summary_of_changes.md`](./summary_of_changes.md)
 
