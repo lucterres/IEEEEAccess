@@ -93,47 +93,19 @@ This design provides direct evidence for the "virtually indistinguishable" hypot
 
 **Changes made to each section of the manuscript:**
 
-- **Abstract** *(line 59)*: Updated with the blind discrimination experiment results: discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1-scores (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067). The original placeholder sentence about an ongoing experiment was replaced with the final reported results.
-- **Section IV, Criterion 1** *(lines 352–365)*: The opening paragraph of the Results section was updated. The reference to the dual evaluation strategy now explicitly cites Ferreira et al.~\cite{Ferreira2020}. The LBP metric description was clarified to read *"Euclidean distance between Local Binary Pattern (LBP) histograms"* (removing the ambiguous modifier "using LBP"). The redundant closing sentence was removed. The claim "highly realistic" in Criterion 1 was moderated to *"sufficiently realistic to challenge expert discrimination"*, consistent with the 63.7% discrimination accuracy and the wording used in the abstract and Section IV-C.
-- **Section IV-C** *(lines 492–507)*: The subsection *Qualitative Evaluation* was restructured. A new subsubsection *Blind Discrimination Experiment Protocol* was added, describing the full experimental design. Added two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph including the binomial test result ($k=172$, $n=270$, $p=0.000004$).
-- **Section IV-C, old tables** *(lines 451–485 in source)*: The two tables previously reporting sequential evaluation results were wrapped in `\begin{comment}` (line 451) / `\end{comment}` (line 485) and are thus absent from the compiled PDF. A source comment marks them as historical reference to be replaced by the blind experiment results.
-- **Section VI — Concluding Remarks** *(line 614)*: The paragraph summarizing the expert evaluation outcome was updated with the final blind experiment results and the moderated hypothesis (*"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*).
-
-**Current status: DONE**
-
-The blind discrimination experiment was completed with three expert geoscientists. The stimulus set comprised **45 real images with salt**, **45 synthetic images with salt**, and **10 control images without salt** (100 images per evaluator; 270 classification decisions total).
-
-**Results — Discrimination accuracy:**
-| Evaluator | Acc. real (%) | Acc. synthetic (%) | Overall (%) |
-|---|---|---|---|
-| Expert 1 | 62.2 | 66.7 | 64.4 |
-| Expert 2 | 66.7 | 68.9 | 67.8 |
-| Expert 3 | 60.0 | 57.8 | 58.9 |
-| **All** | **63.0** | **64.4** | **63.7** |
-
-One-sided exact binomial test: $k=172$, $n=270$, $p = 0.000004$ → **statistically significant above chance**. Confusion was symmetric: real misclassified as synthetic 37.0%; synthetic misclassified as real 35.6%. All experts correctly identified all 10 control images (0% false-positive rate for salt presence).
-
-**Results — Segmentation quality (F1-score):**
-| Evaluator | F1 real | F1 synthetic | Δ |
-|---|---|---|---|
-| Expert 1 | 0.874 ± 0.052 | 0.874 ± 0.049 | +0.000 |
-| Expert 2 | 0.872 ± 0.054 | 0.870 ± 0.043 | −0.002 |
-| Expert 3 | 0.801 ± 0.061 | 0.777 ± 0.058 | −0.024 |
-| **All** | **0.849 ± 0.065** | **0.840 ± 0.067** | **−0.009** |
-
-The mean F1-score difference between real and synthetic images is $-0.009$, confirming that the synthetic images support expert salt-body segmentation at a level comparable to real seismic images.
-
-**Reformulation of the main hypothesis:**  
-In light of the 63.7% discrimination accuracy, we moderated the original claim of "virtually indistinguishable" images and now state that the proposed method produces synthetic seismic images that are **geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation**. This reformulated hypothesis is consistent with the experimental evidence and avoids overclaiming.
+- **Abstract** *(lines 58–60 in `_v7.tex`)*: Updated with the blind discrimination experiment results: discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1-scores (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
+- **Section IV, Criterion 1** *(lines 352–365 in `_v7.tex`)*: The opening paragraph of the Results section was updated. The claim "highly realistic" was moderated to *"sufficiently realistic to challenge expert discrimination"*; the dual evaluation strategy now explicitly cites Ferreira et al.~\cite{Ferreira2020}; the LBP metric description was clarified to *"Euclidean distance between Local Binary Pattern (LBP) histograms"*.
+- **Section IV-C — Qualitative Evaluation** *(lines 455–514 in `_v7.tex`)*: Subsection restructured as a formal blind discrimination experiment. Subsubsection *Blind Discrimination Experiment Protocol* added (lines 459–467). Subsubsection *Blind Discrimination Results* added with two tables (`tab:blind_classification`, `tab:blind_segmentation`) and analysis paragraph including binomial test ($k=172$, $n=270$, $p=0.000004$) (lines 468–514).
+- **Section VI — Concluding Remarks** *(lines 712–718 in `_v7.tex`)*: Paragraph updated with the blind experiment outcome (63.7% accuracy, F1 real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067) and the moderated hypothesis (*"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*).
 
 **All changes made to the manuscript (`_v7.tex`):**
 
-- **Abstract**: Updated with discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1 results (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
-- **Section I — Introduction, main hypothesis**: "Virtually indistinguishable" replaced with the moderated claim: *"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*.
-- **Section IV, Criterion 1**: Summary of blind experiment results added: 63.7% overall discrimination accuracy, statistically significant above chance.
-- **Section IV-C, protocol description**: Image counts updated to 45 real + 45 synthetic + 10 control = 100 images per evaluator.
-- **Section IV-C, results**: Two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph added, including the binomial test ($k=172$, $n=270$, $p=0.000004$) and per-evaluator F1 results.
-- **Section VI — Concluding Remarks**: Paragraph updated with the blind experiment outcome and the moderated hypothesis.
+- **Abstract** *(lines 58–60)*: Updated with discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1 results (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
+- **Section I — Introduction, main hypothesis** *(line 78)*: "Virtually indistinguishable" replaced with the moderated claim: *"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*.
+- **Section IV, Criterion 1** *(lines 352–365)*: Summary of blind experiment results added: 63.7% overall discrimination accuracy, statistically significant above chance.
+- **Section IV-C, protocol description** *(lines 459–467)*: Full experimental design described: 45 real + 45 synthetic + 10 control = 100 images per evaluator, randomized interleaved sequence, experts blinded.
+- **Section IV-C, results** *(lines 468–514)*: Two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph added, including the binomial test ($k=172$, $n=270$, $p=0.000004$) and per-evaluator F1 results.
+- **Section VI — Concluding Remarks** *(lines 712–718)*: Paragraph updated with the blind experiment outcome (63.7%, F1 real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067) and the moderated hypothesis.
 
 ---
 ### Comment R1.4 — Statistical Significance for DSSIM
@@ -259,7 +231,7 @@ This ranking allowed us to make two additional points explicit in the manuscript
 
 This comment is addressed jointly with **Comment R1.3** (Reviewer 1 — Expert Evaluation Design), which raised the same methodological concern. Please refer to the full response under [Comment R1.3](#comment-r13--expert-evaluation-design) above for the complete description of the redesigned blind discrimination experiment and its results.
 
-In summary: a formal blind discrimination experiment was conducted with three expert geoscientists (45 real + 45 synthetic + 10 control images; 270 classification decisions total). Overall discrimination accuracy was 63.7% ($p < 0.001$ vs. chance). Segmentation F1-scores were comparable: real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067. The original claim of "virtually indistinguishable" was moderated to **"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"**. All manuscript changes are described in the R1.3 response.
+In summary: a formal blind discrimination experiment was conducted with three expert geoscientists (45 real + 45 synthetic + 10 control images; 270 classification decisions total). Overall discrimination accuracy was 63.7% ($p < 0.001$ vs. chance). Segmentation F1-scores were comparable: real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067. The original claim of "virtually indistinguishable" was moderated to **"geologically plausible, visually convincing synthetic seismic images that are comparable to real ones for salt-body interpretation"**. All manuscript changes are described in the R1.3 response.
 
 ---
 ### Comment R2.3 — Expanded Baseline Comparison
