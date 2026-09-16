@@ -27,6 +27,7 @@
 \usepackage{algpseudocode}
 \usepackage{letltxmacro}
 \usepackage[normalem]{ulem}
+\usepackage{soul}
 % Hyperref para criar marcadores (bookmarks) no PDF
 \usepackage[
     bookmarks=true,
@@ -95,8 +96,14 @@
 % \DIFadd: blue colored text (works everywhere including captions, tables, math)
 \providecommand{\DIFadd}[1]{{\protect\color{blue}#1}}
 \providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}
-\renewcommand{\DIFadd}[1]{{\protect\color{blue}#1}}
-\renewcommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}
+\sethlcolor{yellow}
+\soulregister\textbf7
+\soulregister\textit7
+\soulregister\emph7
+\soulregister\cite7
+\soulregister\ref7
+\renewcommand{\DIFadd}[1]{\ifmmode#1\else\begingroup\let\protect\relax\hl{#1}\endgroup\fi}
+\renewcommand{\DIFdel}[1]{}
 \providecommand{\DIFaddbegin}{}
 \providecommand{\DIFaddend}{}
 \providecommand{\DIFdelbegin}{}
@@ -105,8 +112,6 @@
 \providecommand{\DIFaddendFL}{}
 \providecommand{\DIFdelFL}[1]{}
 \providecommand{\DIFdelendFL}{}
-\renewcommand{\DIFadd}[1]{{\protect\color{blue}#1}}
-\renewcommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}
 \renewcommand{\DIFaddbegin}{}
 \renewcommand{\DIFaddend}{}
 \renewcommand{\DIFdelbegin}{}
@@ -454,9 +459,13 @@ The salt body dataset from the TGS Salt Identification Challenge is employed for
 
 The F3 dataset, containing 3D post-stack seismic data from the Dutch North Sea, is used for a quantitative comparison of \DIFdelbegin \DIFdel{the quality of }\DIFdelend our synthetic seismic images with the \DIFdelbegin \DIFdel{image quality obtained by a comparable method representing }\DIFdelend \DIFaddbegin \DIFadd{results obtained by }\DIFaddend the state-of-the-art \DIFdelbegin \DIFdel{proposed by }\DIFdelend \DIFaddbegin \DIFadd{method of }\DIFaddend Ferreira \emph{et al.}~\cite{Ferreira2020}. This dataset is widely recognized as a benchmark in seismic interpretation and image synthesis research~\cite{Baroni2018}. \DIFaddbegin \DIFadd{Following the same evaluation protocol as~\cite{Ferreira2020}, we extract 2D image patches of $400 \times 400$ pixels from the F3 volume, and pixel values are normalized to the range $[0, 255]$. A total of 600 synthetic images were generated and evaluated in this experiment. }\DIFaddend Using the same dataset\DIFaddbegin \DIFadd{, image dimensions, preprocessing, }\DIFaddend and evaluation protocol as\DIFdelbegin \DIFdel{the method in}\DIFdelend ~\cite{Ferreira2020} ensures a direct and fair comparison based on quantitative measures (MSE, DSSIM, and LBP Distance).
 
-\DIFaddbegin \noindent\DIFadd{\textbf{Note on experimental settings and numerical ranges.}} \DIFadd{The two experimental contexts in this work — the quantitative comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}and the ablation study (Section~\protect\ref{sec:ablation}) — use }\emph{\DIFadd{different datasets, image dimensions, and sample sizes}}\DIFadd{, and are therefore not directly numerically comparable. The quantitative comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}is conducted on the F3 dataset using $400 \times 400$ pixel images ($N = 600$ synthetic images), producing MSE values in the range of approximately 3,700--6,700. The ablation study is conducted on the TGS dataset using $101 \times 101$ pixel images ($N = 110$ images for the texture ablation; $N = 200$ masks for the VAE ablation), producing MSE values in the range of approximately 500--850. The substantially smaller image area ($101^2 = 10{,}201$ pixels vs.\ $400^2 = 160{,}000$ pixels) accounts for the order-of-magnitude difference in absolute MSE values between the two experimental contexts, since MSE is computed as the mean of squared pixel differences over all pixels of each image pair. DSSIM and LBP Distance values are less sensitive to image size but are still influenced by the different image content characteristics of the two datasets. Results from each context should therefore be interpreted independently.}
+\begingroup
+\renewcommand{\DIFadd}[1]{#1}
+\DIFaddbegin \noindent\DIFadd{\textbf{Note on experimental settings and numerical ranges.}} \DIFadd{The two experimental contexts in this work — the quantitative comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}and the ablation study (Section~\protect\ref{sec:ablation}) — use }\emph{\DIFadd{different datasets, image dimensions, and sample sizes}}\DIFadd{, and are therefore not directly numerically comparable. The quantitative comparison with Ferreira }\emph{\DIFadd{et al.}}\DIFadd{~\cite{Ferreira2020}is conducted on the F3 dataset using $400 \times 400$ pixel images ($N = 600$ synthetic images), producing MSE values in the range of approximately 3,700--6,700. The ablation study is conducted on the TGS dataset using $101 \times 101$ pixel images ($N = 110$ images for the texture ablation; $N = 200$ masks for the VAE ablation), producing MSE values in the range of approximately 500--850. The substantially smaller image area ($101^2 = 10,201$ pixels vs.\ $400^2 = 160,000$ pixels) accounts for the order-of-magnitude difference in absolute MSE values between the two experimental contexts, since MSE is computed as the mean of squared pixel differences over all pixels of each image pair. DSSIM and LBP Distance values are less sensitive to image size but are still influenced by the different image content characteristics of the two datasets. Results from each context should therefore be interpreted independently.}
 
-\DIFaddend \begin{figure}[htbp]
+\DIFaddend
+\endgroup
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{images/terre7.png}
     \caption{Comparison between a real seismic image sample, and the geoscience specialist selection in terms of saline area and ground truth (saline mask).}
