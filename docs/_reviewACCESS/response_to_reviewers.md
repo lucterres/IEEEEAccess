@@ -354,4 +354,14 @@ We thank the reviewer for this detailed and constructive list of missing impleme
 
 **Note on cross-reference with Reviewer 1 (R1.2):** The VAE implementation details above were also requested by Reviewer 1, Comment 2. Both responses refer to the same manuscript changes in Section III-A.
 
+---
+## Additional Editorial and Formatting Corrections
+
+In addition to the reviewer-specific revisions, we performed the following consistency and editorial checks across the revised manuscript:
+
+1. **IEEE citation style:** Narrative constructions such as “Ferreira et al.~\cite{Ferreira2020}” were replaced with IEEE-compatible numerical citations, such as “the method in~\cite{Ferreira2020}”. Citations were positioned before punctuation, and multiple references were written individually rather than as compressed ranges.
+2. **Grammar and academic style:** The revised passages in the related-work, experimental-setting, quantitative-comparison, and concluding sections were edited for grammatical correctness, clarity, and consistent scientific terminology.
+3. **Figure and table citations:** All figure and table labels in `_v7.tex` were checked against their in-text references. No defined figure or table remains uncited, and no orphan figure or table reference was found.
+4. **Bibliographic consistency:** All 21 `\bibitem` entries in `_v7.tex` were checked against the citation commands. Every bibliography entry is cited at least once, and no citation points to a missing bibliography entry.
+
 
