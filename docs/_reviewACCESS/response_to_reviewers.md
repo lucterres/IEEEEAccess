@@ -54,7 +54,7 @@ The paragraph describing Henriques et al. in **Section II (Related Work)** was s
 
 We thank the reviewer for this precise and constructive request. The original manuscript described the VAE architecture only generically as *"a simple feedforward network"* with *"four stacked dense layers"* for the encoder and *"five stacked dense layers"* for the decoder, providing no quantitative detail. We have now fully specified the architecture, training configuration, and design rationale.
 
-**Action taken in the revised manuscript (`_v7.tex`):**
+**Action taken in the revised manuscript :**
 
 The paragraph beginning *"We use the generated masks as contexts..."* in **Section III-A** (*Context Generation Using a Variational Autoencoder*) was replaced with a detailed implementation description covering:
 
@@ -95,19 +95,10 @@ This design provides direct evidence for the "virtually indistinguishable" hypot
 
 - **Abstract** *(lines 58–60 in `_v7.tex`)*: Updated with the blind discrimination experiment results: discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1-scores (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
 - **Section IV, Criterion 1** *(lines 352–365 in `_v7.tex`)*: The opening paragraph of the Results section was updated. The claim "highly realistic" was moderated to *"sufficiently realistic to challenge expert discrimination"*; the dual evaluation strategy now explicitly cites Ferreira et al.~\cite{Ferreira2020}; the LBP metric description was clarified to *"Euclidean distance between Local Binary Pattern (LBP) histograms"*.
+- **Section IV-C, protocol description** *(lines 459–467)*: Full experimental design described: 45 real + 45 synthetic + 10 control = 100 images per evaluator, randomized interleaved sequence, experts blinded.
 - **Section IV-C — Qualitative Evaluation** *(lines 455–514 in `_v7.tex`)*: Subsection restructured as a formal blind discrimination experiment. Subsubsection *Blind Discrimination Experiment Protocol* added (lines 459–467). Subsubsection *Blind Discrimination Results* added with two tables (`tab:blind_classification`, `tab:blind_segmentation`) and analysis paragraph including binomial test ($k=172$, $n=270$, $p=0.000004$) (lines 468–514).
 - **Section VI — Concluding Remarks** *(lines 712–718 in `_v7.tex`)*: Paragraph updated with the blind experiment outcome (63.7% accuracy, F1 real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067) and the moderated hypothesis (*"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*).
 
-**All changes made to the manuscript (`_v7.tex`):**
-
-- **Abstract** *(lines 58–60)*: Updated with discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1 results (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
-- **Section I — Introduction, main hypothesis** *(line 78)*: "Virtually indistinguishable" replaced with the moderated claim: *"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*.
-- **Section IV, Criterion 1** *(lines 352–365)*: Summary of blind experiment results added: 63.7% overall discrimination accuracy, statistically significant above chance.
-- **Section IV-C, protocol description** *(lines 459–467)*: Full experimental design described: 45 real + 45 synthetic + 10 control = 100 images per evaluator, randomized interleaved sequence, experts blinded.
-- **Section IV-C, results** *(lines 468–514)*: Two result tables (`tab:blind_classification`, `tab:blind_segmentation`) and a full analysis paragraph added, including the binomial test ($k=172$, $n=270$, $p=0.000004$) and per-evaluator F1 results.
-- **Section VI — Concluding Remarks** *(lines 712–718)*: Paragraph updated with the blind experiment outcome (63.7%, F1 real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067) and the moderated hypothesis.
-
----
 ### Comment R1.4 — Statistical Significance for DSSIM
 
 > *"The improvement in DSSIM is small (~2.2%). Please add a statistical test (e.g., Wilcoxon) to confirm significance, or otherwise discuss the result candidly while highlighting gains in MSE and LBP."*
@@ -135,7 +126,7 @@ The gains across all three measures are summarized below:
 
 The MSE reduction of ~16.7% reflects substantially improved pixel-level fidelity, and the LBP Distance reduction of ~12.5% indicates that the proposed method generates textures with meaningfully higher similarity to the original seismic images in the local binary pattern feature space. These two metrics together provide a consistent and practically relevant signal of improvement, with DSSIM confirming that the structural regime is preserved.
 
-**Action taken in the revised manuscript (`_v7.tex`):**
+**Action taken in the revised manuscript :**
 
 The MSE, DSSIM, and LBP Distance paragraphs of **Section IV-D** (*Comparative Analysis*) and the "Overall" synthesis paragraph were reconciled with Table `tab:metricsSummary` and rewritten to:
 
@@ -166,7 +157,7 @@ We thank the reviewer for this important suggestion. We agree that a downstream 
 
 The purpose of this experiment is to test whether synthetic samples generated by the proposed context-oriented method improve segmentation performance on a fixed real test set when used for data augmentation during training.
 
-**Action taken in the revised manuscript (`_v7.tex`):**
+**Action taken in the revised manuscript :**
 
 A new subsection **Section IV-E — Downstream Segmentation Evaluation** was inserted and completed with the experimental protocol, numerical results, and interpretation.
 
@@ -216,7 +207,7 @@ This ranking allowed us to make two additional points explicit in the manuscript
   - new table ranking the **seven augmentation methods** evaluated in Scenario B,
   - explicit statement that the best result obtained by **context seismic** supports the paper's central hypothesis.
 
-**Revised text added in Section IV-E (`_v7.tex`):**
+**Revised text added in Section IV-F:**
 
 > *"Scenario B consistently outperforms Scenario A across all three random seeds (seeds 42, 123, and 456), with individual IoU gains of +0.0292, +0.0168, and +0.0125, respectively. The mean IoU improves from 0.4081 (Scenario A) to 0.4276 (Scenario B), an absolute gain of +0.0195 (+4.8%). The lower standard deviation of Scenario B (0.0062 vs. 0.0092) further indicates that augmenting with context-seismic synthetic images not only improves segmentation performance but also stabilizes training across different initialization seeds."*
 
@@ -256,7 +247,7 @@ None of the GAN-based or diffusion-based methods in the salt dome synthesis lite
 
 This is a known limitation acknowledged candidly in the revised manuscript, and it reflects the broader challenge of the absence of a universally adopted benchmark for seismic image synthesis.
 
-**Actions taken in the revised manuscript (`_v7.tex`):**
+**Actions taken in the revised manuscript :**
 
 1. **Section II (Related Work):**
    - The paragraph on **Ferreira et al.** was expanded to explicitly describe their cGAN/pix2pix architecture (conditional generator + discriminator, sketch-based conditioning), contextualizing them as the closest directly comparable baseline (same task, same dataset, same metrics).
@@ -300,7 +291,7 @@ We thank the reviewer for this important observation. The reviewer correctly ide
 
 MSE is defined as the mean of squared pixel differences over all pixels of an image. With $400^2 = 160{,}000$ pixels (F3) vs.\ $101^2 = 10{,}201$ pixels (TGS), the image area differs by a factor of approximately 15.7×, which directly explains the order-of-magnitude difference in absolute MSE values. DSSIM and LBP Distance are less sensitive to image size but are also affected by the distinct image content characteristics of the two datasets.
 
-**Action taken in the revised manuscript (`_v7.tex`):**
+**Action taken in the revised manuscript :**
 
 1. **Section IV — Dataset subsection** *(after the F3 paragraph)*: A new explanatory note was added that explicitly states:
    - The quantitative comparison (Table 3) uses the **F3 dataset**, $400 \times 400$ px patches, normalized to $[0, 255]$, 600 synthetic images.
@@ -310,7 +301,7 @@ MSE is defined as the mean of squared pixel differences over all pixels of an im
 
 2. **Section V — Ablation Study** *(opening paragraph)*: A new "Experimental setting" note was prepended, reminding readers that all ablation experiments use the TGS dataset ($101 \times 101$ px) and cross-referencing the explanatory note in the Dataset section.
 
-**Revised note added to Dataset section (`_v7.tex`):**
+**Revised note added to Dataset section :**
 
 > *"The two experimental contexts in this work — the quantitative comparison with the state-of-the-art (Section IV) and the ablation study (Section V) — use different datasets, image dimensions, and sample sizes, and are therefore not directly numerically comparable. The quantitative comparison with Ferreira et al. is conducted on the F3 dataset using $400 \times 400$ pixel images ($N = 600$ synthetic images), producing MSE values in the range of approximately 3,700–6,700. The ablation study is conducted on the TGS dataset using $101 \times 101$ pixel images ($N = 110$ images for the texture ablation; $N = 200$ masks for the VAE ablation), producing MSE values in the range of approximately 500–850. The substantially smaller image area ($101^2 = 10{,}201$ pixels vs.\ $400^2 = 160{,}000$ pixels) accounts for the order-of-magnitude difference in absolute MSE values between the two experimental contexts, since MSE is computed as the mean of squared pixel differences over all pixels of each image pair."*
 
@@ -323,7 +314,7 @@ MSE is defined as the mean of squared pixel differences over all pixels of an im
 
 We thank the reviewer for this detailed and constructive list of missing implementation details. We have addressed every item enumerated in the comment, distributing the information across two sections of the revised manuscript: VAE-related parameters in Section III-A, and texture synthesis parameters in Section III-B.
 
-**Action taken in the revised manuscript (`_v7.tex`):**
+**Action taken in the revised manuscript :**
 
 **Section III-A** (*Context Generation Using a Variational Autoencoder*) — VAE parameters:
 
