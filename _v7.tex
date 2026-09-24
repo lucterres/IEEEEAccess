@@ -468,6 +468,21 @@ The segmentation masks produced by the experts are compared against the ground-t
 \subsubsection{Blind Discrimination Results}
 
 Table~\ref{tab:blind_classification} reports the classification accuracy per expert and overall.
+The corresponding confusion matrices are presented in Fig.~\ref{fig:discrimination_confusion_matrix_per_evaluator} for the individual evaluators and in Fig.~\ref{fig:discrimination_confusion_matrix_pooled} for all evaluators combined. Each cell reports the number of classifications and the percentage within the corresponding ground-truth class.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{images/terre12.png}
+    \caption{Confusion Matrix - Blind Origin Discrimination (Real vs. Synthetic) (control images excluded).}
+    \label{fig:discrimination_confusion_matrix_per_evaluator}
+\end{figure*}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.72\linewidth]{images/terre13.png}
+    \caption{Confusion Matrix - Blind Origin Discrimination (Real vs. Synthetic) All evaluators combined (control images excluded).}
+    \label{fig:discrimination_confusion_matrix_pooled}
+\end{figure}
 
 \begin{table}[htbp]
     \centering
@@ -508,6 +523,8 @@ Table~\ref{tab:blind_segmentation} reports mean F1-score per expert for real and
 \end{table}
 
 The overall classification accuracy of $63.7\%$ ($n = 270$) is statistically significant above chance (one-sided exact binomial test: $k = 172$, $p = 0.000004$; one-sided 95\% CI: $p > 0.586$). This indicates that the synthetic images are sufficiently realistic to challenge expert discrimination, but not fully undistinguishable from real images. The confusion between classes is near-symmetric: real images were misclassified as synthetic in 37.0\% of trials, and synthetic images as real in 35.6\%, suggesting that neither class was consistently easier to identify.
+
+To assess whether the two error directions were systematically unbalanced, we applied an exact McNemar test to the discordant classifications. In the pooled dataset, the confusion matrix contained 50 real-to-synthetic errors and 48 synthetic-to-real errors, out of 98 discordant classifications. The two-sided exact test was not significant ($p = 0.9196$), providing no evidence of a relevant directional interpretation bias. This analysis evaluates asymmetry between the two error types; it does not constitute a fairness analysis across demographic or independent evaluator groups.
 
 All three experts correctly identified all ten control images (0\% false-positive rate for salt presence in controls), confirming that the evaluators reliably distinguished images with salt from those without.
 
