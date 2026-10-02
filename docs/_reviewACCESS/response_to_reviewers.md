@@ -89,14 +89,14 @@ In response to this limitation, we have **redesigned the expert evaluation as a 
 - Control images without any saline body are included in the stimulus set to assess experts' baseline response tendency;
 - Image identity and sequence are **fully randomized** across participants to avoid order effects.
 
-This design provides direct evidence for the "virtually indistinguishable" hypothesis and fully addresses the reviewer's concern about blinding and image mixing.
+This design directly addresses the reviewer's concern about blinding and image mixing. Because the observed accuracy was above chance, the manuscript now presents the images as sufficiently realistic to challenge expert discrimination, rather than as fully indistinguishable from real images.
 
 **Changes made to each section of the manuscript:**
 
 - **Abstract** *(lines 58–60 in `_v7.tex`)*: Updated with the blind discrimination experiment results: discrimination accuracy (63.7%), statistical significance ($p = 0.000004$), and segmentation F1-scores (real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067).
 - **Section IV, Criterion 1** *(lines 352–365 in `_v7.tex`)*: The opening paragraph of the Results section was updated. The claim "highly realistic" was moderated to *"sufficiently realistic to challenge expert discrimination"*; the dual evaluation strategy now explicitly cites Ferreira et al.~\cite{Ferreira2020}; the LBP metric description was clarified to *"Euclidean distance between Local Binary Pattern (LBP) histograms"*.
 - **Section IV-C, protocol description** *(lines 459–467)*: Full experimental design described: 45 real + 45 synthetic + 10 control = 100 images per evaluator, randomized interleaved sequence, experts blinded.
-- **Section IV-C — Qualitative Evaluation** *(lines 455–514 in `_v7.tex`)*: Subsection restructured as a formal blind discrimination experiment. Subsubsection *Blind Discrimination Experiment Protocol* added (lines 459–467). Subsubsection *Blind Discrimination Results* added with two tables (`tab:blind_classification`, `tab:blind_segmentation`) and analysis paragraph including binomial test ($k=172$, $n=270$, $p=0.000004$) (lines 468–514).
+- **Section IV-C — Qualitative Evaluation** *(lines 455–557 in `_v7.tex`)*: Subsection restructured as a formal blind discrimination experiment. Subsubsection *Blind Discrimination Experiment Protocol* added (lines 459–467). Subsubsection *Blind Discrimination Results* added with three tables (`tab:blind_classification`, `tab:blind_segmentation`, and `tab:blind_seg_breakdown`) and analysis paragraphs including the binomial test ($k=172$, $n=270$, $p=0.000004$), the McNemar test for directional error asymmetry, and the comparison of pixel-level F1/Dice scores by image source and classification outcome.
 - **Section VI — Concluding Remarks** *(lines 712–718 in `_v7.tex`)*: Paragraph updated with the blind experiment outcome (63.7% accuracy, F1 real 0.849 ± 0.065 vs. synthetic 0.840 ± 0.067) and the moderated hypothesis (*"geologically plausible, visually realistic, and comparable to real seismic images for salt-body interpretation"*).
 
 ### Comment R1.4 — Statistical Significance for DSSIM
@@ -179,7 +179,7 @@ Importantly, the gain was consistent across all three seeds:
 - seed 123: **+0.0168**
 - seed 456: **+0.0125**
 
-These results indicate that the proposed synthetic samples improve downstream segmentation on real seismic data and reduce variance across runs.
+Under the evaluated protocol, these results indicate that the proposed synthetic samples improve downstream segmentation on real seismic data and reduce variance across runs.
 
 In addition, we included a second table ranking the augmentation methods tested in **Scenario B**, showing that the proposed **context seismic** strategy achieved the highest mean IoU among all evaluated augmentations:
 
@@ -207,7 +207,7 @@ This ranking allowed us to make two additional points explicit in the manuscript
   - new table ranking the **seven augmentation methods** evaluated in Scenario B,
   - explicit statement that the best result obtained by **context seismic** supports the paper's central hypothesis.
 
-**Revised text added in Section IV-F:**
+**Revised text added in Section IV-E:**
 
 > *"Scenario B consistently outperforms Scenario A across all three random seeds (seeds 42, 123, and 456), with individual IoU gains of +0.0292, +0.0168, and +0.0125, respectively. The mean IoU improves from 0.4081 (Scenario A) to 0.4276 (Scenario B), an absolute gain of +0.0195 (+4.8%). The lower standard deviation of Scenario B (0.0062 vs. 0.0092) further indicates that augmenting with context-seismic synthetic images not only improves segmentation performance but also stabilizes training across different initialization seeds."*
 
