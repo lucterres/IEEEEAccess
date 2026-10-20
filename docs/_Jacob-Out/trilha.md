@@ -186,4 +186,158 @@ Como respondemos as outras questões abaixo ?
 Jacob
 
 # 10. Luciano
- estou terminando as questões 2 e 3. Essas foram ótimas sugestões, mas um pouco mais delicadas. Estou revisando a consistência do documento
+ estou terminando as questões 2 e 3. Essas foram ótimas sugestões, mas um pouco mais delicadas. Estou revisando a consistência do documento.
+
+ 
+# 11. Jacob Scharcanski 8 de out. de 2026, 11:33 (há 7 dias)
+Obrigado, Luciano. Os resultados são bem interessantes, só quero ter certeza de que a apresentação é convincente ... Espero dar retorno ainda hoje.
+
+Jacob Scharcanski 8 de out. de 2026, 17:29 (há 7 dias)
+para mim, Jacobs
+
+Oi Luciano,
+
+Respostas :
+
+2) a resposta da questão 2 parece estar ok, o teste parece adequado e o resultado satisfatório;
+
+================
+
+3) a resposta da questão 3 parece incompleta, falta a testagem conclusiva.
+veja como proceder :
+
+assumindo 100 amostras reais e 100 amostras sintéticas, e queremos saber se o
+desempenho do método de segmentação é o mesmo em ambos os casos :
+
+Para determinar se a adição de 100 imagens sintéticas traz uma melhora
+significativa no desempenho do seu algoritmo de segmentação, deves realizar
+um teste de hipótese estatística pareado ou bicaudal, dependendo de como seus
+dados foram avaliados.
+
+O teste mais recomendado para essa situação é o Teste t de Student Pareado
+(ou o Teste de Wilcoxon, caso os dados não sigam uma distribuição normal).
+
+Abaixo está o passo a passo de como estruturar essa validação:
+
+1. Definição das Métricas e do Conjunto de Teste
+
+• Conjunto de Validação Fixo: Você deve avaliar ambos os modelos exatamente
+no mesmo conjunto de imagens de teste (que devem ser 100% reais e que nunca
+foram vistas por nenhum dos modelos durante o treino).
+
+• Métrica de Segmentação: Escolha uma métrica padrão por imagem, como o Dice
+Coefficient (F1-Score) ou IoU (Intersection over Union).
+
+2. Escolha do Teste Estatístico
+
+Teste dos Postos Sinalizados de Wilcoxon (Alternativa não-paramétrica)
+
+Se a diferença de desempenho entre os modelos não seguir uma distribuição
+normal (por exemplo, se houver muitos valores extremos ou se a métrica
+estiver muito concentrada próxima a 1.0), use o teste de Wilcoxon.
+
+• O que ele faz: É a versão não-paramétrica do teste t pareado. Ele compara
+os postos das diferenças em vez dos valores brutos.
+
+3. Como executar o teste (Exemplo em Python)
+
+Tu vais extrair uma lista de pontuações/exemplos IoU/Dice para o Modelo A
+(100 reais) e outra para o Modelo B (100 reais + 100 sintéticas) para cada
+imagem do conjunto de testes.
+
+em python :
+
+import scipy.stats as stats
+
+# Exemplo: Lista com o IoU de cada imagem no conjunto de teste
+iou_modelo_A = [0.82, 0.75, 0.89, ...]  # Apenas reais
+iou_modelo_B = [0.85, 0.79, 0.88, ...]  # Reais + Sintéticas
+
+# 1. Verificar normalidade da diferença
+diferenca = [b - a for a, b in zip(iou_modelo_A, iou_modelo_B)]
+_, p_normalidade = stats.shapiro(diferenca)
+
+# 2. Aplicar o teste adequado
+if p_normalidade > 0.05:
+     # Dados normais -> Teste t Pareado
+     stat, p_valor = stats.ttest_rel(iou_modelo_B, iou_modelo_A,
+alternative='greater')
+     print(f"Teste t Pareado - p-valor: {p_valor}")
+else:
+     # Dados não-normais -> Wilcoxon
+     stat, p_valor = stats.wilcoxon(iou_modelo_B, iou_modelo_A,
+alternative='greater')
+     print(f"Teste de Wilcoxon - p-valor: {p_valor}")
+
+4. Interpretação dos Resultados
+
+• Defina o nível de significância (\(\alpha \)): O padrão é 0.05 (5%).
+
+• Se o p-valor < 0.05: rejeita a hipótese nula. Isso significa que há uma
+diferença estatisticamente significativa e que a inclusão de imagens
+sintéticas realmente alterou o desempenho do modelo.
+
+• Se o p-valor >= 0.05: Significa que qualquer diferença observada no
+resultado médio pode ter ocorrido puramente por acaso, e as imagens
+sintéticas não trouxeram ganho significativo.
+
+================
+
+No aguardo.
+
+
+Resposta:
+
+
+Vou confrontar a crítica com a trilha, os resumos e o desenho experimental registrado no manuscrito. O ponto principal é verificar se há realmente pares por imagem que permitam o teste sugerido, ou se a avaliação atual tem outra unidade experimental.
+
+Read 
+
+Read 
+
+Read 
+
+Read memory 
+
+Read memory 
+
+Searched for files matching `**/docs/R2.1-experiment-downstream/**/*`, 5 matches
+
+Searched for regex `seed|IoU|intersection|test set|Scenario A|Scenario B|p-value|ttest|wilcoxon|paired` (`**/docs/R2.1-experiment-downstream/**`), 58 results
+
+Read , lines 610 to 715
+
+Read , lines 60 to 159
+
+Há um ponto metodológico importante: o manuscrito diz que o teste contém 800 imagens reais compartilhadas, mas reporta apenas três IoUs agregados por cenário. O protocolo antigo também previa um teste pareado entre esses três seeds; vou conferir os resultados brutos e o protocolo executado para distinguir o teste possível agora do teste que exigiria novas inferências por imagem.
+
+Searched for files matching `**/docs/R2.1-experiment-downstream/**/*.{py,ipynb,pt,pth,npy,npz,json,csv}`, 3 matches
+
+Read 
+
+Read , lines 180 to 240
+
+Read 
+
+Read 
+
+Os resultados disponíveis confirmam que o ganho foi positivo nos três seeds, mas há apenas três pares de IoU agregados; não há, nesses arquivos, uma série de pontuações por imagem. Também encontrei possível diferença de protocolo entre o manuscrito e o relatório dos resultados; vou apontar isso porque pode confundir o efeito dos sintéticos com o das outras augmentações.
+
+Searched for regex `Downstream Segmentation Evaluation|Each scenario is repeated|Training scenarios|Scenario~A|horizontal and vertical flips|test set of 800` (`**/_v7.tex`), 6 results
+
+Searched for regex `Baseline \(sem augmentação\)|Ganho por seed|context seismic|Teste de significância|normal` (`**/docs/R2.1-experiment-downstream/result_UnetExperiment.md`), 15 results
+
+Searched for regex `Teste de significância|teste t pareado|3 seeds independentes|Test set permanece fixo` (`**/docs/R2.1-experiment-downstream/experimentUNet-protocol.md`), 3 results
+
+**Avaliação:** a crítica de Jacob é válida no ponto central. O manuscrito mostra um ganho de IoU de `0.4081` para `0.4276`, consistente nos três seeds, mas não apresenta um teste inferencial nem intervalo de confiança. Portanto, sustenta um ganho **observado**, não uma melhora estatisticamente confirmada.
+
+A sugestão do teste pareado faz sentido, mas precisa ser adaptada ao experimento:
+
+- **O teste deve usar somente imagens reais no conjunto de teste.** Os pares sintéticos são acrescentados ao treinamento; não devem compor o teste que mede generalização para dados reais. O manuscrito descreve 800 imagens reais fixas para ambos os cenários, não 100 reais e 100 sintéticas (`_v7.tex`).
+- Para cada imagem de teste, calcule `dᵢ = IoU_Bᵢ − IoU_Aᵢ`, usando as previsões dos dois modelos sobre **a mesma imagem**. A hipótese sobre ganho é unilateral e deve ser definida antes do teste: `H₀: ganho médio ≤ 0` contra `H₁: ganho médio > 0`. Um teste t pareado ou Wilcoxon pode avaliar esses pares, mas um resultado não significativo **não prova que o desempenho é igual**. Para afirmar equivalência, seria necessário definir uma margem prática e usar um teste de equivalência.
+- Os resultados brutos consultados só trazem IoUs agregados para três seeds, não IoUs por imagem (`result_UnetExperiment.md`, [`last_ab_consolidated_results.csv`](.`last_ab_consolidated_results.csv`)). Com os três pares de médias disponíveis, o teste t pareado daria aproximadamente `p = 0.030` unilateral ou `p = 0.060` bilateral. Isso é frágil: são apenas três pares, insuficientes para avaliar a normalidade das diferenças; o Wilcoxon exato unilateral, por exemplo, não alcançaria `p < 0.05` com três diferenças positivas. O protocolo antigo previa testar os três valores por seed, mas isso não consta como resultado no manuscrito (`experimentUNet-protocol.md`).
+- Há ainda uma questão a resolver antes de interpretar o teste: o relatório chama o Cenário A de baseline **sem augmentação** e compara o método `context seismic` com esse baseline (`result_UnetExperiment.md`); o manuscrito afirma que flips são aplicados igualmente nos dois cenários (`_v7.tex`). É preciso confirmar o que foi realmente executado. Se outras augmentações diferem entre A e B, o teste não isola o efeito dos dados sintéticos.
+
+**Como proceder:** primeiro confirme o protocolo executado e se as sete estratégias foram escolhidas usando esse conjunto de teste. O relatório indica que elas foram ranqueadas pelo IoU no teste; se esse mesmo conjunto selecionou o melhor método, um teste posterior nele pode superestimar a evidência. Para uma conclusão confirmatória, use um teste final não usado nessa seleção. Depois, obtenha as previsões por imagem de cada cenário nesse teste e compare os IoUs pareados; amplie também o número de seeds para estimar a variação do treinamento. Se não houver tempo para novos experimentos, a análise pareada por imagem nos modelos existentes ainda pode ser informativa, mas deve ser apresentada como evidência condicionada a esses modelos, não como confirmação geral.
+
+Em resumo: a crítica aponta uma lacuna real; o teste sugerido é pertinente, mas não basta aplicar Shapiro e escolher um teste mecanicamente. A unidade de pareamento, o número reduzido de seeds, a seleção entre sete métodos e a consistência entre protocolo e manuscrito precisam ser tratados para a conclusão ser defensável.
