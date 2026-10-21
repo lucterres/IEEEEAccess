@@ -2,7 +2,7 @@
 
 **Manuscrito:** Access-2026-27912  
 **Comentário:** Reviewer 2, Issue 1 — Downstream segmentation experiment  
-**Status:** PENDING — experimento ainda não realizado  
+**Status:** EXPERIMENTO PRINCIPAL CONCLUÍDO (2026-08-19); análise inferencial pareada e subexperimento low-data não reportados. Resultados: [`result_UnetExperiment.md`](result_UnetExperiment.md).
 **Data de criação:** 2026-07-17
 
 ---
@@ -145,9 +145,9 @@ if args.scenario == 'B':
 
 | Split | Tamanho | Papel |
 |-------|---------|-------|
-| **Train-real** | 800 imagens | Treino base (ambos os cenários) |
+| **Train-real** | 1.200 imagens | Treino base (ambos os cenários) |
 | **Test** | 800 imagens | Avaliação final — fixo, nunca visto no treino |
-| **Pool sintético** | 400 imagens geradas | Augmentation no cenário B |
+| **Pool sintético** | 1.200 pares imagem--máscara | Adicionados ao cenário B |
 
 > **Regra de isolamento:** as imagens sintéticas do pool são geradas a partir de **máscaras novas** amostradas do VAE treinado — nunca a partir de imagens do test set. Isso garante que o modelo B não veja informação do test set indiretamente, nem pela textura nem pela geometria.
 
@@ -159,8 +159,8 @@ if args.scenario == 'B':
 
 | Cenário | Dados de treino | Finalidade |
 |---------|----------------|-----------|
-| **A — Real only** | 800 imagens reais | Baseline |
-| **B — Real + Synthetic** | 800 reais + 400 sintéticos | Augmented |
+| **A — Real only** | 1.200 imagens reais | Baseline |
+| **B — Real + Synthetic** | 1.200 reais + 1.200 sintéticos | Augmented |
 
 Os dois modelos devem ser **idênticos em arquitetura e hiperparâmetros** — a única variável independente é o conjunto de treino.
 
@@ -218,18 +218,19 @@ Calculadas no **test set real** (fixo e idêntico para ambos os cenários):
 | **Pixel accuracy** | $\frac{TP+TN}{N}$ | Complementar; pode ser enganosa com desbalanceamento |
 
 **Análise estatística:**
-- Treinar cada cenário com **3 seeds independentes** (ex.: 42, 123, 456)
-- Reportar: média ± desvio padrão de IoU e Dice para cada cenário
-- Teste de significância: **teste t pareado** (ou Wilcoxon signed-rank se distribuição não-normal) entre os 3 valores de IoU do cenário A e os 3 do cenário B
-- Nível de significância: $\alpha = 0.05$
+- O relatório registra **3 seeds** (42, 123, 456) por cenário e apresenta média ± desvio padrão de IoU.
+- IoU registrado: A (1.200 reais), $0.4081 \pm 0.0092$; B (1.200 reais + 1.200 sintéticos), $0.4276 \pm 0.0062$.
+- **Valor de p: não reportado.** Os resultados disponíveis são agregados por seed; não incluem IoU por imagem nem registram um teste inferencial pareado.
+- Para uma análise pareada por imagem, são necessários os resultados de ambos os modelos nas mesmas imagens reais de teste. A variação entre treinamentos também deve ser considerada; três seeds oferecem evidência limitada para generalização sobre o processo de treinamento.
+- Fonte e resultados completos: [`result_UnetExperiment.md`](result_UnetExperiment.md).
 
 **Tabela alvo no manuscrito:**
 
 | Cenário | IoU (mean ± std) | Dice (mean ± std) |
 |---------|-----------------|------------------|
-| A — Real only (N=800) | [TODO] | [TODO] |
-| B — Real + Synthetic (N=800+400) | [TODO] | [TODO] |
-| $p$-value (A vs. B) | [TODO] | [TODO] |
+| A — Real only (N=1.200) | $0.4081 \pm 0.0092$ | Não reportado |
+| B — Real + Synthetic (N=1.200+1.200) | $0.4276 \pm 0.0062$ | Não reportado |
+| $p$-value (A vs. B) | Não reportado | — |
 
 ---
 
@@ -340,11 +341,11 @@ lines [TODO]–[TODO] in _v7.tex.
 
 - [ ] Implementar U-Net (PyTorch) com as especificações da Seção 3
 - [ ] Implementar dataloader TGS com split estratificado (seed fixo = 42)
-- [ ] Gerar 400 imagens sintéticas com VAE + pipeline de textura
-- [ ] Treinar e avaliar Cenário A (3 seeds)
-- [ ] Treinar e avaliar Cenário B (3 seeds)
+- [x] Gerar 1.200 imagens sintéticas com VAE + pipeline de textura
+- [x] Treinar e avaliar Cenário A (3 seeds)
+- [x] Treinar e avaliar Cenário B (3 seeds)
 - [ ] Executar sub-experimento low-data (N=50, 100, 200)
-- [ ] Registrar resultados: IoU, Dice, p-value
+- [x] Registrar resultados de IoU por seed; teste inferencial/p-value ainda não reportado
 - [ ] Inserir subseção `\subsection{Downstream Segmentation Evaluation}` em `_v7.tex`
 - [ ] Atualizar `response_to_reviewers.md` — seção R2.1
 - [ ] Atualizar `summary_of_changes.md` — status R2.1 de **PENDING** → **DONE**
